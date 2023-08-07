@@ -26,6 +26,10 @@ public class User {
     @Column(name = "enabled", nullable = false, columnDefinition = "integer default 1")
     private Integer enabled;
 
+
+//    SET CONSULTANT
+//    SET SEEKER
+
     public User() {
     }
 

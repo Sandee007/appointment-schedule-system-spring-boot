@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Defff</title>
+</head>
+<body>
+<div th:replace="layouts/header :: header" ></div>
+
+<div layout:fragment="content" >
+    should be replaced
+</div>
+
+<div th:replace="layouts/footer :: footer" ></div>
+</body>
+</html>

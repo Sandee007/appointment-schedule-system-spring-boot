@@ -1,4 +1,4 @@
-package com.sandee007.appointmentScheduleSystem.auth.entity;
+package com.sandee007.appointmentScheduleSystem.base.auth.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

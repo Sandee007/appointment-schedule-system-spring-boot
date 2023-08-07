@@ -1,10 +1,9 @@
-package com.sandee007.appointmentScheduleSystem.auth.security;
+package com.sandee007.appointmentScheduleSystem.base.auth.security;
 
+import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
@@ -23,31 +22,6 @@ public class AuthConfig {
     public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-    /*
-    @Bean
-    public InMemoryUserDetailsManager userDetailsManager() {
-        UserDetails john = User.builder()
-                               .username("john")
-                               .password("{noop}123") // noop => no operation on password / not encrypted
-                               .roles(Role.EMPLOYEE.name())
-                               .build();
-
-        UserDetails mary = User.builder()
-                               .username("mary")
-                               .password("{noop}123")
-                               .roles(Role.EMPLOYEE.name(), Role.MANAGER.name())
-                               .build();
-
-        UserDetails susan = User.builder()
-                                .username("susan")
-                                .password("{noop}123")
-                                .roles(Role.EMPLOYEE.name(), Role.MANAGER.name(), Role.ADMIN.name())
-                                .build();
-
-        return new InMemoryUserDetailsManager(john, mary, susan);
-    }
-    */
 
     @Bean
     UserDetailsManager userDetailsManager(DataSource dataSource) {

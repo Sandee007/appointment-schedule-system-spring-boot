@@ -1,7 +1,7 @@
-package com.sandee007.appointmentScheduleSystem.auth.service;
+package com.sandee007.appointmentScheduleSystem.base.auth.service;
 
-import com.sandee007.appointmentScheduleSystem.auth.dao.UserRepository;
-import com.sandee007.appointmentScheduleSystem.auth.entity.User;
+import com.sandee007.appointmentScheduleSystem.base.auth.dao.UserRepository;
+import com.sandee007.appointmentScheduleSystem.base.auth.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

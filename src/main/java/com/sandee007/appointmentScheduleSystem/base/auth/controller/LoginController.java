@@ -1,7 +1,7 @@
-package com.sandee007.appointmentScheduleSystem.auth.controller;
+package com.sandee007.appointmentScheduleSystem.base.auth.controller;
 
-import com.sandee007.appointmentScheduleSystem.auth.entity.User;
-import com.sandee007.appointmentScheduleSystem.auth.service.UserService;
+import com.sandee007.appointmentScheduleSystem.base.auth.entity.User;
+import com.sandee007.appointmentScheduleSystem.base.auth.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 

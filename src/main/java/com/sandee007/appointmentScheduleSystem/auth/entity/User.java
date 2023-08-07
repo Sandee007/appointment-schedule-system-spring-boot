@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-//this replicates the default spring-security db table -> users (email column has been added)
+//this replicates the default spring-security db table -> users
 @Entity
 @Table(name = "users")
 @Getter
@@ -17,31 +17,28 @@ public class User {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String username;
 
     @Column(name = "password")
     private String password;
 
-    @Column(name = "email")
-    private String email;
-
     @Column(name = "enabled", nullable = false, columnDefinition = "integer default 1")
-    private Integer active;
+    private Integer enabled;
 
     public User() {
     }
 
-    public User(int id, String username, String password, int active) {
+    public User(int id, String username, String password, int enabled) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.active = active;
+        this.enabled = enabled;
     }
 
-    public User(String username, String password, int active) {
+    public User(String username, String password, int enabled) {
         this.username = username;
         this.password = password;
-        this.active = active;
+        this.enabled = enabled;
     }
 }

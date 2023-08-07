@@ -2,7 +2,9 @@ package com.sandee007.appointmentScheduleSystem.auth.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
@@ -51,14 +53,15 @@ public class AuthConfig {
     UserDetailsManager userDetailsManager(DataSource dataSource) {
         JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
 
+        //        can only use the username column here, nothing else
         jdbcUserDetailsManager.setUsersByUsernameQuery(
-                "SELECT username, password, active FROM custom_table_users " +
-                        " WHERE username=?"
+                "SELECT username, password, enabled FROM users " +
+                        " WHERE username=? "
         );
 
         jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
-                "SELECT R.user_id, R.role FROM custom_table_roles AS R " +
-                        " LEFT JOIN custom_table_users AS U " +
+                "SELECT R.user_id, R.role FROM roles AS R " +
+                        " LEFT JOIN users AS U " +
                         " ON U.id = R.user_id " +
                         " WHERE U.username=?"
         );
@@ -83,9 +86,9 @@ public class AuthConfig {
                 )
                 .formLogin(loginForm ->
                                    loginForm
-//                                           .loginPage("/login")
+                                           //                                           .loginPage("/login")
                                            // * spring will handle a POST request for this automatically, must have name,password
-                                           .loginProcessingUrl("/handle-login")
+                                           //                                           .loginProcessingUrl("/handle-login")
                                            .permitAll()
                 )
                 .logout(logout -> logout.permitAll())

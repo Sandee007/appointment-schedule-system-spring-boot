@@ -50,8 +50,8 @@ public class AuthConfig {
                                                config
                                                        .requestMatchers(
                                                                "/",
+                                                               "/assets/**",
                                                                "/register/**",
-                                                               "/css/**",
                                                                "anotherUrl"
                                                        ).permitAll()
                                                        .requestMatchers("/leaders/**").hasRole(Role.MANAGER.name())

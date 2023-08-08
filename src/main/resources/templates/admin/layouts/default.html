@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head th:replace="~{admin/layouts/header :: adminHeader}"></head>
+<body>
+
+<!-- Main Wrapper -->
+<div class="main-wrapper">
+
+    <!-- Header -->
+    <div th:replace="~{admin/layouts/navbar :: adminNavbar}"></div>
+    <!-- /Header -->
+
+    <!-- Sidebar -->
+    <div th:replace="~{admin/layouts/sidebar :: adminSidebar}"></div>
+    <!-- /Sidebar -->
+
+    <!-- Page Wrapper -->
+    <div class="page-wrapper">
+
+        <div layout:fragment="content" class="content container-fluid">
+
+        </div>
+    </div>
+    <!-- /Page Wrapper -->
+
+</div>
+<!-- /Main Wrapper -->
+<div th:replace="~{admin/layouts/footer :: adminFooterLinks}"></div>
+
+</body>
+
+</html>

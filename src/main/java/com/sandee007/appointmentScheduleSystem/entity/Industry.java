@@ -3,13 +3,13 @@ package com.sandee007.appointmentScheduleSystem.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
+
+import java.util.List;
 
 @Entity
 @Table(name = "industries")
 @Getter
 @Setter
-@ToString
 public class Industry {
 
     @Id
@@ -20,6 +20,14 @@ public class Industry {
     @Column(name = "name")
     private String name;
 
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(
+            name = "consultant_industries",
+            joinColumns = @JoinColumn(name = "industry_id"),
+            inverseJoinColumns = @JoinColumn(name = "consultant_id")
+    )
+    private List<Consultant> consultants;
+
     public Industry() {
     }
 
@@ -27,5 +35,11 @@ public class Industry {
         this.name = name;
     }
 
-
+    @Override
+    public String toString() {
+        return "Industry{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

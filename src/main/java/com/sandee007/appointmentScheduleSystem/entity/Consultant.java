@@ -49,13 +49,13 @@ public class Consultant {
     @OneToMany(mappedBy = "consultant" , cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<ConsultantScheduleDate> consultantScheduleDates;
 
-//    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-//    @JoinTable(
-//            name = "consultant_industries",
-//            joinColumns = @JoinColumn(name = "consultant_id"),
-//            inverseJoinColumns = @JoinColumn(name = "industry_id")
-//    )
-//    private List<Industry> industries;
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(
+            name = "consultant_industries",
+            joinColumns = @JoinColumn(name = "consultant_id"),
+            inverseJoinColumns = @JoinColumn(name = "industry_id")
+    )
+    private List<Industry> industries;
 
 //    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 //    @JoinTable(

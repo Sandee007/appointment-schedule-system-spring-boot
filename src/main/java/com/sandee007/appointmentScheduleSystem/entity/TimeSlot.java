@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "time_slots")
@@ -24,6 +25,14 @@ public class TimeSlot {
     @Temporal(TemporalType.TIME)
     @Column(name = "slot_end")
     private Date slotEnd;
+
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(
+            name = "consultant_schedule_date_timeslots",
+            joinColumns = @JoinColumn(name = "timeslot_id"),
+            inverseJoinColumns = @JoinColumn(name = "consultant_schedule_date")
+    )
+    private List<ConsultantScheduleDate> consultantScheduleDates;
 
     public TimeSlot(){}
 

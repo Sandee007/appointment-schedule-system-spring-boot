@@ -46,8 +46,8 @@ public class Consultant {
     @Column(name = "charge_per_hour")
     private int chargePerHour;
 
-//    @OneToMany(mappedBy = "consultant" , cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-//    private List<ConsultantScheduleDate> consultantScheduleDates;
+    @OneToMany(mappedBy = "consultant" , cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private List<ConsultantScheduleDate> consultantScheduleDates;
 
 //    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 //    @JoinTable(

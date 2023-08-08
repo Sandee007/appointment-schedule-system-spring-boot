@@ -26,8 +26,13 @@ public class ConsultantScheduleDate {
     @JoinColumn(name = "consultant_id")
     private Consultant consultant;
 
-    @OneToMany(mappedBy = "consultantScheduleDate") // cascade ???
-    private List<ConsultantScheduleTime> consultantScheduleTimes;
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(
+            name = "consultant_schedule_date_timeslots",
+            joinColumns = @JoinColumn(name = "consultant_schedule_date"),
+            inverseJoinColumns = @JoinColumn(name = "timeslot_id")
+    )
+    private List<TimeSlot> timeSlots;
 
     public ConsultantScheduleDate(){}
 

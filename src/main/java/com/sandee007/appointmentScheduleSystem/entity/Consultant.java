@@ -57,13 +57,13 @@ public class Consultant {
     )
     private List<Industry> industries;
 
-//    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-//    @JoinTable(
-//            name = "consultant_countries",
-//            joinColumns = @JoinColumn(name = "consultant_id"),
-//            inverseJoinColumns = @JoinColumn(name = "country_id")
-//    )
-//    private List<Country> countries;
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(
+            name = "consultant_countries",
+            joinColumns = @JoinColumn(name = "consultant_id"),
+            inverseJoinColumns = @JoinColumn(name = "country_id")
+    )
+    private List<Country> countries;
 
     public Consultant() {
     }

@@ -1,7 +1,10 @@
+<!--SEARCH ICONS -->
+<!--https://icon-sets.iconify.design/?query=fe%3Adocument-->
+
 <head th:fragment="adminHeader" >
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <title>Doccure - Dashboard</title>
+    <title th:text="${@environment.getProperty('spring.application.name')}" ></title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" th:href="@{/assets/admin/img/favicon.png}">

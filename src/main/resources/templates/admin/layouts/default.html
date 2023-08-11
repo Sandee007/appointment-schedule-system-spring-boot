@@ -1,33 +1,44 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html
+  lang="en"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+  <head th:replace="~{admin/layouts/header :: adminHeader}"></head>
+  <body>
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+      <!-- Header -->
+      <div th:replace="~{admin/layouts/navbar :: adminNavbar}"></div>
+      <!-- /Header -->
 
-<head th:replace="~{admin/layouts/header :: adminHeader}"></head>
-<body>
+      <!-- Sidebar -->
+      <div th:replace="~{admin/layouts/sidebar :: adminSidebar}"></div>
+      <!-- /Sidebar -->
 
-<!-- Main Wrapper -->
-<div class="main-wrapper">
-
-    <!-- Header -->
-    <div th:replace="~{admin/layouts/navbar :: adminNavbar}"></div>
-    <!-- /Header -->
-
-    <!-- Sidebar -->
-    <div th:replace="~{admin/layouts/sidebar :: adminSidebar}"></div>
-    <!-- /Sidebar -->
-
-    <!-- Page Wrapper -->
-    <div class="page-wrapper">
-
-        <div layout:fragment="content" class="content container-fluid">
-
-        </div>
+      <!-- Page Wrapper -->
+      <div class="page-wrapper">
+        <div layout:fragment="content" class="content container-fluid"></div>
+      </div>
+      <!-- /Page Wrapper -->
     </div>
-    <!-- /Page Wrapper -->
+    <!-- /Main Wrapper -->
+    <div th:replace="~{admin/layouts/footer :: adminFooterLinks}"></div>
+  </body>
 
-</div>
-<!-- /Main Wrapper -->
-<div th:replace="~{admin/layouts/footer :: adminFooterLinks}"></div>
+  <!--NO NEED - TEMPLATE HAS SUPPORT-->
+  <!--<script>-->
+  <!--    $(document).ready(function () {-->
+  <!--        // auto open dropdown with the currentUrl-->
+  <!--        openDropdown()-->
+  <!--    })-->
 
-</body>
+  <!--    function openDropdown() {-->
+  <!--        const parentEl = $("li.active").parent()-->
+  <!--        const carotEl = $("li.active").parent().siblings('a')[0]-->
 
+  <!--        $(carotEl).addClass('subdrop')-->
+  <!--        $(parentEl).css('display', 'block')-->
+  <!--    }-->
+  <!--</script>-->
 </html>

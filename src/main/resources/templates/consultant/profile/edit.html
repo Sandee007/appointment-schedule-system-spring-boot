@@ -1,0 +1,147 @@
+<!-- ***** ALWAYS START WITH content container-fluid ***** -->
+<div
+  layout:decorate="~{admin/layouts/default}"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:fragment="content"
+  class="content container-fluid"
+>
+  <div
+    layout:replace="~{admin/layouts/components/pageTitle :: adminPageTitle(title='Update Profile') }"
+  ></div>
+  <!-- /Page Header -->
+  <div class="card">
+    <div class="card-body">
+      <form
+        method="post"
+        th:action="@{/consultant/profile/update}"
+        th:object="${consultant}"
+      >
+        <div class="form-row">
+          <div class="col-md-4 mb-3">
+            <label for="firstname">First Name</label>
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control"
+                id="firstname"
+                placeholder="First Name"
+                name="firstname"
+                th:classappend="${#fields.hasErrors('firstname')} ? 'is-invalid' : ''"
+                th:field="*{firstname}"
+              />
+              <div
+                th:if="${#fields.hasErrors('firstname')}"
+                th:errors="*{firstname}"
+                class="invalid-feedback"
+              ></div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="lastname">Last Name</label>
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control"
+                id="lastname"
+                placeholder="Last Name"
+                name="lastname"
+                th:classappend="${#fields.hasErrors('lastname')} ? 'is-invalid' : ''"
+                th:field="*{lastname}"
+              />
+              <div
+                th:if="${#fields.hasErrors('lastname')}"
+                th:errors="*{lastname}"
+                class="invalid-feedback"
+              ></div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="birthday">Birthday</label>
+            <div class="input-group">
+              <input
+                type="date"
+                class="form-control"
+                id="birthday"
+                placeholder="Birthday"
+                name="birthday"
+                th:classappend="${#fields.hasErrors('birthday')} ? 'is-invalid' : ''"
+                th:field="*{birthday}"
+              />
+              <div
+                th:if="${#fields.hasErrors('birthday')}"
+                th:errors="*{birthday}"
+                class="invalid-feedback"
+              ></div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="phone">Phone</label>
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control"
+                id="phone"
+                placeholder="Phone"
+                name="phone"
+                maxlength="10"
+                th:classappend="${#fields.hasErrors('phone')} ? 'is-invalid' : ''"
+                th:field="*{phone}"
+              />
+              <div
+                th:if="${#fields.hasErrors('phone')}"
+                th:errors="*{phone}"
+                class="invalid-feedback"
+              ></div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="chargePerHour">Charge Per Hour</label>
+            <div class="input-group">
+              <input
+                type="number"
+                class="form-control"
+                id="chargePerHour"
+                placeholder="Charge Per Hour"
+                name="chargePerHour"
+                th:classappend="${#fields.hasErrors('chargePerHour')} ? 'is-invalid' : ''"
+                th:field="*{chargePerHour}"
+              />
+              <div
+                th:if="${#fields.hasErrors('chargePerHour')}"
+                th:errors="*{chargePerHour}"
+                class="invalid-feedback"
+              ></div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-md-12 mb-3">
+            <label for="description">Description</label>
+            <div class="input-group">
+              <textarea
+                type="text"
+                class="form-control"
+                id="description"
+                placeholder="Description"
+                name="description"
+                th:classappend="${#fields.hasErrors('description')} ? 'is-invalid' : ''"
+                th:field="*{description}"
+                cols="30"
+                rows="10"
+              ></textarea>
+              <div
+                th:if="${#fields.hasErrors('description')}"
+                th:errors="*{description}"
+                class="invalid-feedback"
+              ></div>
+            </div>
+          </div>
+        </div>
+
+        <input type="hidden" th:field="*{id}" />
+
+        <button class="btn btn-primary" type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>

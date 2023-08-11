@@ -13,10 +13,10 @@ public class LoginController {
         this.userService = userService;
     }
 
-//    @GetMapping("/login")
-//    public String login() {
-//        return "login";
-//    }
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
 
     @GetMapping("/access-denied")
     public String accessDenied() {

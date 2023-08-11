@@ -1,6 +1,11 @@
 package com.sandee007.appointmentScheduleSystem.base.auth.entity;
 
+import com.sandee007.appointmentScheduleSystem.base.auth.validation.UniqueEmail;
+import com.sandee007.appointmentScheduleSystem.base.auth.validation.ValidationMessages;
+import com.sandee007.appointmentScheduleSystem.entity.Consultant;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -10,13 +15,15 @@ import lombok.ToString;
 @Table(name = "users")
 @Getter
 @Setter
-@ToString
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
+    @UniqueEmail
+    @NotNull(message = ValidationMessages.REQUIRED)
+    @Email
     @Column(name = "username", unique = true)
     private String username;
 
@@ -26,9 +33,20 @@ public class User {
     @Column(name = "enabled", nullable = false, columnDefinition = "integer default 1")
     private Integer enabled;
 
+    @OneToOne(
+            mappedBy = "user",
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    private Role role;
 
-//    SET CONSULTANT
-//    SET SEEKER
+    @OneToOne(
+            mappedBy = "user",
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    private Consultant consultant;
+
+    //    SET CONSULTANT
+    //    SET SEEKER
 
     public User() {
     }
@@ -44,5 +62,15 @@ public class User {
         this.username = username;
         this.password = password;
         this.enabled = enabled;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", enabled=" + enabled +
+                '}';
     }
 }

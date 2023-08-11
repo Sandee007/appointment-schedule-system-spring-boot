@@ -1,0 +1,26 @@
+<!-- ***** ALWAYS START WITH content container-fluid ***** -->
+<div
+  layout:decorate="~{admin/layouts/default}"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:fragment="content"
+  class="content container-fluid"
+>
+  <div
+    layout:replace="~{admin/layouts/components/pageTitle :: adminPageTitle(title='Consultant Dashboard') }"
+  ></div>
+  <!-- /Page Header -->
+  <span th:text="${#ctx.springRequestContext.requestUri}"></span>
+
+  <div class="row">
+    <div
+      class="col-12 alert alert-success my-3"
+      th:if="${success}"
+      th:text="${success}"
+    ></div>
+    <div
+      class="col-12 alert alert-danger my-3"
+      th:if="${error}"
+      th:text="${error}"
+    ></div>
+  </div>
+</div>

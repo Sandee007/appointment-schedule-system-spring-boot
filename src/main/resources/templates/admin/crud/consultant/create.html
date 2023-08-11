@@ -1,0 +1,47 @@
+<!-- ***** ALWAYS START WITH content container-fluid ***** -->
+<div
+  layout:decorate="~{admin/layouts/default}"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:fragment="content"
+  class="content container-fluid"
+>
+  <div
+    layout:replace="~{admin/layouts/components/pageTitle :: adminPageTitle(title='Create Consultant') }"
+  ></div>
+  <!-- /Page Header -->
+  <div class="card">
+    <div class="card-body">
+      <form
+        method="post"
+        th:action="@{/admin/consultant/store}"
+        th:object="${user}"
+      >
+        <div class="form-row">
+          <div class="col-md-4 mb-3">
+            <label for="email">Email</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroupPrepend3">@</span>
+              </div>
+              <input
+                type="text"
+                class="form-control"
+                id="email"
+                placeholder="Email"
+                name="username"
+                th:classappend="${#fields.hasErrors('username')} ? 'is-invalid' : ''"
+                th:field="*{username}"
+              />
+              <div
+                class="invalid-feedback"
+                th:if="${#fields.hasErrors('username')}"
+                th:errors="*{username}"
+              ></div>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>

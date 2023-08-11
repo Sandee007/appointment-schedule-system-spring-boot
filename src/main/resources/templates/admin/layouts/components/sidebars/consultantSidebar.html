@@ -1,0 +1,35 @@
+<ul>
+  <li class="menu-title">
+    <span>Consultant</span>
+  </li>
+
+  <li th:classappend="${currentUrl == '/consultant/dashboard'} ? active : '' ">
+    <a href="#" th:href="@{/consultant/dashboard}"
+      ><i class="fe fe-home"></i> <span>Dashboard</span></a
+    >
+  </li>
+  <li class="submenu">
+    <a href="#"
+      ><i class="fe fe-user"></i> <span> Profile</span>
+      <span class="menu-arrow"></span
+    ></a>
+    <ul style="display: none">
+      <li>
+        <a
+          th:classappend="${currentUrl == '/admin/dashboard'} ? active : ''"
+          href="#"
+          th:href="@{/admin/dashboard}"
+          >View - redirect to main site</a
+        >
+      </li>
+      <li>
+        <a
+          th:classappend="${currentUrl == '/consultant/profile/edit'} ? active : ''"
+          href="#"
+          th:href="@{/consultant/profile/edit}"
+          >Update</a
+        >
+      </li>
+    </ul>
+  </li>
+</ul>

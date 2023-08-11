@@ -1,6 +1,5 @@
 package com.sandee007.appointmentScheduleSystem.base.auth.security;
 
-import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -9,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import javax.sql.DataSource;
 
@@ -21,6 +21,11 @@ public class AuthConfig {
     @Bean
     public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
+        return new CustomAuthenticationSuccessHandler();
     }
 
     @Bean
@@ -54,22 +59,26 @@ public class AuthConfig {
                                                                "/register/**",
                                                                "anotherUrl"
                                                        ).permitAll()
-                                                       .requestMatchers("/leaders/**").hasRole(Role.MANAGER.name())
-                                                       .requestMatchers("/systems/**").hasRole(Role.ADMIN.name())
+                                                       //                                                       .requestMatchers("/admin/**").hasRole(Role.ROLE_CONSULTANT.name())
+
+                                                       //cuz Enum has prefix ROLE_ in it
+                                                       .requestMatchers("/admin/**").hasAnyAuthority(ERole.ROLE_ADMIN.name())
+                                                       .requestMatchers("/consultant/**").hasAnyAuthority(ERole.ROLE_CONSULTANT.name())
                                                        .anyRequest().authenticated()
                 )
                 .formLogin(loginForm ->
                                    loginForm
-                                           //                                           .loginPage("/login")
+                                           .loginPage("/login")
                                            // * spring will handle a POST request for this automatically, must have name,password
-                                           //                                           .loginProcessingUrl("/handle-login")
+                                           .loginProcessingUrl("/login-handler")
+                                           .successHandler(customAuthenticationSuccessHandler())
                                            .permitAll()
                 )
-                .logout(logout -> logout.permitAll())
-                .exceptionHandling(config ->
-                                           config
-                                                   .accessDeniedPage("/access-denied")
-                );
+                .logout(logout -> logout.permitAll());
+        //                .exceptionHandling(config ->
+        //                                           config
+        //                                                   .accessDeniedPage("/access-denied")
+        //                );
 
         return httpSecurity.build();
     }

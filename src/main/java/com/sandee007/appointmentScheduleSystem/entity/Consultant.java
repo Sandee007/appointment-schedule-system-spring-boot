@@ -39,7 +39,7 @@ public class Consultant {
     private String lastname;
 
     //    https://www.baeldung.com/spring-data-jpa-query-by-date
-//    https://www.baeldung.com/dates-in-thymeleaf
+    //    https://www.baeldung.com/dates-in-thymeleaf
     @NotNull(message = ValidationMessages.REQUIRED)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
@@ -62,11 +62,14 @@ public class Consultant {
     @Column(name = "charge_per_hour")
     private int chargePerHour;
 
-//    ******************* TODO **************************
-//    @Column(name = "image")
-    //    private String image;
+//    @NotNull(message = ValidationMessages.REQUIRED)
+    @Column(name = "image")
+    private String image;
 
-    @OneToMany(mappedBy = "consultant" , cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(
+            mappedBy = "consultant",
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
     private List<ConsultantScheduleDate> consultantScheduleDates;
 
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})

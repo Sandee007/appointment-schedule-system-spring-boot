@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DatabaseMigrationSettings" lastSelectedDirectory="src\main\resources\db\migration" />
+  <component name="JpaLiquibaseChangesConfig">
+    <exclude-change idName="consultants#image" tagName="addNotNullConstraint" />
+    <exclude-change idName="consultants#birthday" tagName="addNotNullConstraint" />
+    <exclude-change idName="consultants#charge_per_hour" tagName="addNotNullConstraint" />
+    <exclude-change idName="consultants#description" tagName="addNotNullConstraint" />
+    <exclude-change idName="consultants#firstname" tagName="addNotNullConstraint" />
+    <exclude-change idName="consultants#lastname" tagName="addNotNullConstraint" />
+    <exclude-change idName="consultants#phone" tagName="addNotNullConstraint" />
+    <exclude-change idName="users#username" tagName="addNotNullConstraint" />
+  </component>
   <component name="PersistenceUnitSettings">
     <persistence-units>
       <persistence-unit name="Default">

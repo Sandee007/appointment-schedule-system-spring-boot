@@ -4,12 +4,15 @@
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
   layout:fragment="content"
   class="content container-fluid"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 >
   <div
     layout:replace="~{admin/layouts/components/pageTitle :: adminPageTitle(title='Consultant Dashboard') }"
   ></div>
   <!-- /Page Header -->
   <span th:text="${#ctx.springRequestContext.requestUri}"></span>
+
+  <img th:src="${consultant.image}" alt="" />
 
   <div class="row">
     <div

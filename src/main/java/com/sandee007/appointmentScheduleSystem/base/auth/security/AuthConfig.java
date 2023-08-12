@@ -55,6 +55,7 @@ public class AuthConfig {
                                                config
                                                        .requestMatchers(
                                                                "/",
+                                                               "/uploads/**",
                                                                "/assets/**",
                                                                "/register/**",
                                                                "anotherUrl"

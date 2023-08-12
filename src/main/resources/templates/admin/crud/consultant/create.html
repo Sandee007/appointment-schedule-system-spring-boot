@@ -18,11 +18,46 @@
       >
         <div class="form-row">
           <div class="col-md-4 mb-3">
+            <label for="firstname">First Name</label>
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control"
+                id="firstname"
+                placeholder="First Name"
+                name="firstname"
+                th:field="*{consultant.firstname}"
+                th:classappend="${#fields.hasErrors('consultant.firstname')} ? 'is-invalid' : ''"
+              />
+              <div
+                class="invalid-feedback"
+                th:if="${#fields.hasErrors('consultant.firstname')}"
+                th:errors="*{consultant.firstname}"
+              ></div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="lastname">Last Name</label>
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control"
+                id="lastname"
+                placeholder="Last Name"
+                name="lastname"
+                th:field="*{consultant.lastname}"
+                th:classappend="${#fields.hasErrors('consultant.lastname')} ? 'is-invalid' : ''"
+              />
+              <div
+                class="invalid-feedback"
+                th:if="${#fields.hasErrors('consultant.lastname')}"
+                th:errors="*{consultant.lastname}"
+              ></div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
             <label for="email">Email</label>
             <div class="input-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroupPrepend3">@</span>
-              </div>
               <input
                 type="text"
                 class="form-control"
@@ -32,6 +67,15 @@
                 th:classappend="${#fields.hasErrors('username')} ? 'is-invalid' : ''"
                 th:field="*{username}"
               />
+              <div class="input-group-append">
+                <span class="input-group-text" id="basic-addon2"
+                  >@
+                  <span
+                    th:text="${@environment.getProperty('spring.application.name').toLowerCase()}"
+                  ></span>
+                  .com</span
+                >
+              </div>
               <div
                 class="invalid-feedback"
                 th:if="${#fields.hasErrors('username')}"

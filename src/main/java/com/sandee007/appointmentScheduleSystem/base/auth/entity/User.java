@@ -23,7 +23,7 @@ public class User {
 
     @UniqueEmail
     @NotNull(message = ValidationMessages.REQUIRED)
-    @Email
+    //    @Email // EMAIL DOMAIN IS APPENDED MANUALLY
     @Column(name = "username", unique = true)
     private String username;
 

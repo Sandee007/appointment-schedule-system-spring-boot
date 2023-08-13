@@ -85,7 +85,7 @@
             </div>
           </div>
           <div class="col-md-4 mb-3">
-            <label for="email">Countries</label>
+            <label for="selectCountries">Countries</label>
             <div class="input-group">
               <select id="selectCountries" class="form-control">
                 <option value="">Select</option>
@@ -105,6 +105,27 @@
             </div>
             <table class="table" id="tableSelectedCountries"></table>
           </div>
+          <div class="col-md-4 mb-3">
+            <label for="selectIndustries">Industries</label>
+            <div class="input-group">
+              <select id="selectIndustries" class="form-control">
+                <option value="">Select</option>
+                <option
+                  th:each="industry : ${propIndustries}"
+                  th:value="${industry.id}"
+                  th:text="${industry.name}"
+                ></option>
+              </select>
+              <button
+                onclick="addIndustry()"
+                type="button"
+                class="btn btn-primary"
+              >
+                Add
+              </button>
+            </div>
+            <table class="table" id="tableSelectedIndustries"></table>
+          </div>
         </div>
 
         <input
@@ -112,6 +133,12 @@
           id="countries"
           type="text"
           th:value="${countries}"
+        />
+        <input
+          name="industries"
+          id="industries"
+          type="text"
+          th:value="${industries}"
         />
         <!--        th:field="${user.consultant.countries}"-->
         <input type="hidden" th:field="*{id}" />
@@ -123,29 +150,67 @@
 
 <script th:inline="javascript">
     const MODE = [[${MODE}]]
-    let propCountries = [[${propCountries}]]
     let user = [[${user}]]
-    let countriesString = [[${countriesString}]]
     let consultant = [[${user.consultant}]]
+    let propCountries = [[${propCountries}]]
+    let propIndustries = [[${propIndustries}]]
+    let countriesString = [[${countriesString}]]
+    let industriesString = [[${industriesString}]]
     // console.log({propCountries})
+    console.log({propIndustries})
     // console.log({user})
-    console.log({consultant})
+    // console.log({consultant})
     // console.log({countriesString})
     // console.log(1)
 
-    // * returned from the post mapping
-    if (!!countriesString) {
-        $('#countries').val(countriesString)
-        showSelectedCountries()
-    } else if (MODE === "UPDATE") {
+    // // * returned from the post mapping
+    // if (!!countriesString) {
+    //     $('#countries').val(countriesString)
+    //     showSelectedCountries()
+    // } else if (MODE === "UPDATE") {
+    //     $('#countries').val(JSON.stringify(consultant.countries))
+    //     showSelectedCountries()
+    //
+    //     const originalEmail = $('#email').val()
+    //     $('#email')
+    //         .val(originalEmail.split('@')[0])
+    //         .attr('disabled', true)
+    // }
+    //
+    // if (!!industriesString) {
+    //     $('#industries').val(industriesString)
+    //     showSelectedIndustries()
+    // } else if (MODE === "UPDATE") {
+    //     $('#industries').val(JSON.stringify(consultant.industries))
+    //     showSelectedIndustries()
+    // }
+
+    if (MODE === "UPDATE") {
         $('#countries').val(JSON.stringify(consultant.countries))
         showSelectedCountries()
 
+        $('#industries').val(JSON.stringify(consultant.industries))
+        showSelectedIndustries()
+
         const originalEmail = $('#email').val()
         $('#email')
-                .val(originalEmail.split('@')[0])
-                .attr('disabled', true)
+            .val(originalEmail.split('@')[0])
+            .attr('disabled', true)
+
+    } else {
+        // * returned from the post mapping
+        if (!!countriesString) {
+            $('#countries').val(countriesString)
+            showSelectedCountries()
+        }
+
+        // * returned from the post mapping
+        if (!!industriesString) {
+            $('#industries').val(industriesString)
+            showSelectedIndustries()
+        }
     }
+
 
     // countries.push(propCountries[0])
     // countries.push(propCountries[1])
@@ -196,6 +261,53 @@
             selectedCountries.splice(index, 1)
             $('#countries').val(JSON.stringify(selectedCountries))
             showSelectedCountries()
+        }
+    }
+
+    function addIndustry() {
+        const newIndustry = propIndustries.find(i => i.id == $('#selectIndustries').val())
+        if (!!newIndustry) {
+            const alreadySelectedIndustries = $('#industries').val()
+            if (alreadySelectedIndustries != "") {
+                const isAlreadySelected = !!JSON.parse(alreadySelectedIndustries).find(i => i.id == newIndustry.id)
+                if (!isAlreadySelected) pushNewIndustry(newIndustry, JSON.parse(alreadySelectedIndustries))
+            } else {
+                pushNewIndustry(newIndustry, [])
+            }
+        }
+    }
+
+    function pushNewIndustry(newIndustry, arr) {
+        arr.push(newIndustry)
+        // * populate the hidden input
+        $('#industries').val(JSON.stringify(arr))
+        showSelectedIndustries()
+    }
+
+    function showSelectedIndustries() {
+        const alreadySelectedIndustries = $('#industries').val()
+        if (alreadySelectedIndustries != "") {
+            let html = ``
+            JSON.parse(alreadySelectedIndustries).forEach(i => {
+                html += `
+  <tr>
+    <td> ${i.name}</td>
+    <td><button type="button" onclick="removeSelectedIndustry(${i.id})" class="btn btn-danger btn-sm" >X</button> </td>
+  </tr>`
+            })
+            $('#tableSelectedIndustries').html(html)
+        }
+    }
+
+    function removeSelectedIndustry(id) {
+        const selectedIndustries = JSON.parse($('#industries').val())
+        const itemToRemove = selectedIndustries.find(i => i.id == id)
+        const index = selectedIndustries.indexOf(itemToRemove)
+
+        if (index > -1) {
+            selectedIndustries.splice(index, 1)
+            $('#industries').val(JSON.stringify(selectedIndustries))
+            showSelectedIndustries()
         }
     }
 </script>

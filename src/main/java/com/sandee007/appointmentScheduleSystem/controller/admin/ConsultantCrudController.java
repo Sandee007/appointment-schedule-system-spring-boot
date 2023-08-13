@@ -11,8 +11,10 @@ import com.sandee007.appointmentScheduleSystem.base.auth.validation.ValidationMe
 import com.sandee007.appointmentScheduleSystem.entity.Consultant;
 import com.sandee007.appointmentScheduleSystem.base.auth.service.EmailService;
 import com.sandee007.appointmentScheduleSystem.entity.Country;
+import com.sandee007.appointmentScheduleSystem.entity.Industry;
 import com.sandee007.appointmentScheduleSystem.service.ConsultantService;
 import com.sandee007.appointmentScheduleSystem.service.CountryService;
+import com.sandee007.appointmentScheduleSystem.service.IndustryService;
 import jakarta.validation.Valid;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.core.env.Environment;
@@ -32,17 +34,20 @@ public class ConsultantCrudController {
     private Environment environment;
     private CountryService countryService;
     private ConsultantService consultantService;
+    private IndustryService industryService;
 
     public ConsultantCrudController(
             UserService userService, EmailService emailService, Environment environment,
             CountryService countryService,
-            ConsultantService consultantService
+            ConsultantService consultantService,
+            IndustryService industryService
     ) {
         this.userService = userService;
         this.emailService = emailService;
         this.environment = environment;
         this.countryService = countryService;
         this.consultantService = consultantService;
+        this.industryService = industryService;
     }
 
     //    ! upgraded as a ControllerAdvice
@@ -64,8 +69,9 @@ public class ConsultantCrudController {
         user.setConsultant(consultant);
         model.addAttribute("user", user);
 
-        //        * props countries
+        //        * props
         model.addAttribute("propCountries", countryService.findAll());
+        model.addAttribute("propIndustries", industryService.findAll());
 
         return "admin/crud/consultant/create";
     }
@@ -79,6 +85,7 @@ public class ConsultantCrudController {
             RedirectAttributes redirectAttributes,
             // ! important - RequestParam must be below binding result  argument , required must be false
             @RequestParam(value = "countries", required = false) String countriesString,
+            @RequestParam(value = "industries", required = false) String industriesString,
             Model model
     ) {
 
@@ -95,6 +102,7 @@ public class ConsultantCrudController {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("propCountries", countryService.findAll());
+            model.addAttribute("propIndustries", industryService.findAll());
             model.addAttribute("countriesString", countriesString);
             return "admin/crud/consultant/create";
         }
@@ -109,6 +117,7 @@ public class ConsultantCrudController {
         Consultant consultant = user.getConsultant();
         consultant.setUser(user);
         consultant.setCountries(this.getCountriesList(countriesString));
+        consultant.setIndustries(this.getIndustriesList(industriesString));
 
         //        * gen password
         String password = RandomStringUtils.randomAlphanumeric(8);
@@ -122,6 +131,7 @@ public class ConsultantCrudController {
         redirectAttributes.addFlashAttribute("success", "Consultant Created.");
         return "redirect:/admin/dashboard";
     }
+
 
     @GetMapping("toggle-active")
     public String toggleActive(
@@ -145,8 +155,9 @@ public class ConsultantCrudController {
         if (user.isPresent()) {
             model.addAttribute("user", user.get());
 
-            //        * props countries
+            //        * props
             model.addAttribute("propCountries", countryService.findAll());
+            model.addAttribute("propIndustries", industryService.findAll());
 
             model.addAttribute("MODE", "UPDATE");
             return "admin/crud/consultant/create";
@@ -160,6 +171,7 @@ public class ConsultantCrudController {
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes,
             @RequestParam(value = "countries", required = false) String countriesString,
+            @RequestParam(value = "industries", required = false) String industriesString,
             Model model
 
     ) {
@@ -176,6 +188,7 @@ public class ConsultantCrudController {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("propCountries", countryService.findAll());
+            model.addAttribute("propIndustries", industryService.findAll());
             model.addAttribute("countriesString", countriesString);
             model.addAttribute("MODE", "UPDATE");
             return "admin/crud/consultant/create";
@@ -186,9 +199,10 @@ public class ConsultantCrudController {
         tempUser.ifPresent(u -> {
             Optional<Consultant> consultant = Optional.ofNullable(consultantService.findByUser(u));
             consultant.ifPresent(c -> {
-                c.setCountries(this.getCountriesList(countriesString));
                 c.setFirstname(user.getConsultant().getFirstname());
                 c.setLastname(user.getConsultant().getLastname());
+                c.setCountries(this.getCountriesList(countriesString));
+                c.setIndustries(this.getIndustriesList(industriesString));
                 consultantService.save(c);
             });
         });
@@ -221,5 +235,26 @@ public class ConsultantCrudController {
         });
 
         return countries;
+    }
+
+    private List<Industry> getIndustriesList(String industriesString) {
+        List<Industry> tempIndustries = new ArrayList<>();
+        if (industriesString != null) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                tempIndustries = objectMapper.readValue(industriesString, new TypeReference<List<Industry>>() {
+                });
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        List<Industry> industries = new ArrayList<>();
+        tempIndustries.forEach(industry -> {
+            Optional<Industry> c = industryService.findById(industry.getId());
+            c.ifPresent(industries::add);
+        });
+
+        return industries;
     }
 }

@@ -13,7 +13,7 @@
     <div class="card-body">
       <form
         method="post"
-        th:action="@{/admin/consultant/store}"
+        th:action="${MODE} != 'UPDATE' ? '/admin/consultant/store' : '/admin/consultant/update' "
         th:object="${user}"
       >
         <div class="form-row">
@@ -67,6 +67,7 @@
                 th:classappend="${#fields.hasErrors('username')} ? 'is-invalid' : ''"
                 th:field="*{username}"
               />
+              <!--                th:disabled="${MODE} == 'UPDATE'"-->
               <div class="input-group-append">
                 <span class="input-group-text" id="basic-addon2"
                   >@
@@ -83,9 +84,118 @@
               ></div>
             </div>
           </div>
+          <div class="col-md-4 mb-3">
+            <label for="email">Countries</label>
+            <div class="input-group">
+              <select id="selectCountries" class="form-control">
+                <option value="">Select</option>
+                <option
+                  th:each="country : ${propCountries}"
+                  th:value="${country.id}"
+                  th:text="${country.name}"
+                ></option>
+              </select>
+              <button
+                onclick="addCountry()"
+                type="button"
+                class="btn btn-primary"
+              >
+                Add
+              </button>
+            </div>
+            <table class="table" id="tableSelectedCountries"></table>
+          </div>
         </div>
+
+        <input
+          name="countries"
+          id="countries"
+          type="text"
+          th:value="${countries}"
+        />
+        <!--        th:field="${user.consultant.countries}"-->
+        <input type="hidden" th:field="*{id}" />
         <button class="btn btn-primary" type="submit">Submit</button>
       </form>
     </div>
   </div>
 </div>
+
+<script th:inline="javascript">
+    const MODE = [[${MODE}]]
+    let propCountries = [[${propCountries}]]
+    let user = [[${user}]]
+    let countriesString = [[${countriesString}]]
+    let consultant = [[${user.consultant}]]
+    // console.log({propCountries})
+    // console.log({user})
+    console.log({consultant})
+    // console.log({countriesString})
+    // console.log(1)
+
+    // * returned from the post mapping
+    if (!!countriesString) {
+        $('#countries').val(countriesString)
+        showSelectedCountries()
+    } else if (MODE === "UPDATE") {
+        $('#countries').val(JSON.stringify(consultant.countries))
+        showSelectedCountries()
+
+        const originalEmail = $('#email').val()
+        $('#email')
+                .val(originalEmail.split('@')[0])
+                .attr('disabled', true)
+    }
+
+    // countries.push(propCountries[0])
+    // countries.push(propCountries[1])
+    // $('#countries').val(JSON.stringify(countries))
+
+    function addCountry() {
+        const newCountry = propCountries.find(i => i.id == $('#selectCountries').val())
+        if (!!newCountry) {
+            const alreadySelectedCountries = $('#countries').val()
+            // console.log({alreadySelectedCountries})
+            if (alreadySelectedCountries != "") {
+                const isAlreadySelected = !!JSON.parse(alreadySelectedCountries).find(i => i.id == newCountry.id)
+                if (!isAlreadySelected) pushNewCountry(newCountry, JSON.parse(alreadySelectedCountries))
+            } else {
+                pushNewCountry(newCountry, [])
+            }
+        }
+    }
+
+    function pushNewCountry(newCountry, arr) {
+        arr.push(newCountry)
+        // * populate the hidden input
+        $('#countries').val(JSON.stringify(arr))
+        showSelectedCountries()
+    }
+
+    function showSelectedCountries() {
+        const alreadySelectedCountries = $('#countries').val()
+        if (alreadySelectedCountries != "") {
+            let html = ``
+            JSON.parse(alreadySelectedCountries).forEach(i => {
+                html += `
+  <tr>
+    <td> ${i.name}</td>
+    <td><button type="button" onclick="removeSelectedCountry(${i.id})" class="btn btn-danger btn-sm" >X</button> </td>
+  </tr>`
+            })
+            $('#tableSelectedCountries').html(html)
+        }
+    }
+
+    function removeSelectedCountry(id) {
+        const selectedCountries = JSON.parse($('#countries').val())
+        const itemToRemove = selectedCountries.find(i => i.id == id)
+        const index = selectedCountries.indexOf(itemToRemove)
+
+        if (index > -1) {
+            selectedCountries.splice(index, 1)
+            $('#countries').val(JSON.stringify(selectedCountries))
+            showSelectedCountries()
+        }
+    }
+</script>

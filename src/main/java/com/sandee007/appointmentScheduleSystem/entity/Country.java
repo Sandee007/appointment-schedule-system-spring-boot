@@ -1,5 +1,6 @@
 package com.sandee007.appointmentScheduleSystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +21,12 @@ public class Country {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany( cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+
+//    https://www.baeldung.com/jackson-bidirectional-relationships-and-infinite-recursion
+//    https://stackoverflow.com/questions/3325387/infinite-recursion-with-jackson-json-and-hibernate-jpa-issue
+//    https://github.com/FasterXML/jackson-annotations#annotations-for-ignoring-properties
+    @JsonIgnore
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
             name = "consultant_countries",
             joinColumns = @JoinColumn(name = "country_id"),

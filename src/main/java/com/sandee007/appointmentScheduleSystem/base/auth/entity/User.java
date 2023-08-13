@@ -1,20 +1,25 @@
 package com.sandee007.appointmentScheduleSystem.base.auth.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sandee007.appointmentScheduleSystem.base.auth.validation.UniqueEmail;
 import com.sandee007.appointmentScheduleSystem.base.auth.validation.ValidationMessages;
 import com.sandee007.appointmentScheduleSystem.entity.Consultant;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.ResultCheckStyle;
+import org.hibernate.annotations.SQLDelete;
 
 //this replicates the default spring-security db table -> users
 @Entity
 @Table(name = "users")
 @Getter
 @Setter
+@SQLDelete(sql = "UPDATE users SET enabled=0 WHERE id=? ",check = ResultCheckStyle.COUNT)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +29,7 @@ public class User {
     @UniqueEmail
     @NotNull(message = ValidationMessages.REQUIRED)
     //    @Email // EMAIL DOMAIN IS APPENDED MANUALLY
+    @Pattern(regexp = "^[A-Za-z0-9_]*$", message = "Should only contain letters, numbers and underscores")
     @Column(name = "username", unique = true)
     private String username;
 
@@ -33,12 +39,14 @@ public class User {
     @Column(name = "enabled", nullable = false, columnDefinition = "integer default 1")
     private Integer enabled;
 
+    @JsonIgnore
     @OneToOne(
             mappedBy = "user",
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
     private Role role;
 
+    @JsonIgnore
     @OneToOne(
             mappedBy = "user",
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}

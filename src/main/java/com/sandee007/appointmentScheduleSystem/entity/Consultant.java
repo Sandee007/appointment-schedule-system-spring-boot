@@ -8,16 +8,31 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "consultants")
 @Getter
 @Setter
+// * soft delete refs
+//https://www.baeldung.com/spring-jpa-soft-delete
+//@SQLDelete(sql = "UPDATE consultants SET deleted_at=CURRENT_TIMESTAMP WHERE id=?")
+//// * @Where(clause = "deleted_at IS NULL") // * entity manager can't overcome this to, so this has to go
+////  * @Where is applied to below by default, so named queries is not the way to include soft deletes
+//// ! conclusion - use default findAll , create a named query no get not deleted
+//@NamedQuery(
+//        name = "Consultant.findAllActiveUsers",
+//        query = "SELECT c FROM Consultant c WHERE deletedAt IS NULL"
+//)
+// !!! conclusion - wont delete Consultants , only disabling users
 public class Consultant {
 
     @Id
@@ -25,7 +40,7 @@ public class Consultant {
     @Column(name = "id")
     private int id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY) // * if this is EAGER updating deleted_at doesn't work
     @JoinColumn(name = "user_id", updatable = false)
     private User user;
 
@@ -62,9 +77,13 @@ public class Consultant {
     @Column(name = "charge_per_hour")
     private int chargePerHour;
 
-//    @NotNull(message = ValidationMessages.REQUIRED)
+    //    @NotNull(message = ValidationMessages.REQUIRED) // cuz comes with a different name from the form
     @Column(name = "image")
     private String image;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "deleted_at", nullable = true)
+    private Date deletedAt;
 
     @OneToMany(
             mappedBy = "consultant",
@@ -91,7 +110,14 @@ public class Consultant {
     public Consultant() {
     }
 
-    public Consultant(String firstname, String lastname, Date birthday, String description, String phone, int chargePerHour) {
+    public Consultant(
+            String firstname,
+            String lastname,
+            Date birthday,
+            String description,
+            String phone,
+            int chargePerHour
+    ) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.birthday = birthday;
@@ -112,4 +138,12 @@ public class Consultant {
                 ", chargePerHour=" + chargePerHour +
                 '}';
     }
+
+    public void addCountry(Country country) {
+        if (countries == null) {
+            countries = new ArrayList<>();
+        }
+        countries.add(country);
+    }
+
 }

@@ -4,6 +4,8 @@ import com.sandee007.appointmentScheduleSystem.base.auth.entity.User;
 import com.sandee007.appointmentScheduleSystem.entity.Consultant;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface ConsultantRepository extends JpaRepository<Consultant, Integer> {
     Consultant findByUser(User user);
 }

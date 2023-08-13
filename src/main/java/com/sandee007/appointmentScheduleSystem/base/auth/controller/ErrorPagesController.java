@@ -32,6 +32,9 @@ public class ErrorPagesController implements ErrorController {
                 // pass
             } else if (statusCode == HttpStatus.FORBIDDEN.value()) {
                 model.addAttribute(KEY_MESSAGE, "Access Denied!");
+                //            } else if (statusCode == HttpStatus.OK.value()) { // ! ¯\_(ツ)_/¯ investigate why this happened in edit
+                // ! reason found- because there was an infinite recursion error in jackson
+                //                return null;
             }
         }
 

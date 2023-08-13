@@ -18,6 +18,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
 
 @Controller
 @RequestMapping("consultant/profile")
@@ -50,23 +52,25 @@ public class ConsultantProfileController {
             @Valid @ModelAttribute("consultant") Consultant consultant,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes,
-            @RequestParam("imageFile") MultipartFile file
+            @RequestParam(value = "imageFile", required = false) MultipartFile file
     ) throws ParseException, IOException {
 
         if (bindingResult.hasErrors()) return "consultant/profile/edit";
 
-        //        upload image references
+        //        * upload image references
         //        https://www.baeldung.com/spring-boot-thymeleaf-image-upload
-        String UPLOAD_DIRECTORY_LOCATION = "/src/main/resources/static";
-        String UPLOAD_DIRECTORY = "/uploads/";
-        String FILE_NAME = file.getOriginalFilename();
-        Path fileNameAndPath = Paths.get(
-                System.getProperty("user.dir") + UPLOAD_DIRECTORY_LOCATION + UPLOAD_DIRECTORY,
-                FILE_NAME
-        );
-        Files.write(fileNameAndPath, file.getBytes());
+        if (!file.isEmpty()) {
+            String UPLOAD_DIRECTORY_LOCATION = "/src/main/resources/static";
+            String UPLOAD_DIRECTORY = "/uploads/";
+            String FILE_NAME = new Date().getTime() + file.getOriginalFilename();
+            Path fileNameAndPath = Paths.get(
+                    System.getProperty("user.dir") + UPLOAD_DIRECTORY_LOCATION + UPLOAD_DIRECTORY,
+                    FILE_NAME
+            );
+            Files.write(fileNameAndPath, file.getBytes());
+            consultant.setImage(UPLOAD_DIRECTORY + FILE_NAME);
+        }
 
-        consultant.setImage(UPLOAD_DIRECTORY + FILE_NAME);
         consultantService.save(consultant);
         redirectAttributes.addFlashAttribute("success", "Profile Updated");
         return "redirect:/consultant/dashboard";

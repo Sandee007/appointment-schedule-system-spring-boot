@@ -103,7 +103,10 @@
                 Add
               </button>
             </div>
-            <table class="table" id="tableSelectedCountries"></table>
+            <table
+              class="table table-sm table-secondary"
+              id="tableSelectedCountries"
+            ></table>
           </div>
           <div class="col-md-4 mb-3">
             <label for="selectIndustries">Industries</label>
@@ -124,20 +127,23 @@
                 Add
               </button>
             </div>
-            <table class="table" id="tableSelectedIndustries"></table>
+            <table
+              class="table table-sm table-secondary"
+              id="tableSelectedIndustries"
+            ></table>
           </div>
         </div>
 
         <input
           name="countries"
           id="countries"
-          type="text"
+          type="hidden"
           th:value="${countries}"
         />
         <input
           name="industries"
           id="industries"
-          type="text"
+          type="hidden"
           th:value="${industries}"
         />
         <!--        th:field="${user.consultant.countries}"-->
@@ -245,7 +251,7 @@
                 html += `
   <tr>
     <td> ${i.name}</td>
-    <td><button type="button" onclick="removeSelectedCountry(${i.id})" class="btn btn-danger btn-sm" >X</button> </td>
+    <td class="text-right"><button type="button" onclick="removeSelectedCountry(${i.id})" class="btn btn-danger btn-sm" >X</button> </td>
   </tr>`
             })
             $('#tableSelectedCountries').html(html)
@@ -292,7 +298,7 @@
                 html += `
   <tr>
     <td> ${i.name}</td>
-    <td><button type="button" onclick="removeSelectedIndustry(${i.id})" class="btn btn-danger btn-sm" >X</button> </td>
+    <td class="text-right" ><button type="button" onclick="removeSelectedIndustry(${i.id})" class="btn btn-danger btn-sm" >X</button> </td>
   </tr>`
             })
             $('#tableSelectedIndustries').html(html)

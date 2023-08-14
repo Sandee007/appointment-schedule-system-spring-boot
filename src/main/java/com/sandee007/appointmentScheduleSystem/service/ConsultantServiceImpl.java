@@ -77,8 +77,10 @@ public class ConsultantServiceImpl implements ConsultantService {
 
     @Override
     public String generateConsultantEmailDomain() {
-        return "@" + Objects.requireNonNull(environment.getProperty(
-                "spring.application.name")).toLowerCase() + ".com";
+        return "@"
+                + Objects.requireNonNull(environment.getProperty(
+                "spring.application.name")).toLowerCase()
+                + ".com";
     }
 
     @Override

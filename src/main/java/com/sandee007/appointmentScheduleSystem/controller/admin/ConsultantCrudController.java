@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.*;
+import java.util.concurrent.Callable;
 
 @Controller
 @RequestMapping("admin/consultant")
@@ -257,4 +258,31 @@ public class ConsultantCrudController {
 
         return industries;
     }
+
+    //    * function generic types
+    //    https://stackoverflow.com/questions/18276285/method-returning-dynamic-type-in-java
+//    public <T, Service> List<T> getDynamicList(
+//            Class<T> entity,
+//            String string,
+//            Class<Service> service,
+//            Callable<T> findById
+//    ) throws Exception {
+//        List<T> tempList = new ArrayList<>();
+//        if (string != null) {
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            try {
+//                tempList = objectMapper.readValue(string, new TypeReference<List<T>>() {
+//                });
+//            } catch (JsonProcessingException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
+//
+//        List<T> list = new ArrayList<>();
+//        for (T i : tempList) {
+//            Optional<T> optional = (Optional<T>) findById.call();
+//            optional.ifPresent(list::add);
+//        }
+//        return list;
+//    }
 }

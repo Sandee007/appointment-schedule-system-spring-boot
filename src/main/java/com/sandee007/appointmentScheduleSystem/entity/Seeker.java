@@ -1,5 +1,6 @@
 package com.sandee007.appointmentScheduleSystem.entity;
 
+import com.sandee007.appointmentScheduleSystem.base.auth.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -43,6 +44,10 @@ public class Seeker {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "deleted_at")
     private Date deletedAt;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Seeker() {
     }

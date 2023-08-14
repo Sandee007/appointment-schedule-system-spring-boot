@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "time_slots")
+@Table(name = "timeslots")
 @Getter
 @Setter
 public class TimeSlot {
@@ -20,11 +20,11 @@ public class TimeSlot {
 
     @Temporal(TemporalType.TIME)
     @Column(name = "slot_start")
-    private Date slotStart;
+    private String slotStart;
 
     @Temporal(TemporalType.TIME)
     @Column(name = "slot_end")
-    private Date slotEnd;
+    private String slotEnd;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "deleted_at")
@@ -40,7 +40,7 @@ public class TimeSlot {
 
     public TimeSlot(){}
 
-    public TimeSlot(Date slotStart, Date slotEnd) {
+    public TimeSlot(String slotStart, String slotEnd) {
         this.slotStart = slotStart;
         this.slotEnd = slotEnd;
     }

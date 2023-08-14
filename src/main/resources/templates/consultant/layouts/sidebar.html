@@ -1,25 +1,37 @@
-<div th:fragment="sidebar" class="profile-sidebar">
+<div
+  th:fragment="sidebar"
+  class="profile-sidebar"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+  th:with="currentUrl=${#ctx.springRequestContext.requestUri}"
+>
   <div class="widget-profile pro-widget-content">
     <div class="profile-info-widget">
-      <a href="#" class="booking-doc-img">
-        <img src="assets/img/doctors/doctor-thumb-02.jpg" alt="User Image" />
-      </a>
       <div class="profile-det-info">
-        <h3>Dr. Darren Elder</h3>
+        <h3 sec:authentication="principal.username"></h3>
 
-        <div class="patient-details">
-          <h5 class="mb-0">BDS, MDS - Oral & Maxillofacial Surgery</h5>
-        </div>
+        <!--        <div class="patient-details">-->
+        <!--          <h5 class="mb-0">BDS, MDS - Oral & Maxillofacial Surgery</h5>-->
+        <!--        </div>-->
       </div>
     </div>
   </div>
   <div class="dashboard-widget">
     <nav class="dashboard-menu">
       <ul>
-        <li class="active">
-          <a href="doctor-dashboard.html">
+        <li
+          th:classappend="${currentUrl == '/consultant/dashboard'} ? active : ''"
+        >
+          <a href="#">
             <i class="fas fa-columns"></i>
             <span>Dashboard</span>
+          </a>
+        </li>
+        <li
+          th:classappend="${currentUrl == '/consultant/profile/edit'} ? active : ''"
+        >
+          <a href="#" th:href="@{/consultant/profile/edit}">
+            <i class="fas fa-user-cog"></i>
+            <span>Profile Settings</span>
           </a>
         </li>
         <li>
@@ -57,12 +69,6 @@
             <i class="fas fa-comments"></i>
             <span>Message</span>
             <small class="unread-msg">23</small>
-          </a>
-        </li>
-        <li>
-          <a href="doctor-profile-settings.html">
-            <i class="fas fa-user-cog"></i>
-            <span>Profile Settings</span>
           </a>
         </li>
         <li>

@@ -1,14 +1,13 @@
 <!-- ***** ALWAYS START WITH content container-fluid ***** -->
 <div
-  layout:decorate="~{admin/layouts/default}"
+  layout:decorate="~{consultant/layouts/default}"
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
   layout:fragment="content"
   class="content container-fluid"
 >
   <div
-    layout:replace="~{admin/layouts/components/pageTitle :: adminPageTitle(title='Update Profile') }"
+    layout:replace="/consultant/layouts/components/pageTitle :: consultantPageTitle(title='Update Profile')"
   ></div>
-  <!-- /Page Header -->
   <div class="card">
     <div class="card-body">
       <form

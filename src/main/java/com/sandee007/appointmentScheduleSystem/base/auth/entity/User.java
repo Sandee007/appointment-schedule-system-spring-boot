@@ -72,6 +72,13 @@ public class User {
         this.enabled = enabled;
     }
 
+    public User(User user){
+        this.id = user.getId();
+        this.username = user.getUsername();
+        this.password = user.getPassword();
+        this.enabled = user.getEnabled();
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -81,4 +88,5 @@ public class User {
                 ", enabled=" + enabled +
                 '}';
     }
+
 }

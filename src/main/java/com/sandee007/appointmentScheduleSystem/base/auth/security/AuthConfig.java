@@ -18,7 +18,7 @@ import javax.sql.DataSource;
 public class AuthConfig {
 
     //    @Autowired
-//    private UserDetailsService userDetailsService;
+    //    private UserDetailsService userDetailsService;
 
 
     @Bean
@@ -87,12 +87,14 @@ public class AuthConfig {
         return httpSecurity.build();
     }
 
-//    @Bean
+    //    * custom user deails service
+    //    https://stackoverflow.com/questions/39930876/spring-get-custom-userdetails-in-securitycontextholder
+    @Bean
 //    public DaoAuthenticationProvider authenticationProvider(UserDetailsService userDetailsService) {
-//        DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
-//        auth.setUserDetailsService(userDetailsService);
-//        auth.setPasswordEncoder(passwordEncoder());
-//        auth.
-//        return auth;
-//    }
+    public DaoAuthenticationProvider authenticationProvider(CustomUserDetailsService userDetailsService) {
+        DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
+        auth.setUserDetailsService(userDetailsService);
+        auth.setPasswordEncoder(passwordEncoder());
+        return auth;
+    }
 }

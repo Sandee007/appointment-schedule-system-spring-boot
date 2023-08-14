@@ -22,6 +22,10 @@ public class ConsultantScheduleDate {
     @Column(name = "date")
     private Date date;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "deleted_at")
+    private Date deletedAt;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "consultant_id")
     private Consultant consultant;

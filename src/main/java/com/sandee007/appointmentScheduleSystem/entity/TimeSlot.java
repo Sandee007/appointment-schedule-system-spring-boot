@@ -26,6 +26,10 @@ public class TimeSlot {
     @Column(name = "slot_end")
     private Date slotEnd;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "deleted_at")
+    private Date deletedAt;
+
 //    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 //    @JoinTable(
 //            name = "consultant_schedule_date_timeslots",

@@ -26,13 +26,13 @@ public class TimeSlot {
     @Column(name = "slot_end")
     private Date slotEnd;
 
-    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinTable(
-            name = "consultant_schedule_date_timeslots",
-            joinColumns = @JoinColumn(name = "timeslot_id"),
-            inverseJoinColumns = @JoinColumn(name = "consultant_schedule_date")
-    )
-    private List<ConsultantScheduleDate> consultantScheduleDates;
+//    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+//    @JoinTable(
+//            name = "consultant_schedule_date_timeslots",
+//            joinColumns = @JoinColumn(name = "timeslot_id"),
+//            inverseJoinColumns = @JoinColumn(name = "consultant_schedule_date_id")
+//    )
+//    private List<ConsultantScheduleDate> consultantScheduleDates;
 
     public TimeSlot(){}
 

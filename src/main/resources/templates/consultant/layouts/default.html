@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+  <head th:replace="/consultant/layouts/header :: header"></head>
+  <body>
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+      <!-- Header -->
+      <header th:replace="/consultant/layouts/navbar :: navbar"></header>
+      <!-- /Header -->
+
+      <!-- Breadcrumb -->
+      <!--      <div-->
+      <!--        layout:replace="/consultant/layouts/components/pageTitle :: consultantPageTitle(title='Dashboard')"-->
+      <!--      ></div>-->
+      <!-- /Breadcrumb -->
+
+      <!-- Page Content -->
+      <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
+              <!-- Profile Sidebar -->
+              <div
+                th:replace="/consultant/layouts/sidebar :: sidebar"
+                class="profile-sidebar"
+              ></div>
+              <!-- /Profile Sidebar -->
+            </div>
+
+            <div class="col-md-7 col-lg-8 col-xl-9">
+              <div layout:fragment="content"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /Page Content -->
+
+      <!-- Footer -->
+      <footer
+        th:replace="/consultant/layouts/footer :: footer"
+        class="footer"
+      ></footer>
+      <!-- /Footer -->
+    </div>
+    <!-- /Main Wrapper -->
+
+    <div th:replace="/consultant/layouts/footer :: footerLinks"></div>
+  </body>
+</html>

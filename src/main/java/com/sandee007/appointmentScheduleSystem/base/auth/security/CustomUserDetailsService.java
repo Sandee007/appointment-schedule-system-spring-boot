@@ -7,8 +7,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-// ! un comment when using
-@Service
+// ! un-comment when using
+//@Service
 public class CustomUserDetailsService implements UserDetailsService {
 
     private UserService userService;

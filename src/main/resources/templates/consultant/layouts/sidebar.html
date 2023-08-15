@@ -2,17 +2,22 @@
   th:fragment="sidebar"
   class="profile-sidebar"
   xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-  th:with="currentUrl=${#ctx.springRequestContext.requestUri}"
+  th:with="
+  currentUrl=${#ctx.springRequestContext.requestUri},
+  conusltant=${@utilThymeleaf.getConsultant()}
+"
 >
   <div class="widget-profile pro-widget-content">
     <div class="profile-info-widget">
+      <a href="#" class="booking-doc-img">
+        <img src="#" th:src="${consultant?.image}" alt="User Image" />
+      </a>
       <div class="profile-det-info">
-        <h3 sec:authentication="principal.username"></h3>
-        <h3 th:text="${#authentication.getPrincipal().getConsultant()}"></h3>
+        <h3 th:text="${conusltant.firstname + ' ' + conusltant.lastname }"></h3>
 
-        <!--        <div class="patient-details">-->
-        <!--          <h5 class="mb-0">BDS, MDS - Oral & Maxillofacial Surgery</h5>-->
-        <!--        </div>-->
+        <div class="patient-details">
+          <h5 class="mb-0" sec:authentication="principal.username"></h5>
+        </div>
       </div>
     </div>
   </div>
@@ -22,7 +27,7 @@
         <li
           th:classappend="${currentUrl == '/consultant/dashboard'} ? active : ''"
         >
-          <a href="#">
+          <a href="#" th:href="@{/consultant/dashboard}">
             <i class="fas fa-columns"></i>
             <span>Dashboard</span>
           </a>
@@ -39,6 +44,12 @@
           <a href="appointments.html">
             <i class="fas fa-calendar-check"></i>
             <span>Appointments</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" th:href="@{/consultant/profile/calendar}">
+            <i class="fas fa-calendar-check"></i>
+            <span>Calendar</span>
           </a>
         </li>
         <li>

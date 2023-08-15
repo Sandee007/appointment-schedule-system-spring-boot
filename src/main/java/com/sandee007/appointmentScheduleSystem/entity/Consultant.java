@@ -116,7 +116,8 @@ public class Consultant {
             Date birthday,
             String description,
             String phone,
-            int chargePerHour
+            int chargePerHour,
+            String image
     ) {
         this.firstname = firstname;
         this.lastname = lastname;
@@ -124,6 +125,7 @@ public class Consultant {
         this.description = description;
         this.phone = phone;
         this.chargePerHour = chargePerHour;
+        this.image = image;
     }
 
     @Override
@@ -136,6 +138,7 @@ public class Consultant {
                 ", description='" + description + '\'' +
                 ", phone='" + phone + '\'' +
                 ", chargePerHour=" + chargePerHour +
+                ", image=" + image +
                 '}';
     }
 

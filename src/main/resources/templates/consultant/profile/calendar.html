@@ -1,0 +1,44 @@
+<div
+  layout:decorate="~{consultant/layouts/default}"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:fragment="content"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+  <div
+    layout:replace="~{/consultant/layouts/components/pageTitle :: consultantPageTitle(title='Calendar')}"
+  ></div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <form action="">
+            <div class="row mb-3">
+              <div class="col-md-12">
+                <label for="selectedDate">Date</label>
+                <div class="input-group">
+                  <input class="form-control" id="selectedDate" type="date" />
+                  <button class="btn btn-primary btn-sm" type="button">
+                    Load Schedule
+                  </button>
+                </div>
+
+                click load schedule, then load the slots
+                <input name="arrSelectedDates" type="text" />
+              </div>
+            </div>
+            <div class="row justify-content-around">
+              <div
+                th:each="slot : ${propTimeslots}"
+                class="col-md-2 btn btn-primary btn-sm my-1 mx-4"
+              >
+                <span th:text="${slot.getSlotStart()}"></span>
+                <span th:text="${slot.getSlotEnd()}"></span>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

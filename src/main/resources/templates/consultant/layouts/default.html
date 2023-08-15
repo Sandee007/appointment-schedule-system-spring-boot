@@ -5,7 +5,7 @@
     <!-- Main Wrapper -->
     <div class="main-wrapper">
       <!-- Header -->
-      <header th:replace="/consultant/layouts/navbar :: navbar"></header>
+      <header th:replace="~{/consultant/layouts/navbar :: navbar}"></header>
       <!-- /Header -->
 
       <!-- Breadcrumb -->
@@ -21,7 +21,7 @@
             <div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
               <!-- Profile Sidebar -->
               <div
-                th:replace="/consultant/layouts/sidebar :: sidebar"
+                th:replace="~{/consultant/layouts/sidebar :: sidebar}"
                 class="profile-sidebar"
               ></div>
               <!-- /Profile Sidebar -->
@@ -37,13 +37,46 @@
 
       <!-- Footer -->
       <footer
-        th:replace="/consultant/layouts/footer :: footer"
+        th:replace="~{/consultant/layouts/footer :: footer}"
         class="footer"
       ></footer>
       <!-- /Footer -->
     </div>
     <!-- /Main Wrapper -->
 
-    <div th:replace="/consultant/layouts/footer :: footerLinks"></div>
+    <!-- Add Event Modal -->
+    <div class="modal custom-modal fade none-border" id="my_event">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Add Event</h4>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-hidden="true"
+            >
+              &times;
+            </button>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer justify-content-center">
+            <button type="button" class="btn btn-success save-event submit-btn">
+              Create event
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger delete-event submit-btn"
+              data-dismiss="modal"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /Add Event Modal -->
+
+    <div th:replace="~{/consultant/layouts/footer :: footerLinks}"></div>
   </body>
 </html>

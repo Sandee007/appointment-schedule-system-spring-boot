@@ -89,12 +89,12 @@ public class AuthConfig {
 
     //    * custom user deails service
     //    https://stackoverflow.com/questions/39930876/spring-get-custom-userdetails-in-securitycontextholder
-    @Bean
-//    public DaoAuthenticationProvider authenticationProvider(UserDetailsService userDetailsService) {
-    public DaoAuthenticationProvider authenticationProvider(CustomUserDetailsService userDetailsService) {
-        DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
-        auth.setUserDetailsService(userDetailsService);
-        auth.setPasswordEncoder(passwordEncoder());
-        return auth;
-    }
+//    @Bean
+////    public DaoAuthenticationProvider authenticationProvider(UserDetailsService userDetailsService) {
+//    public DaoAuthenticationProvider authenticationProvider(CustomUserDetailsService userDetailsService) {
+//        DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
+//        auth.setUserDetailsService(userDetailsService);
+//        auth.setPasswordEncoder(passwordEncoder());
+//        return auth;
+//    }
 }

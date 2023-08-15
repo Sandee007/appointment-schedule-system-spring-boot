@@ -1,5 +1,7 @@
 package com.sandee007.appointmentScheduleSystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.util.JSONWrappedObject;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,19 +28,26 @@ public class ConsultantScheduleDate {
     @Column(name = "deleted_at")
     private Date deletedAt;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "consultant_id")
     private Consultant consultant;
 
-//    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-//    @JoinTable(
-//            name = "consultant_schedule_date_timeslots",
-//            joinColumns = @JoinColumn(name = "consultant_schedule_date_id"),
-//            inverseJoinColumns = @JoinColumn(name = "timeslot_id")
-//    )
-//    private List<TimeSlot> timeSlots;
+    //    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    //    @JoinTable(
+    //            name = "consultant_schedule_date_timeslots",
+    //            joinColumns = @JoinColumn(name = "consultant_schedule_date_id"),
+    //            inverseJoinColumns = @JoinColumn(name = "timeslot_id")
+    //    )
+    //    private List<TimeSlot> timeSlots;
+    @OneToMany(
+            mappedBy = "consultantScheduleDate",
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    List<ConsultantScheduleDateTimeslot> consultantScheduleDateTimeslots;
 
-    public ConsultantScheduleDate(){}
+    public ConsultantScheduleDate() {
+    }
 
     public ConsultantScheduleDate(Date date, Consultant consultant) {
         this.date = date;
@@ -52,4 +61,5 @@ public class ConsultantScheduleDate {
                 ", date=" + date +
                 '}';
     }
+
 }

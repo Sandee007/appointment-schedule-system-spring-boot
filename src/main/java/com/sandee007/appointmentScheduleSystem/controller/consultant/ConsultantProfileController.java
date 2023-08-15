@@ -79,11 +79,4 @@ public class ConsultantProfileController {
         redirectAttributes.addFlashAttribute("success", "Profile Updated");
         return "redirect:/consultant/dashboard";
     }
-
-    @GetMapping("calendar")
-    public String calendar(Model model){
-        List<TimeSlot> propTimeslots = timeslotService.findAll();
-        model.addAttribute("propTimeslots", propTimeslots);
-        return "consultant/profile/calendar";
-    }
 }

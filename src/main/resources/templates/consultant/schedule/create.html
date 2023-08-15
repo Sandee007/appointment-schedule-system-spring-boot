@@ -1,0 +1,178 @@
+<div
+  layout:decorate="~{consultant/layouts/default}"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:fragment="content"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+  <div
+    layout:replace="~{/consultant/layouts/components/pageTitle :: consultantPageTitle(title='Schedule')}"
+  ></div>
+
+  validate duplicate date <br />
+  validate not a past date <br />
+  disable removing timeslot if it has a seeker - if have enough time
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <form
+            th:object="${createScheduleDto}"
+            th:action="${MODE != 'UPDATE'} ? '/consultant/schedule/store' : '/consultant/schedule/update' "
+            method="post"
+          >
+            <div class="row mb-3">
+              <div class="col-md-10">
+                <label for="selectedDate">Date</label>
+                <div class="input-group">
+                  <input
+                    class="form-control"
+                    id="selectedDate"
+                    name="selectedDate"
+                    th:field="*{selectedDate}"
+                    type="date"
+                    th:classappend="${#fields.hasErrors('selectedDate')} ? 'is-invalid' : ''"
+                    th:readonly="${MODE == 'UPDATE'}"
+                  />
+
+                  <div
+                    th:errors="*{selectedDate}"
+                    th:if="${#fields.hasErrors('selectedDate')}"
+                    class="invalid-feedback"
+                  ></div>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="row">
+                  <div class="col">
+                    <button
+                      type="button"
+                      onclick="selectAll()"
+                      class="btn btn-sm btn-info float-right my-1"
+                    >
+                      Select All
+                    </button>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <button
+                      onclick="selectNone()"
+                      type="button"
+                      class="btn btn-sm btn-danger float-right my-1"
+                    >
+                      Select None
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row justify-content-around">
+              <div
+                th:each="slot : ${@utilThymeleaf.getPropTimeslots}"
+                class="col-md-2 btn btn-outline-secondary btn-sm my-1 mx-4"
+                th:attr="data-timeslot-id=${slot.id}"
+                onclick="timeslotOnclickHandler(this)"
+                th:id="'timeslot_'+${slot.id}"
+              >
+                <span th:text="${slot.getSlotStart().substring(0,5)}"></span>
+                ~
+                <span th:text="${slot.getSlotEnd().substring(0,5)}"></span>
+              </div>
+            </div>
+
+            <input
+              th:field="*{timeslotString}"
+              type="text"
+              name="timeslotString"
+              id="timeslotString"
+            />
+            <input type="text" name="id" id="id" th:field="*{id}" />
+            <button class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script th:inline="javascript">
+  const propTimeslots = [[${@utilThymeleaf.getPropTimeslots}]]
+  const consultantScheduleDate = [[${consultantScheduleDate}]]
+  const MODE = [[${MODE}]]
+
+  const inputTimeslotString = $('#timeslotString')
+  const classSelected = 'btn-primary'
+  const classNotSelected = 'btn-outline-secondary'
+
+  if (MODE == 'UPDATE') {
+    // console.log({consultantScheduleDate})
+      const slotsFromDb = consultantScheduleDate?.consultantScheduleDateTimeslots?.map(i => i.timeslot.id)
+      setInputTimeslotStringValues({values: slotsFromDb})
+  }
+
+  // console.log({propTimeslots}, {inputTimeslotString})
+  if (inputTimeslotString.val().length > 0) {
+      getInputTimeslotStringValues().forEach(i => {
+          $(`#timeslot_${i}`).removeClass(classNotSelected).addClass(classSelected)
+      })
+  }
+
+  function getInputTimeslotStringValues() {
+      const val = inputTimeslotString.val()
+
+      if (!val) return [];
+      return JSON.parse(val)
+  }
+
+  function setInputTimeslotStringValues({values}) {
+    // console.log({values})
+      return inputTimeslotString.val(JSON.stringify(values))
+  }
+
+  function isSlotSelected({timeslotId}) {
+      return !!getInputTimeslotStringValues().find(i => i == timeslotId)
+  }
+
+  function pushTimeSlot({timeslotId}) {
+      let values = getInputTimeslotStringValues()
+      values.push(timeslotId)
+      setInputTimeslotStringValues({values})
+
+      $(`#timeslot_${timeslotId}`).removeClass(classNotSelected).addClass(classSelected)
+      // console.log('getInputTimeslotStringValues', getInputTimeslotStringValues())
+  }
+
+  function popTimeslot({timeslotId}) {
+      let values = getInputTimeslotStringValues()
+      const index = values.indexOf(timeslotId)
+      values.splice(index, 1)
+      setInputTimeslotStringValues({values})
+
+      $(`#timeslot_${timeslotId}`).removeClass(classSelected).addClass(classNotSelected)
+      // console.log('getInputTimeslotStringValues', getInputTimeslotStringValues())
+  }
+
+  function timeslotOnclickHandler(el) {
+      const timeslotId = Number(el.dataset.timeslotId)
+
+      if (isSlotSelected({timeslotId})) {
+          popTimeslot({timeslotId})
+      } else {
+          pushTimeSlot({timeslotId})
+      }
+
+  }
+
+  function selectAll() {
+      propTimeslots.forEach(i => {
+          pushTimeSlot({timeslotId: i.id})
+      })
+  }
+
+  function selectNone() {
+      propTimeslots.forEach(i => {
+          popTimeslot({timeslotId: i.id})
+      })
+  }
+</script>

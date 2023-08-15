@@ -1,0 +1,44 @@
+<div
+  layout:decorate="~{consultant/layouts/default}"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:fragment="content"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+  <div
+    layout:replace="~{/consultant/layouts/components/pageTitle :: consultantPageTitle(title='Schedule')}"
+  ></div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row mb-3">
+            <div class="col-md-12">
+              <a
+                href="#"
+                th:href="@{/consultant/schedule/create}"
+                class="btn btn-primary btn-sm float-right text-light"
+                type="button"
+              >
+                Create Schedule
+              </a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="mb-3" th:each="date : ${consultantScheduleDates}">
+                <span th:text="${date.getDate()}"></span>
+                <a
+                  th:href="@{/consultant/schedule/edit(id=${date.id})}"
+                  href="#"
+                  class="btn btn-primary btn-sm"
+                  >Update Schedule</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head th:replace="~{admin/layouts/header :: adminHeader}"></head>
+  <body>
+    <!-- Main Wrapper -->
+    <div class="main-wrapper login-body">
+      <div class="login-wrapper">
+        <div class="container">
+          <form
+            th:object="${RegisterSeekerDto}"
+            action="#"
+            th:action="@{/register}"
+            method="post"
+            enctype="multipart/form-data"
+          >
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <h4 class="card-header text-center">Register</h4>
+                  <div class="card-body">
+                    <div class="form-row">
+                      <div class="col-md-4 mb-3">
+                        <label for="username">Email</label>
+                        <div class="input-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="username"
+                            placeholder="Email"
+                            name="username"
+                            th:classappend="${error_username} ? 'is-invalid' : ''"
+                            th:value="${username}"
+                          />
+
+                          <div
+                            th:if="${error_username}"
+                            class="invalid-feedback"
+                            th:text="${error_username}"
+                          ></div>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label for="username">Password</label>
+                        <div class="input-group">
+                          <input
+                            type="password"
+                            class="form-control"
+                            id="password"
+                            placeholder="Password"
+                            name="password"
+                            th:classappend="${error_password} ? 'is-invalid' : ''"
+                            th:value="${password}"
+                          />
+
+                          <div
+                            th:if="${error_password}"
+                            class="invalid-feedback"
+                            th:text="${error_password}"
+                          ></div>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label for="username">Confirm Password</label>
+                        <div class="input-group">
+                          <input
+                            type="password"
+                            class="form-control"
+                            id="confirmPassword"
+                            placeholder="Confirm Password"
+                            name="confirmPassword"
+                            th:classappend="${error_confirmPassword} ? 'is-invalid' : ''"
+                            th:value="${confirmPassword}"
+                          />
+
+                          <div
+                            th:if="${error_confirmPassword}"
+                            class="invalid-feedback"
+                            th:text="${error_confirmPassword}"
+                          ></div>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label for="firstname">First Name</label>
+                        <div class="input-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="firstname"
+                            placeholder="First Name"
+                            name="firstname"
+                            th:classappend="${error_firstname} ? 'is-invalid' : ''"
+                            th:value="${firstname}"
+                          />
+
+                          <div
+                            th:if="${error_firstname}"
+                            class="invalid-feedback"
+                            th:text="${error_firstname}"
+                          ></div>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label for="lastname">Last Name</label>
+                        <div class="input-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="lastname"
+                            placeholder="Last Name"
+                            name="lastname"
+                            th:classappend="${error_lastname} ? 'is-invalid' : ''"
+                            th:value="${lastname}"
+                          />
+                          <div
+                            th:if="${error_lastname}"
+                            class="invalid-feedback"
+                            th:text="${error_lastname}"
+                          ></div>
+                        </div>
+                      </div>
+                      <div class="col-md-2 mb-3">
+                        <label for="birthday">Birthday</label>
+                        <div class="input-group">
+                          <input
+                            type="date"
+                            class="form-control"
+                            id="birthday"
+                            placeholder="Birthday"
+                            name="birthday"
+                            th:classappend="${error_birthday} ? 'is-invalid' : ''"
+                            th:value="${birthday}"
+                          />
+                          <div
+                            th:if="${error_birthday}"
+                            class="invalid-feedback"
+                            th:text="${error_birthday}"
+                          ></div>
+                        </div>
+                      </div>
+                      <div class="col-md-2 mb-3">
+                        <label for="phone">Phone</label>
+                        <div class="input-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="phone"
+                            placeholder="Phone"
+                            name="phone"
+                            maxlength="10"
+                            th:classappend="${error_phone} ? 'is-invalid' : ''"
+                            th:value="${phone}"
+                          />
+                          <div
+                            th:if="${error_phone}"
+                            class="invalid-feedback"
+                            th:text="${error_phone}"
+                          ></div>
+                        </div>
+                      </div>
+                      <div class="col-md-8 mb-3">
+                        <label for="address">Address</label>
+                        <div class="input-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="address"
+                            placeholder="Address"
+                            name="address"
+                            th:classappend="${error_phone} ? 'is-invalid' : ''"
+                            th:value="${phone}"
+                          />
+                          <div
+                            th:if="${error_phone}"
+                            class="invalid-feedback"
+                            th:text="${error_phone}"
+                          ></div>
+                        </div>
+                      </div>
+                      <div class="col-md-12 mb-3">
+                        <label for="description">About Yourself</label>
+                        <div class="input-group">
+                          <textarea
+                            class="form-control"
+                            id="description"
+                            placeholder="About Yourself"
+                            name="description"
+                            cols="30"
+                            rows="10"
+                            th:classappend="${error_description} ? 'is-invalid' : ''"
+                            th:value="${description}"
+                          ></textarea>
+                          <div
+                            th:if="${error_description}"
+                            class="invalid-feedback"
+                            th:text="${error_description}"
+                          ></div>
+                        </div>
+                      </div>
+                      <div class="col-md-12 mb-3">
+                        <label for="imageFile">Image</label>
+                        <div class="input-group">
+                          <input
+                            type="file"
+                            class="form-control"
+                            id="imageFile"
+                            placeholder="Image"
+                            name="imageFile"
+                            th:classappend="${error_image} ? 'is-invalid' : ''"
+                          />
+                          <div
+                            th:if="${error_image}"
+                            class="invalid-feedback"
+                            th:text="${error_image}"
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-row justify-content-center">
+                      <div class="col-md-6 mb-3">
+                        <div class="form-group">
+                          <button
+                            class="btn btn-primary btn-block"
+                            type="submit"
+                          >
+                            Register
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-row justify-content-center">
+                      <div class="col-md-6 mb-3">
+                        <div class="text-center dont-have">
+                          Already Registered ?
+                          <a href="#" th:href="@{/login}">Login</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+          <!--          </div>-->
+        </div>
+      </div>
+    </div>
+    <!-- /Main Wrapper -->
+  </body>
+</html>

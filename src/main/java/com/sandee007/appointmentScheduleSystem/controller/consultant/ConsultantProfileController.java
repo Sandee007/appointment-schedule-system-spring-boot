@@ -71,8 +71,6 @@ public class ConsultantProfileController {
             );
             Files.write(fileNameAndPath, file.getBytes());
             consultant.setImage(UPLOAD_DIRECTORY + FILE_NAME);
-        } else {
-//            consultant.setImage();
         }
 
         consultantService.save(consultant);

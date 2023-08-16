@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sandee007.appointmentScheduleSystem.base.auth.validation.UniqueEmail;
 import com.sandee007.appointmentScheduleSystem.base.auth.validation.ValidationMessages;
 import com.sandee007.appointmentScheduleSystem.entity.Consultant;
+import com.sandee007.appointmentScheduleSystem.entity.Seeker;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -53,8 +54,14 @@ public class User {
     )
     private Consultant consultant;
 
-    //    SET CONSULTANT
-    //    SET SEEKER
+    @JsonIgnore
+    @OneToOne(
+            mappedBy = "user",
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    private Seeker seeker;
+
+
 
     public User() {
     }

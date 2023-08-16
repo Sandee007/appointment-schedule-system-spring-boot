@@ -14,13 +14,12 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class CreateScheduleDto {
+public class UpdateScheduleDto {
     private int id;
 
     @NotNull(message = ValidationMessages.REQUIRED)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotPastDate
-    @UniqueConsultantDate
     @Temporal(TemporalType.DATE)
     private Date selectedDate;
 

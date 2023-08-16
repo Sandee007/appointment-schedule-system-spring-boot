@@ -5,6 +5,7 @@ import com.sandee007.appointmentScheduleSystem.entity.Consultant;
 import com.sandee007.appointmentScheduleSystem.entity.ConsultantScheduleDate;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,5 +30,10 @@ public class ConsultantScheduleDateServiceImpl implements ConsultantScheduleDate
     @Override
     public Optional<ConsultantScheduleDate> findById(int id) {
         return consultantScheduleDateRepository.findById(id);
+    }
+
+    @Override
+    public boolean existsByConsultantAndDate(Consultant consultant, Date date) {
+        return consultantScheduleDateRepository.existsByConsultantAndDate(consultant, date);
     }
 }

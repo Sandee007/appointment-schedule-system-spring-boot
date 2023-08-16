@@ -54,31 +54,34 @@ public class AuthConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .authorizeHttpRequests(config ->
-                                               config
-                                                       .requestMatchers(
-                                                               "/",
-                                                               "/uploads/**",
-                                                               "/assets/**",
-                                                               "/register/**",
-                                                               "anotherUrl"
-                                                       ).permitAll()
-                                                       //                                                       .requestMatchers("/admin/**").hasRole(Role.ROLE_CONSULTANT.name())
+                .authorizeHttpRequests(
+                        config -> config
+                                .requestMatchers(
+                                        "/",
+                                        "/uploads/**",
+                                        "/assets/**",
+                                        "/register/**",
+                                        "anotherUrl"
+                                ).permitAll()
+                                //                                                       .requestMatchers("/admin/**").hasRole(Role.ROLE_CONSULTANT.name())
 
-                                                       //cuz Enum has prefix ROLE_ in it
-                                                       .requestMatchers("/admin/**").hasAnyAuthority(ERole.ROLE_ADMIN.name())
-                                                       .requestMatchers("/consultant/**").hasAnyAuthority(ERole.ROLE_CONSULTANT.name())
-                                                       .anyRequest().authenticated()
+                                //cuz Enum has prefix ROLE_ in it
+                                .requestMatchers("/admin/**").hasAnyAuthority(ERole.ROLE_ADMIN.name())
+                                .requestMatchers("/consultant/**").hasAnyAuthority(ERole.ROLE_CONSULTANT.name())
+                                .anyRequest().authenticated()
                 )
-                .formLogin(loginForm ->
-                                   loginForm
-                                           .loginPage("/login")
-                                           // * spring will handle a POST request for this automatically, must have name,password
-                                           .loginProcessingUrl("/login-handler")
-                                           .successHandler(customAuthenticationSuccessHandler())
-                                           .permitAll()
+                .formLogin(
+                        loginForm -> loginForm
+                                .loginPage("/login")
+                                // * spring will handle a POST request for this automatically, must have name,password
+                                .loginProcessingUrl("/login-handler")
+                                .successHandler(customAuthenticationSuccessHandler())
+                                .permitAll()
                 )
-                .logout(logout -> logout.permitAll());
+                .logout(
+                        logout -> logout
+                                .logoutSuccessUrl("/")
+                                .permitAll());
         //                .exceptionHandling(config ->
         //                                           config
         //                                                   .accessDeniedPage("/access-denied")
@@ -87,14 +90,14 @@ public class AuthConfig {
         return httpSecurity.build();
     }
 
-    //    * custom user deails service
+    //    * custom user deatils service
     //    https://stackoverflow.com/questions/39930876/spring-get-custom-userdetails-in-securitycontextholder
-//    @Bean
-////    public DaoAuthenticationProvider authenticationProvider(UserDetailsService userDetailsService) {
-//    public DaoAuthenticationProvider authenticationProvider(CustomUserDetailsService userDetailsService) {
-//        DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
-//        auth.setUserDetailsService(userDetailsService);
-//        auth.setPasswordEncoder(passwordEncoder());
-//        return auth;
-//    }
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider(UserDetailsService userDetailsService) {
+        //    public DaoAuthenticationProvider authenticationProvider(CustomUserDetailsService userDetailsService) {
+        DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
+        auth.setUserDetailsService(userDetailsService);
+        auth.setPasswordEncoder(passwordEncoder());
+        return auth;
+    }
 }

@@ -8,9 +8,10 @@
     layout:replace="~{/consultant/layouts/components/pageTitle :: consultantPageTitle(title='Schedule')}"
   ></div>
 
-  validate duplicate date <br />
-  validate not a past date <br />
-  disable removing timeslot if it has a seeker - if have enough time
+  <!--  validate duplicate date - FOR THE SAME CONSULTANT - DONE <br />-->
+  <!--  validate not a past date - DONE <br />-->
+  <!--  disable removing timeslot if it has a seeker - if have enough time -> DONE-->
+  <!--  don't let to update past dates - DONE-->
 
   <div class="row">
     <div class="col-md-12">
@@ -21,7 +22,7 @@
             th:action="${MODE != 'UPDATE'} ? '/consultant/schedule/store' : '/consultant/schedule/update' "
             method="post"
           >
-            <div class="row mb-3">
+            <div class="row">
               <div class="col-md-10">
                 <label for="selectedDate">Date</label>
                 <div class="input-group">
@@ -43,25 +44,26 @@
                 </div>
               </div>
               <div class="col-md-2">
-                <div class="row">
-                  <div class="col">
-                    <button
-                      type="button"
-                      onclick="selectAll()"
-                      class="btn btn-sm btn-info float-right my-1"
-                    >
-                      Select All
-                    </button>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
+                <button class="btn btn-primary float-right">Submit</button>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-10">
+                <div class="row justify-content-end">
+                  <div class="btn-group mr-3">
                     <button
                       onclick="selectNone()"
                       type="button"
-                      class="btn btn-sm btn-danger float-right my-1"
+                      class="btn btn-sm btn-outline-danger float-right my-1"
                     >
                       Select None
+                    </button>
+                    <button
+                      type="button"
+                      onclick="selectAll()"
+                      class="btn btn-sm btn-outline-info float-right my-1"
+                    >
+                      Select All
                     </button>
                   </div>
                 </div>
@@ -83,12 +85,11 @@
 
             <input
               th:field="*{timeslotString}"
-              type="text"
+              type="hidden"
               name="timeslotString"
               id="timeslotString"
             />
-            <input type="text" name="id" id="id" th:field="*{id}" />
-            <button class="btn btn-primary">Submit</button>
+            <input type="hidden" name="id" id="id" th:field="*{id}" />
           </form>
         </div>
       </div>
@@ -106,7 +107,7 @@
   const classNotSelected = 'btn-outline-secondary'
 
   if (MODE == 'UPDATE') {
-    // console.log({consultantScheduleDate})
+      // console.log({consultantScheduleDate})
       const slotsFromDb = consultantScheduleDate?.consultantScheduleDateTimeslots?.map(i => i.timeslot.id)
       setInputTimeslotStringValues({values: slotsFromDb})
   }
@@ -126,7 +127,7 @@
   }
 
   function setInputTimeslotStringValues({values}) {
-    // console.log({values})
+      // console.log({values})
       return inputTimeslotString.val(JSON.stringify(values))
   }
 

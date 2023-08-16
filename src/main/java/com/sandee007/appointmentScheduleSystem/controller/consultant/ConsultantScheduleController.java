@@ -2,6 +2,7 @@ package com.sandee007.appointmentScheduleSystem.controller.consultant;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sandee007.appointmentScheduleSystem.dto.CreateScheduleDto;
+import com.sandee007.appointmentScheduleSystem.dto.UpdateScheduleDto;
 import com.sandee007.appointmentScheduleSystem.entity.ConsultantScheduleDate;
 import com.sandee007.appointmentScheduleSystem.entity.ConsultantScheduleDateTimeslot;
 import com.sandee007.appointmentScheduleSystem.entity.TimeSlot;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -109,7 +111,7 @@ public class ConsultantScheduleController {
 
     @PostMapping("update")
     public String update(
-            @Valid CreateScheduleDto createScheduleDto,
+            @Valid UpdateScheduleDto updateScheduleDto,
             BindingResult bindingResult,
             Model model,
             RedirectAttributes redirectAttributes
@@ -118,11 +120,10 @@ public class ConsultantScheduleController {
             model.addAttribute("MODE", "UPDATE");
             return "consultant/schedule/create";
         }
-
-        List<TimeSlot> timeslots = timeslotService.getTimeslotsByString(createScheduleDto.getTimeslotString());
+        List<TimeSlot> timeslots = timeslotService.getTimeslotsByString(updateScheduleDto.getTimeslotString());
 
         Optional<ConsultantScheduleDate> consultantScheduleDate = consultantScheduleDateService.findById(
-                createScheduleDto.getId()
+                updateScheduleDto.getId()
         );
         consultantScheduleDate.ifPresent(c -> {
             //            * delete all existing consultant_schedule_date_timeslots

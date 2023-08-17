@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sandee007.appointmentScheduleSystem.dao.ConsultantScheduleDateTimeslotRepository;
+import com.sandee007.appointmentScheduleSystem.entity.Consultant;
 import com.sandee007.appointmentScheduleSystem.entity.ConsultantScheduleDate;
 import com.sandee007.appointmentScheduleSystem.entity.ConsultantScheduleDateTimeslot;
 import com.sandee007.appointmentScheduleSystem.entity.TimeSlot;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,6 +23,16 @@ public class ConsultantScheduleDateTimeslotServiceImpl implements ConsultantSche
 
     public ConsultantScheduleDateTimeslotServiceImpl(ConsultantScheduleDateTimeslotRepository consultantScheduleDateTimeslotRepository) {
         this.consultantScheduleDateTimeslotRepository = consultantScheduleDateTimeslotRepository;
+    }
+
+    @Override
+    public Optional<ConsultantScheduleDateTimeslot> findById(int id) {
+        return consultantScheduleDateTimeslotRepository.findById(id);
+    }
+
+    @Override
+    public void save(ConsultantScheduleDateTimeslot consultantScheduleDateTimeslot) {
+        consultantScheduleDateTimeslotRepository.save(consultantScheduleDateTimeslot);
     }
 
     @Override
@@ -100,5 +113,40 @@ public class ConsultantScheduleDateTimeslotServiceImpl implements ConsultantSche
     public void saveAll(List<ConsultantScheduleDateTimeslot> consultantScheduleDateTimeslots) {
         consultantScheduleDateTimeslotRepository.saveAll(consultantScheduleDateTimeslots);
     }
+
+    @Override
+    public List<ConsultantScheduleDateTimeslot> getPendingAppointments(
+            int status,
+            Consultant consultantScheduleDate_consultant
+    ) {
+        return consultantScheduleDateTimeslotRepository.findAllByStatusIsAndConsultantScheduleDate_ConsultantAndSeekerNotNull(
+                status,
+                consultantScheduleDate_consultant
+        );
+    }
+
+    @Override
+    public List<ConsultantScheduleDateTimeslot> getTodayAppointments(
+            Consultant consultantScheduleDate_consultant
+    ) {
+        return consultantScheduleDateTimeslotRepository.findAllByStatusIsAndConsultantScheduleDate_ConsultantAndSeekerNotNullAndConsultantScheduleDate_DateOrderByTimeslotAsc(
+                1,
+                consultantScheduleDate_consultant,
+                new Date()
+        );
+    }
+
+    @Override
+    public List<ConsultantScheduleDateTimeslot> getUpcomingAppointments(Consultant consultantScheduleDate_consultant) {
+        Date today = new Date();
+        Date tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
+
+        return consultantScheduleDateTimeslotRepository.findAllByStatusIsAndConsultantScheduleDate_ConsultantAndSeekerNotNullAndConsultantScheduleDate_DateAfterOrderByConsultantScheduleDate_Date(
+                1,
+                consultantScheduleDate_consultant,
+                tomorrow
+        );
+    }
+
 
 }

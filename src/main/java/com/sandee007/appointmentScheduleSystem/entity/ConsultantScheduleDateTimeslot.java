@@ -40,6 +40,9 @@ public class ConsultantScheduleDateTimeslot {
     @Column(name = "deleted_at")
     private Date deletedAt;
 
+    @Column(name = "status", columnDefinition = "integer default 0")
+    private int status;
+
     public ConsultantScheduleDateTimeslot() {
     }
 

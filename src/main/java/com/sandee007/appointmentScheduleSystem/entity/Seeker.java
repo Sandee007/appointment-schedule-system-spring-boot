@@ -86,4 +86,8 @@ public class Seeker {
                 ", deletedAt=" + deletedAt +
                 '}';
     }
+
+    public String getFullName() {
+        return this.firstname + ' ' + this.lastname;
+    }
 }

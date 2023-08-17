@@ -8,15 +8,12 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Entity
 @Table(name = "consultants")
@@ -147,6 +144,24 @@ public class Consultant {
             countries = new ArrayList<>();
         }
         countries.add(country);
+    }
+
+    public String getCountriesString() {
+        return this.getCountries().stream().map(Country::getName).toList()
+                   .toString()
+                   .replace("[", "").replace("]", "");
+    }
+
+    public String getFirstIndustryString() {
+        AtomicReference<String> s = new AtomicReference<>("");
+        this.getIndustries().stream().findFirst().ifPresent(i -> {
+            s.set(i.getName());
+        });
+        return s.get();
+    }
+
+    public String getFullName() {
+        return this.firstname + ' ' + this.lastname;
     }
 
 }

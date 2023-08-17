@@ -30,15 +30,16 @@ public class TimeSlot {
     @Column(name = "deleted_at")
     private Date deletedAt;
 
-//    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-//    @JoinTable(
-//            name = "consultant_schedule_date_timeslots",
-//            joinColumns = @JoinColumn(name = "timeslot_id"),
-//            inverseJoinColumns = @JoinColumn(name = "consultant_schedule_date_id")
-//    )
-//    private List<ConsultantScheduleDate> consultantScheduleDates;
+    //    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    //    @JoinTable(
+    //            name = "consultant_schedule_date_timeslots",
+    //            joinColumns = @JoinColumn(name = "timeslot_id"),
+    //            inverseJoinColumns = @JoinColumn(name = "consultant_schedule_date_id")
+    //    )
+    //    private List<ConsultantScheduleDate> consultantScheduleDates;
 
-    public TimeSlot(){}
+    public TimeSlot() {
+    }
 
     public TimeSlot(String slotStart, String slotEnd) {
         this.slotStart = slotStart;
@@ -52,5 +53,9 @@ public class TimeSlot {
                 ", slotStart=" + slotStart +
                 ", slotEnd=" + slotEnd +
                 '}';
+    }
+
+    public String getSlotsString() {
+        return slotStart.substring(0, 5) + " ~ " + slotEnd.substring(0, 5);
     }
 }

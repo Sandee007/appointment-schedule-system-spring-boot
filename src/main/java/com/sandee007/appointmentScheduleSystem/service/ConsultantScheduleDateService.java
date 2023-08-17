@@ -12,4 +12,5 @@ public interface ConsultantScheduleDateService {
     List<ConsultantScheduleDate> findAllByConsultant(Consultant consultant);
     Optional<ConsultantScheduleDate> findById(int id);
     boolean existsByConsultantAndDate(Consultant consultant, Date date);
+    List<ConsultantScheduleDate> findAllByConsultantAndDateAfterOrderByDateAsc(Consultant consultant, Date date);
 }

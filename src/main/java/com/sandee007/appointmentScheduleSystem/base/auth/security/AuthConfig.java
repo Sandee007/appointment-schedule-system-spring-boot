@@ -58,10 +58,11 @@ public class AuthConfig {
                         config -> config
                                 .requestMatchers(
                                         "/",
+                                        "/error",
                                         "/uploads/**",
                                         "/assets/**",
                                         "/register/**",
-                                        "anotherUrl"
+                                        "/view/**"
                                 ).permitAll()
                                 //                                                       .requestMatchers("/admin/**").hasRole(Role.ROLE_CONSULTANT.name())
 

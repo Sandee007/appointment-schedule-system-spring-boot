@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ConsultantScheduleDateServiceImpl implements ConsultantScheduleDateService{
+public class ConsultantScheduleDateServiceImpl implements ConsultantScheduleDateService {
     private ConsultantScheduleDateRepository consultantScheduleDateRepository;
 
     public ConsultantScheduleDateServiceImpl(ConsultantScheduleDateRepository consultantScheduleDateRepository) {
@@ -36,4 +36,10 @@ public class ConsultantScheduleDateServiceImpl implements ConsultantScheduleDate
     public boolean existsByConsultantAndDate(Consultant consultant, Date date) {
         return consultantScheduleDateRepository.existsByConsultantAndDate(consultant, date);
     }
+
+    @Override
+    public List<ConsultantScheduleDate> findAllByConsultantAndDateAfterOrderByDateAsc(Consultant consultant, Date date) {
+        return consultantScheduleDateRepository.findAllByConsultantAndDateAfterOrderByDateAsc(consultant, date);
+    }
+
 }

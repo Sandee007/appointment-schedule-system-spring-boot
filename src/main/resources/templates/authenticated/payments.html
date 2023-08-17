@@ -1,0 +1,189 @@
+<div
+  layout:decorate="layouts/default"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:fragment="content"
+>
+  <!-- Breadcrumb -->
+  <div class="breadcrumb-bar">
+    <div class="container-fluid">
+      <div class="row align-items-center">
+        <div class="col-md-12 col-12">
+          <h2 class="breadcrumb-title">Book Appointments</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /Breadcrumb -->
+
+  <!-- Page Content -->
+  <div class="content">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-7 col-lg-8">
+          <div class="card">
+            <div class="card-body">
+              <!-- Checkout Form -->
+              <form action="#" th:action="@{/complete-payment}" method="post">
+                <input
+                  th:value="*{timeslotString}"
+                  type="hidden"
+                  name="timeslotString"
+                  id="timeslotString"
+                />
+                <input
+                  th:value="*{consultant.id}"
+                  type="hidden"
+                  name="consultantId"
+                />
+                <div class="payment-widget">
+                  <!-- Credit Card Payment -->
+                  <div class="payment-list">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group card-label">
+                          <label for="card_name">Name on Card</label>
+                          <input
+                            required
+                            class="form-control"
+                            id="card_name"
+                            type="text"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group card-label">
+                          <label for="card_number">Card Number</label>
+                          <input
+                            required
+                            class="form-control"
+                            id="card_number"
+                            placeholder="1234  5678  9876  5432"
+                            maxlength="16"
+                            type="text"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group card-label">
+                          <label for="expiry_month">Expiry Month</label>
+                          <input
+                            class="form-control"
+                            id="expiry_month"
+                            placeholder="MM"
+                            type="text"
+                            required
+                            maxlength="2"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group card-label">
+                          <label for="expiry_year">Expiry Year</label>
+                          <input
+                            class="form-control"
+                            id="expiry_year"
+                            placeholder="YY"
+                            type="text"
+                            required
+                            maxlength="2"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group card-label">
+                          <label for="cvv">CVV</label>
+                          <input
+                            class="form-control"
+                            id="cvv"
+                            type="text"
+                            required
+                            maxlength="3"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- /Credit Card Payment -->
+
+                  <!-- Terms Accept -->
+                  <!--                  <div class="terms-accept">-->
+                  <!--                    <div class="custom-checkbox">-->
+                  <!--                      <input type="checkbox" id="terms_accept" />-->
+                  <!--                      <label for="terms_accept"-->
+                  <!--                        >I have read and accept-->
+                  <!--                        <a href="#">Terms &amp; Conditions</a></label-->
+                  <!--                      >-->
+                  <!--                    </div>-->
+                  <!--                  </div>-->
+                  <!-- /Terms Accept -->
+
+                  <!-- Submit Section -->
+                  <div class="submit-section mt-4">
+                    <button type="submit" class="btn btn-primary submit-btn">
+                      Confirm and Pay
+                    </button>
+                  </div>
+                  <!-- /Submit Section -->
+                </div>
+              </form>
+              <!-- /Checkout Form -->
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-5 col-lg-4 theiaStickySidebar">
+          <!-- Booking Summary -->
+          <div class="card booking-card">
+            <div class="card-header">
+              <h4 class="card-title">Booking Summary</h4>
+            </div>
+            <div class="card-body">
+              <!-- Booking Doctor Info -->
+              <div class="booking-doc-info">
+                <div class="booking-info">
+                  Consultant: <br />
+                  <h4
+                    th:text="${consultant.firstname + ' ' + consultant.lastname}"
+                  ></h4>
+                </div>
+              </div>
+              <hr />
+              <!-- Booking Doctor Info -->
+
+              <div class="booking-summary">
+                <div class="booking-item-wrap">
+                  Timeslots:
+                  <ul class="booking-date mt-2">
+                    <li th:each="timeslot : ${timeslots}">
+                      <th:block
+                        th:text="${timeslot.getConsultantScheduleDate().date}"
+                      ></th:block>
+                      <span
+                        th:text="${timeslot.getTimeslot().getSlotsString()}"
+                      ></span>
+                    </li>
+                  </ul>
+                  <div class="booking-total">
+                    <ul class="booking-total-list">
+                      <li>
+                        <span>Total</span>
+                        <span class="total-cost"
+                          >LKR
+                          <th:block
+                            th:text="${timeslots.size() * consultant.chargePerHour/2}"
+                          ></th:block>
+                        </span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /Booking Summary -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /Page Content -->
+</div>

@@ -62,4 +62,9 @@ public class ConsultantScheduleDate {
                 '}';
     }
 
+    public List<ConsultantScheduleDateTimeslot> unReservedConsultantScheduleDateTimeslots() {
+        consultantScheduleDateTimeslots.removeIf(i -> i.getSeeker() != null);
+        return consultantScheduleDateTimeslots;
+    }
+
 }

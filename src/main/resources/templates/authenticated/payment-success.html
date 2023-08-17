@@ -1,0 +1,130 @@
+<div
+  layout:decorate="layouts/default"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:fragment="content"
+>
+  <!-- Breadcrumb -->
+  <div class="breadcrumb-bar">
+    <div class="container-fluid">
+      <div class="row align-items-center">
+        <div class="col-md-12 col-12">
+          <h2 class="breadcrumb-title">Payment Complete</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /Breadcrumb -->
+
+  <!-- Page Content -->
+  <div class="content success-page-cont">
+    <div class="container-fluid">
+      <div class="row justify-content-center">
+        <div class="col-lg-6">
+          <!-- Success Card -->
+          <div id="invoice" class="card success-card invoice">
+            <div class="card-body">
+              <div class="success-cont">
+                <i class="fas fa-check"></i>
+                <h3>Appointment(s) booked Successfully!</h3>
+                <p>
+                  Appointment(s) booked with
+                  <strong th:text="${consultant.getFullName()}"></strong><br />
+                </p>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="float-right">
+                      <strong> Date:</strong>
+                      <span th:text="${@utilThymeleaf.getNow()}"></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-md-12">
+                    <div class="float-right">
+                      <strong> Invoice: #</strong>
+                      <span
+                        th:text="${@utilThymeleaf.generateInvoiceNo()}"
+                      ></span>
+                    </div>
+                  </div>
+                </div>
+
+                <table class="table table-sm">
+                  <thead>
+                    <tr>
+                      <th class="text-left">#</th>
+                      <th class="text-center">Date</th>
+                      <th class="text-right">Timeslots</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="timeslot, loop : ${timeslots}">
+                      <td class="text-left" th:text="${loop.index+1}"></td>
+                      <td
+                        class="text-center"
+                        th:text="${timeslot.getConsultantScheduleDate().date}"
+                      ></td>
+                      <td
+                        class="text-right"
+                        th:text="${timeslot.getTimeslot().getSlotsString()}"
+                      ></td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <th class="text-left" colspan="2">Price Per Hour</th>
+                      <th
+                        class="text-right"
+                        th:text="'LKR ' + ${consultant.chargePerHour}"
+                      ></th>
+                    </tr>
+                    <tr>
+                      <th class="text-left" colspan="2">Total</th>
+                      <th class="text-right">
+                        <strong>LKR</strong>
+                        <th:block
+                          th:text="${ consultant.chargePerHour/2 * timeslots.size()}"
+                        ></th:block>
+                      </th>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- /Success Card -->
+
+          <div class="row justify-content-center mb-3">
+            <div class="col">
+              <button onclick="printInvoice()" class="btn btn-success col">
+                Print Invoice
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- /Page Content -->
+</div>
+
+<script>
+  function printInvoice() {
+    const content = document.getElementById("invoice");
+    let WinPrint = window.open(
+      "",
+      "Title",
+      "left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0;margin:0"
+    );
+    WinPrint.document.write(content.innerHTML);
+    WinPrint.document.write(
+      "<style>.invoice {width: 100% !important;}</style>"
+    );
+    // WinPrint.document.write(styles);
+    WinPrint.document.close();
+    WinPrint.focus();
+    WinPrint.print();
+    WinPrint.close();
+  }
+</script>

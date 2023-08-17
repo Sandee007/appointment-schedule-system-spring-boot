@@ -1,0 +1,320 @@
+<div
+  layout:decorate="layouts/default"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:fragment="content"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+  <!-- Breadcrumb -->
+  <div class="breadcrumb-bar">
+    <div class="container-fluid">
+      <div class="row align-items-center">
+        <div class="col-md-12 col-12">
+          <h2 class="breadcrumb-title">Consultant Profile</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /Breadcrumb -->
+
+  <form
+    id="formBookAppointments"
+    action="#"
+    th:action="@{/payments}"
+    method="post"
+  >
+    <input type="hidden" name="timeslotString" id="timeslotString" />
+    <input type="hidden" name="consultantId" th:value="*{consultant.id}" />
+
+    <div class="content">
+      <div class="container">
+        <!-- Doctor Widget -->
+        <div class="card">
+          <div class="card-body">
+            <div class="doctor-widget">
+              <div class="doc-info-left">
+                <div class="doctor-img">
+                  <img
+                    style="height: auto !important; width: 150px !important"
+                    th:src="${consultant.image}"
+                    class="img-fluid"
+                    alt="User Image"
+                  />
+                </div>
+                <div class="doc-info-cont">
+                  <h4
+                    class="doc-name"
+                    th:text="${consultant.firstname + ' ' + consultant.lastname}"
+                  ></h4>
+                  <div class="clinic-details">
+                    <p class="doc-location">
+                      <i class="fas fa-map-marker-alt"></i>
+                      <span th:text="${consultant.getCountriesString()}"></span>
+                    </p>
+                  </div>
+                  <div class="clinic-services">
+                    <span
+                      th:each="industry : ${consultant.getIndustries()}"
+                      th:text="${industry.name}"
+                    ></span>
+                  </div>
+                </div>
+              </div>
+              <div class="doc-info-right">
+                <div class="clini-infos">
+                  <ul>
+                    <li>
+                      <i class="far fa-money-bill-alt"></i> LKR
+                      <span th:text="${consultant.chargePerHour}"></span> Per
+                      Hour
+                    </li>
+                  </ul>
+                </div>
+                <div class="">
+                  <button
+                    sec:authorize="isAuthenticated()"
+                    onclick="checkIfSlotsSelected()"
+                    type="button"
+                    class="btn btn-info"
+                  >
+                    Book Appointment
+                  </button>
+                  <a
+                    sec:authorize="isAnonymous()"
+                    href="#"
+                    th:href="@{/login}"
+                    class="btn btn-success"
+                  >
+                    Log in to Book Appointments
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /Doctor Widget -->
+
+        <div id="errNoTimeslots" class="alert alert-danger d-none">
+          No Timeslots are Selected
+        </div>
+
+        <!-- Doctor Details Tab -->
+        <div class="card">
+          <div class="card-body pt-0">
+            <!-- Tab Menu -->
+            <nav class="user-tabs mb-4">
+              <ul class="nav nav-tabs nav-tabs-bottom nav-justified">
+                <li class="nav-item">
+                  <a
+                    class="nav-link active"
+                    href="#doc_business_hours"
+                    data-toggle="tab"
+                    >Schedule</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#doc_overview" data-toggle="tab"
+                    >About Consultant</a
+                  >
+                </li>
+              </ul>
+            </nav>
+            <!-- /Tab Menu -->
+
+            <!-- Tab Content -->
+            <div class="tab-content pt-0">
+              <!-- Overview Content -->
+              <div role="tabpanel" id="doc_overview" class="tab-pane fade">
+                <div class="row">
+                  <div class="col-md-12 col-lg-9">
+                    <!-- About Details -->
+                    <div class="widget about-widget">
+                      <h4 class="widget-title">About Me</h4>
+                      <p th:text="${consultant.description}"></p>
+                    </div>
+                    <!-- /About Details -->
+
+                    <!-- Education Details -->
+                    <div class="widget education-widget">
+                      <h4 class="widget-title">Countries</h4>
+                      <div class="experience-box">
+                        <ul class="experience-list">
+                          <li th:each="country : ${consultant.getCountries()}">
+                            <div class="experience-user">
+                              <div class="before-circle"></div>
+                            </div>
+                            <div class="experience-content">
+                              <div class="timeline-content">
+                                <a
+                                  href="#"
+                                  class="name"
+                                  th:text="${country.name}"
+                                ></a>
+                              </div>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <!-- /Education Details -->
+                    <!-- Education Details -->
+                    <div class="widget education-widget">
+                      <h4 class="widget-title">Industries</h4>
+                      <div class="experience-box">
+                        <ul class="experience-list">
+                          <li
+                            th:each="industry : ${consultant.getIndustries()}"
+                          >
+                            <div class="experience-user">
+                              <div class="before-circle"></div>
+                            </div>
+                            <div class="experience-content">
+                              <div class="timeline-content">
+                                <a
+                                  href="#"
+                                  class="name"
+                                  th:text="${industry.name}"
+                                ></a>
+                              </div>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <!-- /Education Details -->
+                  </div>
+                </div>
+              </div>
+              <!-- /Overview Content -->
+
+              <!-- Business Hours Content -->
+              <div
+                role="tabpanel"
+                id="doc_business_hours"
+                class="tab-pane fade show active"
+              >
+                <h4 class="text-info text-center p-3">
+                  Select from below Timeslots to book an Appointment
+                </h4>
+                <div
+                  th:each="date : ${futureScheduleDates}"
+                  class="row py-3"
+                  style="border-bottom: 1px solid skyblue"
+                  th:if="${date.unReservedConsultantScheduleDateTimeslots().size() > 1}"
+                >
+                  <div class="col-md-4">
+                    <h4 th:text="${date.date}"></h4>
+                  </div>
+                  <div class="col-md-8">
+                    <span
+                      th:each="timeslot : ${date.unReservedConsultantScheduleDateTimeslots()}"
+                      th:text="${timeslot.timeslot.getSlotsString() }"
+                      th:attr="data-timeslot-id=${timeslot.id}"
+                      onclick="timeslotOnclickHandler(this)"
+                      th:id="'timeslot_'+${timeslot.id}"
+                      class="btn btn-outline-secondary btn-sm m-1 w-25"
+                    ></span>
+                    <!-- /Business Hours Widget -->
+                  </div>
+                </div>
+              </div>
+              <!-- /Business Hours Content -->
+            </div>
+          </div>
+        </div>
+        <!-- /Doctor Details Tab -->
+      </div>
+    </div>
+  </form>
+</div>
+
+<script th:inline="javascript">
+  const propTimeslots = [[${@utilThymeleaf.getPropTimeslots}]]
+  const consultantScheduleDate = [[${consultantScheduleDate}]]
+  const MODE = [[${MODE}]]
+
+  const inputTimeslotString = $('#timeslotString')
+  const classSelected = 'btn-primary'
+  const classNotSelected = 'btn-outline-secondary'
+
+  if (MODE == 'UPDATE') {
+    // console.log({consultantScheduleDate})
+    const slotsFromDb = consultantScheduleDate?.consultantScheduleDateTimeslots?.map(i => i.timeslot.id)
+    setInputTimeslotStringValues({values: slotsFromDb})
+  }
+
+  // console.log({propTimeslots}, {inputTimeslotString})
+  if (inputTimeslotString.val().length > 0) {
+    getInputTimeslotStringValues().forEach(i => {
+      $(`#timeslot_${i}`).removeClass(classNotSelected).addClass(classSelected)
+    })
+  }
+
+  function getInputTimeslotStringValues() {
+    const val = inputTimeslotString.val()
+
+    if (!val) return [];
+    return JSON.parse(val)
+  }
+
+  function setInputTimeslotStringValues({values}) {
+    // console.log({values})
+    return inputTimeslotString.val(JSON.stringify(values))
+  }
+
+  function isSlotSelected({timeslotId}) {
+    return !!getInputTimeslotStringValues().find(i => i == timeslotId)
+  }
+
+  function pushTimeSlot({timeslotId}) {
+    let values = getInputTimeslotStringValues()
+    values.push(timeslotId)
+    setInputTimeslotStringValues({values})
+
+    $(`#timeslot_${timeslotId}`).removeClass(classNotSelected).addClass(classSelected)
+    // console.log('getInputTimeslotStringValues', getInputTimeslotStringValues())
+  }
+
+  function popTimeslot({timeslotId}) {
+    let values = getInputTimeslotStringValues()
+    const index = values.indexOf(timeslotId)
+    values.splice(index, 1)
+    setInputTimeslotStringValues({values})
+
+    $(`#timeslot_${timeslotId}`).removeClass(classSelected).addClass(classNotSelected)
+    // console.log('getInputTimeslotStringValues', getInputTimeslotStringValues())
+  }
+
+  function timeslotOnclickHandler(el) {
+    const timeslotId = Number(el.dataset.timeslotId)
+
+    if (isSlotSelected({timeslotId})) {
+      popTimeslot({timeslotId})
+    } else {
+      pushTimeSlot({timeslotId})
+    }
+
+  }
+
+  // function selectAll() {
+  //   propTimeslots.forEach(i => {
+  //     pushTimeSlot({timeslotId: i.id})
+  //   })
+  // }
+  //
+  // function selectNone() {
+  //   propTimeslots.forEach(i => {
+  //     popTimeslot({timeslotId: i.id})
+  //   })
+  // }
+
+  function checkIfSlotsSelected(){
+
+    if(getInputTimeslotStringValues().length < 1){
+      $('#errNoTimeslots').removeClass('d-none')
+      return false
+    }
+
+    $('#formBookAppointments').submit()
+
+  }
+</script>

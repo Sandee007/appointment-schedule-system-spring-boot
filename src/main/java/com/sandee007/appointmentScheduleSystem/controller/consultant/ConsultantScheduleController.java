@@ -77,7 +77,7 @@ public class ConsultantScheduleController {
         ConsultantScheduleDate consultantScheduleDate = new ConsultantScheduleDate();
         consultantScheduleDate.setDate(createScheduleDto.getSelectedDate());
         consultantScheduleDate.setConsultant(utilThymeleaf.getConsultant());
-        consultantScheduleDate.setConsultantScheduleDateTimeslots(this.generateConsultantScheduleDateTimeslots(
+        consultantScheduleDate.setConsultantScheduleDateTimeslots(consultantScheduleDateTimeslotService.generateConsultantScheduleDateTimeslots(
                 timeslots,
                 consultantScheduleDate
         ));
@@ -131,7 +131,7 @@ public class ConsultantScheduleController {
             consultantScheduleDateTimeslotService.deleteAllByConsultantScheduleDate(c);
 
             //            * apply new appointment_schedule_system
-            List<ConsultantScheduleDateTimeslot> pendingScheduleDateTimeslots = this.generateConsultantScheduleDateTimeslots(
+            List<ConsultantScheduleDateTimeslot> pendingScheduleDateTimeslots = consultantScheduleDateTimeslotService.generateConsultantScheduleDateTimeslots(
                     timeslots,
                     c
             );
@@ -152,17 +152,4 @@ public class ConsultantScheduleController {
 
     }
 
-    public List<ConsultantScheduleDateTimeslot> generateConsultantScheduleDateTimeslots(
-            List<TimeSlot> timeslots,
-            ConsultantScheduleDate consultantScheduleDate
-    ) {
-        return timeslots.stream()
-                        .map(i -> {
-                            var t = new ConsultantScheduleDateTimeslot();
-                            t.setConsultantScheduleDate(consultantScheduleDate);
-                            t.setTimeslot(i);
-                            return t;
-                        })
-                        .collect(Collectors.toList());
-    }
 }

@@ -137,6 +137,7 @@ public class LoginController {
         seeker.setPhone(registerSeekerDto.getPhone());
         seeker.setAddress(registerSeekerDto.getAddress());
         seeker.setDescription(registerSeekerDto.getDescription());
+        seeker.setUser(user);
         user.setSeeker(seeker);
 
         if (!registerSeekerDto.getImageFile().isEmpty()) {

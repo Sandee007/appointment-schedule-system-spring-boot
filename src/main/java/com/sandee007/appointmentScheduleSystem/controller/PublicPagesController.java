@@ -5,10 +5,9 @@ import com.sandee007.appointmentScheduleSystem.base.auth.entity.User;
 import com.sandee007.appointmentScheduleSystem.base.auth.service.UserService;
 import com.sandee007.appointmentScheduleSystem.entity.Consultant;
 import com.sandee007.appointmentScheduleSystem.entity.ConsultantScheduleDateTimeslot;
-import com.sandee007.appointmentScheduleSystem.entity.Seeker;
-import com.sandee007.appointmentScheduleSystem.service.ConsultantScheduleDateService;
-import com.sandee007.appointmentScheduleSystem.service.ConsultantScheduleDateTimeslotService;
-import com.sandee007.appointmentScheduleSystem.service.ConsultantService;
+import com.sandee007.appointmentScheduleSystem.entity.Country;
+import com.sandee007.appointmentScheduleSystem.entity.Industry;
+import com.sandee007.appointmentScheduleSystem.service.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Controller
 public class PublicPagesController {
@@ -27,21 +24,32 @@ public class PublicPagesController {
     private ConsultantScheduleDateService consultantScheduleDateService;
     private ConsultantScheduleDateTimeslotService consultantScheduleDateTimeslotService;
     private UserService userService;
+    private IndustryService industryService;
+    private CountryService countryService;
 
     public PublicPagesController(
             ConsultantService consultantService,
             ConsultantScheduleDateService consultantScheduleDateService,
             ConsultantScheduleDateTimeslotService consultantScheduleDateTimeslotService,
-            UserService userService
+            UserService userService,
+            IndustryService industryService,
+            CountryService countryService
     ) {
         this.consultantService = consultantService;
         this.consultantScheduleDateService = consultantScheduleDateService;
         this.consultantScheduleDateTimeslotService = consultantScheduleDateTimeslotService;
         this.userService = userService;
+        this.industryService = industryService;
+        this.countryService = countryService;
     }
 
     @GetMapping("/")
-    public String index() {
+    public String index(Model model) {
+        List<Industry> industries = industryService.findAll();
+        model.addAttribute("industries", industries);
+
+        List<Country> countries = countryService.findAll();
+        model.addAttribute("countries", countries);
         return "index";
     }
 

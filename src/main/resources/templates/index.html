@@ -20,10 +20,15 @@
   <section class="section section-specialities">
     <div class="container-fluid">
       <div class="section-header text-center">
-        <h2>Clinic and Specialities</h2>
+        <h2>
+          <span
+            th:text="${@environment.getProperty('spring.application.name')}"
+          ></span>
+          offers services in these Countries.
+        </h2>
         <p class="sub-title">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          Out Consultants have connections in these countries. We will only keep
+          expanding this list !
         </p>
       </div>
       <div class="row justify-content-center">
@@ -31,58 +36,19 @@
           <!-- Slider -->
           <div class="specialities-slider slider">
             <!-- Slider Item -->
-            <div class="speicality-item text-center">
+            <div
+              th:each="country : ${countries}"
+              class="speicality-item text-center"
+            >
               <div class="speicality-img">
                 <img
-                  src="https://cdn.countryflags.com/thumbs/sri-lanka/flag-3d-round-500.png"
+                  th:src="${country.image}"
                   class="img-fluid"
                   alt="Speciality"
                 />
                 <span><i class="fa fa-circle" aria-hidden="true"></i></span>
               </div>
-              <p>Neurology</p>
-            </div>
-            <!-- /Slider Item -->
-
-            <!-- Slider Item -->
-            <div class="speicality-item text-center">
-              <div class="speicality-img">
-                <img
-                  src="https://cdn.countryflags.com/thumbs/united-kingdom/flag-3d-round-500.png"
-                  class="img-fluid"
-                  alt="Speciality"
-                />
-                <span><i class="fa fa-circle" aria-hidden="true"></i></span>
-              </div>
-              <p>Orthopedic</p>
-            </div>
-            <!-- /Slider Item -->
-
-            <!-- Slider Item -->
-            <div class="speicality-item text-center">
-              <div class="speicality-img">
-                <img
-                  src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-3d-round-500.png"
-                  class="img-fluid"
-                  alt="Speciality"
-                />
-                <span><i class="fa fa-circle" aria-hidden="true"></i></span>
-              </div>
-              <p>Cardiologist</p>
-            </div>
-            <!-- /Slider Item -->
-
-            <!-- Slider Item -->
-            <div class="speicality-item text-center">
-              <div class="speicality-img">
-                <img
-                  src="assets/img/specialities/specialities-05.png"
-                  class="img-fluid"
-                  alt="Speciality"
-                />
-                <span><i class="fa fa-circle" aria-hidden="true"></i></span>
-              </div>
-              <p>Dentist</p>
+              <p th:text="${country.name}"></p>
             </div>
             <!-- /Slider Item -->
           </div>
@@ -99,20 +65,20 @@
       <div class="row">
         <div class="col-lg-4">
           <div class="section-header">
-            <h2>Book Our Consultant</h2>
-            <p>Lorem Ipsum is simply dummy text</p>
+            <h2>Meet Our Consultants</h2>
+            <p>Discover your career Guru.</p>
           </div>
           <div class="about-content">
             <p>
-              It is a long established fact that a reader will be distracted by
-              the readable content of a page when looking at its layout. The
-              point of using Lorem Ipsum.
+              Consultants at
+              <span
+                th:text="${@environment.getProperty('spring.application.name')}"
+              ></span>
+              are always trying to find what is best for you.
             </p>
             <p>
-              web page editors now use Lorem Ipsum as their default model text,
-              and a search for 'lorem ipsum' will uncover many web sites still
-              in their infancy. Various versions have evolved over the years,
-              sometimes
+              Visit the Consultant's profile and book your own appointment from
+              the available schedule of the Consultant.
             </p>
             <a href="javascript:;">Read More..</a>
           </div>
@@ -183,7 +149,12 @@
                     >
                   </div>
                   <div class="col-6">
-                    <a href="booking.html" class="btn book-btn">Book Now</a>
+                    <a
+                      href="#"
+                      th:href="@{/view/consultant(id=${consultant.id})}"
+                      class="btn book-btn"
+                      >Book Now</a
+                    >
                   </div>
                 </div>
               </div>
@@ -200,85 +171,32 @@
   <section class="section section-features">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-md-5 features-img">
-          <img
-            src="assets/img/features/feature.png"
-            class="img-fluid"
-            alt="Feature"
-          />
-        </div>
-        <div class="col-md-7">
+        <!--        <div class="col-md-5 features-img">-->
+        <!--          <img-->
+        <!--            th:src="@{/assets/user/img/features/feature.png}"-->
+        <!--            class="img-fluid"-->
+        <!--            alt="Feature"-->
+        <!--          />-->
+        <!--        </div>-->
+        <div class="col-md-12">
           <div class="section-header">
-            <h2 class="mt-2">Availabe Features in Our Clinic</h2>
-            <p>
-              It is a long established fact that a reader will be distracted by
-              the readable content of a page when looking at its layout.
-            </p>
+            <h2 class="mt-2">
+              Consultants at
+              <span
+                th:text="${@environment.getProperty('spring.application.name')}"
+              ></span>
+              excels in these Industries.
+            </h2>
+            <p>Your career await in one of the industries below.</p>
           </div>
           <div class="features-slider slider">
             <!-- Slider Item -->
-            <div class="feature-item text-center">
-              <img
-                src="assets/img/features/feature-01.jpg"
-                class="img-fluid"
-                alt="Feature"
-              />
-              <p>Patient Ward</p>
-            </div>
-            <!-- /Slider Item -->
-
-            <!-- Slider Item -->
-            <div class="feature-item text-center">
-              <img
-                src="assets/img/features/feature-02.jpg"
-                class="img-fluid"
-                alt="Feature"
-              />
-              <p>Test Room</p>
-            </div>
-            <!-- /Slider Item -->
-
-            <!-- Slider Item -->
-            <div class="feature-item text-center">
-              <img
-                src="assets/img/features/feature-03.jpg"
-                class="img-fluid"
-                alt="Feature"
-              />
-              <p>ICU</p>
-            </div>
-            <!-- /Slider Item -->
-
-            <!-- Slider Item -->
-            <div class="feature-item text-center">
-              <img
-                src="assets/img/features/feature-04.jpg"
-                class="img-fluid"
-                alt="Feature"
-              />
-              <p>Laboratory</p>
-            </div>
-            <!-- /Slider Item -->
-
-            <!-- Slider Item -->
-            <div class="feature-item text-center">
-              <img
-                src="assets/img/features/feature-05.jpg"
-                class="img-fluid"
-                alt="Feature"
-              />
-              <p>Operation</p>
-            </div>
-            <!-- /Slider Item -->
-
-            <!-- Slider Item -->
-            <div class="feature-item text-center">
-              <img
-                src="assets/img/features/feature-06.jpg"
-                class="img-fluid"
-                alt="Feature"
-              />
-              <p>Medical</p>
+            <div
+              th:each="industry : ${industries}"
+              class="feature-item text-center"
+            >
+              <img th:src="${industry.image}" class="img-fluid" alt="Feature" />
+              <p th:text="${industry.name}"></p>
             </div>
             <!-- /Slider Item -->
           </div>

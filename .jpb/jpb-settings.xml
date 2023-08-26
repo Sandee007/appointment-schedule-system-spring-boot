@@ -10,6 +10,12 @@
     <exclude-change idName="consultants#lastname" tagName="addNotNullConstraint" />
     <exclude-change idName="consultants#phone" tagName="addNotNullConstraint" />
     <exclude-change idName="users#username" tagName="addNotNullConstraint" />
+    <exclude-change idName="seekers#phone" tagName="addNotNullConstraint" />
+    <exclude-change idName="seekers#lastname" tagName="addNotNullConstraint" />
+    <exclude-change idName="seekers#firstname" tagName="addNotNullConstraint" />
+    <exclude-change idName="seekers#description" tagName="addNotNullConstraint" />
+    <exclude-change idName="seekers#birthday" tagName="addNotNullConstraint" />
+    <exclude-change idName="seekers#address" tagName="addNotNullConstraint" />
   </component>
   <component name="PersistenceUnitSettings">
     <persistence-units>

@@ -1,9 +1,12 @@
 package com.sandee007.appointmentScheduleSystem.entity;
 
 import com.sandee007.appointmentScheduleSystem.base.auth.entity.User;
+import com.sandee007.appointmentScheduleSystem.base.auth.validation.ValidationMessages;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -17,23 +20,30 @@ public class Seeker {
     @Column(name = "id")
     private int id;
 
+    @NotNull(message = ValidationMessages.REQUIRED)
     @Column(name = "firstname")
     private String firstname;
 
+    @NotNull(message = ValidationMessages.REQUIRED)
     @Column(name = "lastname")
     private String lastname;
 
+    @NotNull(message = ValidationMessages.REQUIRED)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
     @Column(name = "birthday")
     private Date birthday;
 
+    @NotNull(message = ValidationMessages.REQUIRED)
     @Column(name = "phone")
     private String phone;
 
+    @NotNull(message = ValidationMessages.REQUIRED)
     @Lob
     @Column(name = "address")
     private String address;
 
+    @NotNull(message = ValidationMessages.REQUIRED)
     @Lob
     @Column(name = "description")
     private String description;

@@ -21,6 +21,9 @@ public class Industry {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "image")
+    private String image;
+
     @JsonIgnore
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(

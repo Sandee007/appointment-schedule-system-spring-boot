@@ -57,6 +57,7 @@
         <li>
           <a href="#">Consultants</a>
         </li>
+
         <!--        <li class="login-link">-->
         <!--          <a sec:authorize="isAnonymous()" th:href="@{/login}"-->
         <!--            >Login / Signup</a-->
@@ -65,6 +66,16 @@
       </ul>
     </div>
     <ul class="nav header-navbar-rht">
+      <li sec:authorize="hasRole('SEEKER')">
+        <a
+          href="#"
+          th:href="@{/view/seeker(id=${@utilThymeleaf.getAuthUser().getSeeker().id})}"
+          >My Profile</a
+        >
+      </li>
+      <li sec:authorize="hasRole('CONSULTANT')">
+        <a href="#" th:href="@{/consultant/dashboard}">Dashboard</a>
+      </li>
       <li class="nav-item contact-item">
         <div class="header-contact-detail">
           <p

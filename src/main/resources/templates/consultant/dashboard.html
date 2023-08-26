@@ -91,7 +91,10 @@
 
   <div class="row">
     <div class="col-md-12">
-      <h4 class="mb-4">Appointments</h4>
+      <h4 class="mb-4">
+        Appointments - TODO SEND MAIL TO SEEKER AFTER APPOINTMENT BOOKING ?? ->
+        INFORM CONSULTANT TOO
+      </h4>
       <div class="appointment-tab">
         <!-- Appointment Tab -->
         <ul class="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
@@ -110,7 +113,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#upcoming-appointments" data-toggle="tab"
-              >Upcoming Appointments</a
+              >Upcoming</a
             >
           </li>
         </ul>
@@ -147,7 +150,9 @@
                                 th:src="${seeker.image}"
                                 alt="User Image"
                             /></a>
-                            <a href="#" th:text="${seeker.getFullName()}"></a>
+                            <th:block
+                              th:text="${seeker.getFullName()}"
+                            ></th:block>
                           </h2>
                         </td>
                         <td
@@ -161,9 +166,13 @@
                         </td>
                         <td class="text-right">
                           <div class="table-action">
-                            <a href="#" class="btn btn-sm bg-info-light">
-                              <i class="far fa-eye"></i> TODO View seeker
-                              profile
+                            <a
+                              href="#"
+                              th:href="@{/view/seeker(id=${seeker.id})}"
+                              target="_blank"
+                              class="btn btn-sm bg-info-light"
+                            >
+                              <i class="far fa-eye"></i> View Profile
                             </a>
                             <a
                               href="#"
@@ -240,7 +249,10 @@
             <div class="card card-table mb-0">
               <div class="card-body">
                 <div class="table-responsive">
-                  <table class="table table-hover table-center mb-0">
+                  <table
+                    id="tableUpcomingAppointments"
+                    class="table table-hover table-center mb-0"
+                  >
                     <thead>
                       <tr>
                         <th>Job Seeker Name</th>
@@ -287,42 +299,14 @@
   </div>
 </div>
 
+<script th:insert="~{/base/data-tables-config.js}"></script>
 <script>
-  const exportOptions = {
-    columns: ":visible:not(.noExport)",
-  };
-
-  const excludeColumns = [
-    {
-      targets: 3,
-      className: "noExport",
-    },
-  ];
-
-  const dataTablesConfig = {
-    dom: "Blfrtip",
-    // buttons: ["excel", "pdf", "csv"],
-    buttons: [
-      {
-        extend: "pdfHtml5",
-        exportOptions,
-      },
-      {
-        extend: "excel",
-        exportOptions,
-      },
-      {
-        extend: "csv",
-        exportOptions,
-      },
-    ],
-  };
-
   $(document).ready(function () {
     $("#tablePendingAppointments").DataTable({
       ...dataTablesConfig,
       columnDefs: excludeColumns,
     });
     $("#tableTodayAppointments").DataTable(dataTablesConfig);
+    $("#tableUpcomingAppointments").DataTable(dataTablesConfig);
   });
 </script>

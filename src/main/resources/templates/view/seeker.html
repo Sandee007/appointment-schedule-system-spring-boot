@@ -1,0 +1,285 @@
+<div
+  layout:decorate="layouts/default"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:fragment="content"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+  <!-- Breadcrumb -->
+  <div class="breadcrumb-bar">
+    <div class="container-fluid">
+      <div class="row align-items-center">
+        <div class="col-md-12 col-12">
+          <h2 class="breadcrumb-title">Seeker Profile</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /Breadcrumb -->
+
+  <div class="content">
+    <div class="container">
+      <!-- Doctor Widget -->
+      <div class="card">
+        <div class="card-body">
+          <div class="doctor-widget">
+            <div class="doc-info-left">
+              <div class="doctor-img">
+                <img
+                  style="height: auto !important; width: 150px !important"
+                  th:src="${seeker.image}"
+                  class="img-fluid"
+                  alt="User Image"
+                />
+              </div>
+              <div class="doc-info-cont">
+                <h4 class="doc-name" th:text="${seeker.getFullName()}"></h4>
+                <div class="clinic-details">
+                  <p class="doc-location">
+                    <span>Job Seeker</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /Doctor Widget -->
+
+      <div
+        class="alert alert-success"
+        th:if="${success}"
+        th:text="${success}"
+      ></div>
+
+      <!-- Doctor Details Tab -->
+      <div class="card">
+        <div class="card-body pt-0">
+          <!-- Tab Menu -->
+          <nav class="user-tabs mb-4">
+            <ul class="nav nav-tabs nav-tabs-bottom nav-justified">
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  th:classappend="${!isAuthSeekerAccount} ? 'active' : ''"
+                  href="#doc_overview"
+                  data-toggle="tab"
+                  >About
+                  <th:block th:text="${seeker.firstname}"></th:block>
+                </a>
+              </li>
+              <li th:if="${isAuthSeekerAccount}" class="nav-item">
+                <a
+                  class="nav-link active"
+                  href="#doc_locations"
+                  data-toggle="tab"
+                  >Edit Profile</a
+                >
+              </li>
+            </ul>
+          </nav>
+          <!-- /Tab Menu -->
+
+          <!-- Tab Content -->
+          <div class="tab-content pt-0">
+            <!-- Overview Content -->
+            <div
+              role="tabpanel"
+              id="doc_overview"
+              class="tab-pane fade"
+              th:classappend="${!isAuthSeekerAccount} ? 'show active' : ''"
+            >
+              <div class="row">
+                <div class="col-md-12 col-lg-9">
+                  <!-- About Details -->
+                  <div class="widget about-widget">
+                    <h4 class="widget-title">About Me</h4>
+                    <p th:text="${seeker.description}"></p>
+                  </div>
+                  <!-- /About Details -->
+                </div>
+              </div>
+            </div>
+            <!-- /Overview Content -->
+
+            <!-- Locations Content -->
+            <div
+              role="tabpanel"
+              id="doc_locations"
+              class="tab-pane fade show active"
+              th:if="${isAuthSeekerAccount}"
+            >
+              <!-- Location List -->
+              <div class="location-list">
+                <form
+                  th:object="${seeker}"
+                  action="#"
+                  th:action="@{/view/seeker}"
+                  method="post"
+                  enctype="multipart/form-data"
+                >
+                  <input type="hidden" th:field="${seeker.id}" />
+                  <input type="hidden" th:field="${seeker.user.id}" />
+                  <input type="hidden" th:field="${seeker.image}" />
+
+                  <div class="card-body">
+                    <div class="form-row">
+                      <div class="col-md-4 mb-3">
+                        <label for="firstname">First Name</label>
+                        <div class="input-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="firstname"
+                            placeholder="First Name"
+                            name="firstname"
+                            th:classappend="${#fields.hasErrors('firstname')} ? 'is-invalid' : ''"
+                            th:field="*{firstname}"
+                          />
+                          <div
+                            th:if="${#fields.hasErrors('firstname')}"
+                            class="invalid-feedback"
+                            th:errors="*{firstname}"
+                          ></div>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label for="lastname">Last Name</label>
+                        <div class="input-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="lastname"
+                            placeholder="Last Name"
+                            name="lastname"
+                            th:classappend="${#fields.hasErrors('lastname')} ? 'is-invalid' : ''"
+                            th:field="*{lastname}"
+                          />
+                          <div
+                            th:if="${#fields.hasErrors('lastname')}"
+                            class="invalid-feedback"
+                            th:errors="*{lastname}"
+                          ></div>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label for="birthday">Birthday</label>
+                        <div class="input-group">
+                          <input
+                            type="date"
+                            class="form-control"
+                            id="birthday"
+                            placeholder="Birthday"
+                            name="birthday"
+                            th:classappend="${#fields.hasErrors('birthday')} ? 'is-invalid' : ''"
+                            th:field="*{birthday}"
+                          />
+                          <div
+                            th:if="${#fields.hasErrors('birthday')}"
+                            class="invalid-feedback"
+                            th:errors="*{birthday}"
+                          ></div>
+                        </div>
+                      </div>
+                      <div class="col-md-3 mb-3">
+                        <label for="phone">Phone</label>
+                        <div class="input-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="phone"
+                            placeholder="Phone"
+                            name="phone"
+                            maxlength="10"
+                            th:classappend="${#fields.hasErrors('phone')} ? 'is-invalid' : ''"
+                            th:field="*{phone}"
+                          />
+                          <div
+                            th:if="${#fields.hasErrors('phone')}"
+                            class="invalid-feedback"
+                            th:errors="*{phone}"
+                          ></div>
+                        </div>
+                      </div>
+                      <div class="col-md-9 mb-3">
+                        <label for="address">Address</label>
+                        <div class="input-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="address"
+                            placeholder="Address"
+                            name="address"
+                            th:classappend="${#fields.hasErrors('address')} ? 'is-invalid' : ''"
+                            th:field="*{address}"
+                          />
+                          <div
+                            th:if="${#fields.hasErrors('address')}"
+                            class="invalid-feedback"
+                            th:errors="*{address}"
+                          ></div>
+                        </div>
+                      </div>
+                      <div class="col-md-12 mb-3">
+                        <label for="description">About Yourself</label>
+                        <div class="input-group">
+                          <textarea
+                            class="form-control"
+                            id="description"
+                            placeholder="About Yourself"
+                            name="description"
+                            cols="30"
+                            rows="10"
+                            th:classappend="${#fields.hasErrors('description')} ? 'is-invalid' : ''"
+                            th:field="*{description}"
+                          ></textarea>
+                          <div
+                            th:if="${#fields.hasErrors('description')}"
+                            class="invalid-feedback"
+                            th:errors="*{description}"
+                          ></div>
+                        </div>
+                      </div>
+                      <div class="col-md-12 mb-3">
+                        <label for="imageFile">Image</label>
+                        <div class="input-group">
+                          <input
+                            type="file"
+                            class="form-control"
+                            id="imageFile"
+                            placeholder="Image"
+                            name="imageFile"
+                            th:classappend="${#fields.hasErrors('image')} ? 'is-invalid' : ''"
+                          />
+                          <div
+                            th:if="${#fields.hasErrors('image')}"
+                            class="invalid-feedback"
+                            th:errors="*{image}"
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-row justify-content-center">
+                      <div class="col-md-12 mb-3">
+                        <div class="form-group">
+                          <button
+                            class="btn btn-primary float-right"
+                            type="submit"
+                          >
+                            Update
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <!-- /Location List -->
+            </div>
+            <!-- /Locations Content -->
+          </div>
+        </div>
+      </div>
+      <!-- /Doctor Details Tab -->
+    </div>
+  </div>
+</div>

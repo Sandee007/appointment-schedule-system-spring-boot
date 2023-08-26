@@ -1,23 +1,21 @@
 package com.sandee007.appointmentScheduleSystem.util;
 
+import com.sandee007.appointmentScheduleSystem.base.auth.entity.User;
 import com.sandee007.appointmentScheduleSystem.base.auth.service.UserService;
-import com.sandee007.appointmentScheduleSystem.entity.Consultant;
-import com.sandee007.appointmentScheduleSystem.entity.Country;
-import com.sandee007.appointmentScheduleSystem.entity.Industry;
-import com.sandee007.appointmentScheduleSystem.entity.TimeSlot;
-import com.sandee007.appointmentScheduleSystem.service.ConsultantService;
-import com.sandee007.appointmentScheduleSystem.service.CountryService;
-import com.sandee007.appointmentScheduleSystem.service.IndustryService;
-import com.sandee007.appointmentScheduleSystem.service.TimeslotService;
+import com.sandee007.appointmentScheduleSystem.entity.*;
+import com.sandee007.appointmentScheduleSystem.service.*;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class UtilThymeleaf {
@@ -26,23 +24,31 @@ public class UtilThymeleaf {
     private CountryService countryService;
     private IndustryService industryService;
     private ConsultantService consultantService;
+    private SeekerService seekerService;
 
     public UtilThymeleaf(
             UserService userService, TimeslotService timeslotService, CountryService countryService,
             IndustryService industryService,
-            ConsultantService consultantService
+            ConsultantService consultantService,
+            SeekerService seekerService
     ) {
         this.userService = userService;
         this.timeslotService = timeslotService;
         this.countryService = countryService;
         this.industryService = industryService;
         this.consultantService = consultantService;
+        this.seekerService = seekerService;
     }
 
     public Consultant getConsultant() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         return userService.findByUsername(username).getConsultant();
+    }
+
+    public User getAuthUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return  userService.findByUsername(authentication.getName());
     }
 
     public List<TimeSlot> getPropTimeslots() {
@@ -72,6 +78,13 @@ public class UtilThymeleaf {
 
     public String getNow(){
         return LocalDate.now().toString();
+    }
+
+    public boolean isAuthSeekerAccount(int id){
+        Seeker seeker = seekerService.findById(id).orElse(null);
+        if(seeker == null) return false;
+
+        return this.getAuthUser().getId() == seeker.getUser().getId();
     }
 
 }

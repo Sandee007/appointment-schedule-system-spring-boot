@@ -21,6 +21,9 @@ public class Country {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "image")
+    private String image;
+
 
 //    https://www.baeldung.com/jackson-bidirectional-relationships-and-infinite-recursion
 //    https://stackoverflow.com/questions/3325387/infinite-recursion-with-jackson-json-and-hibernate-jpa-issue

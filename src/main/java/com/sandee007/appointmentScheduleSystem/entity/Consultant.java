@@ -153,6 +153,8 @@ public class Consultant {
     }
 
     public String getFirstIndustryString() {
+        if(this.getIndustries() == null) return null;
+
         AtomicReference<String> s = new AtomicReference<>("");
         this.getIndustries().stream().findFirst().ifPresent(i -> {
             s.set(i.getName());

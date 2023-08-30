@@ -69,13 +69,12 @@
               />
               <!--                th:disabled="${MODE} == 'UPDATE'"-->
               <div class="input-group-append">
-                <span class="input-group-text" id="basic-addon2"
-                  >@
+                <span class="input-group-text" id="basic-addon2">
+                  <!--                    th:text="${@environment.getProperty('spring.application.name').toLowerCase()}"-->
                   <span
-                    th:text="${@environment.getProperty('spring.application.name').toLowerCase()}"
+                    th:text="${@consultantServiceImpl.generateConsultantEmailDomain()}"
                   ></span>
-                  .com</span
-                >
+                </span>
               </div>
               <div
                 class="invalid-feedback"

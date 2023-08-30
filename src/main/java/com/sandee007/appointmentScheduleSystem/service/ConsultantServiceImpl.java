@@ -82,7 +82,9 @@ public class ConsultantServiceImpl implements ConsultantService {
     public String generateConsultantEmailDomain() {
         return "@"
                 + Objects.requireNonNull(environment.getProperty(
-                "spring.application.name")).toLowerCase()
+                                 "spring.application.name"))
+                         .replace(" ", "")
+                         .replace(".", "").toLowerCase()
                 + ".com";
     }
 
@@ -106,7 +108,7 @@ public class ConsultantServiceImpl implements ConsultantService {
             List<Integer> countryIds,
             List<Integer> industryIds
     ) {
-        String DYNAMIC_OPERATOR =  countryIds != null && industryIds != null ? " AND " : " OR ";
+        String DYNAMIC_OPERATOR = countryIds != null && industryIds != null ? " AND " : " OR ";
         String DYNAMIC_CLAUSE = " WHERE ( consultant_countries.country_id IN (:countryIds) " + DYNAMIC_OPERATOR + " consultant_industries.industry_id IN (:industryIds) ) ";
 
         Query q = entityManager.createNativeQuery(

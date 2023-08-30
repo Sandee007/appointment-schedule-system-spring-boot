@@ -53,7 +53,7 @@ public class PublicPagesController {
         List<Industry> industries = industryService.findAll();
         model.addAttribute("industries", industries);
 
-        List<Country> countries = countryService.findAll();
+        List<Country> countries = countryService.findAllWithActiveConsultants();
         model.addAttribute("countries", countries);
 
         List<Consultant> consultants = consultantService.findAllActiveConsultants();

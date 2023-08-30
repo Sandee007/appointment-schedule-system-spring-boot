@@ -118,7 +118,7 @@
       <!-- Recent Orders -->
       <div class="card card-table">
         <div class="card-header">
-          <h4 class="card-title">Consultants List</h4>
+          <h4 class="card-title">Consultants List - TODO DATATABLES</h4>
         </div>
         <div class="card-body">
           <div class="table-responsive">
@@ -126,6 +126,7 @@
               <thead>
                 <tr>
                   <th>Consultant</th>
+                  <th>Email</th>
                   <th>Phone No.</th>
                   <th>Charge Per Hour</th>
                   <th>Status</th>
@@ -148,9 +149,10 @@
                       ></a>
                     </h2>
                   </td>
+                  <td><span th:text="${consultant.user.username}"></span></td>
                   <td><span th:text="${consultant.phone}"></span></td>
                   <td>
-                    LKR <span th:text="${consultant.chargePerHour}"></span> LKR
+                    LKR <span th:text="${consultant.chargePerHour}"></span>
                   </td>
                   <td>
                     <div class="status-toggle">

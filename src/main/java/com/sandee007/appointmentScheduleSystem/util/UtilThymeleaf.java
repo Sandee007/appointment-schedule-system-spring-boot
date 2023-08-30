@@ -60,11 +60,11 @@ public class UtilThymeleaf {
     }
 
     public List<Country> getCountries() {
-        return countryService.findAll();
+        return countryService.findAllWithActiveConsultants();
     }
 
     public List<Industry> getIndustries() {
-        return industryService.findAll();
+        return industryService.findAllWithActiveConsultants();
     }
 
     //    * consultants

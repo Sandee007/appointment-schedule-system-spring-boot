@@ -5,6 +5,7 @@ import com.sandee007.appointmentScheduleSystem.dao.SeekerRepository;
 import com.sandee007.appointmentScheduleSystem.entity.Seeker;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,6 +30,11 @@ public class SeekerServiceImpl implements SeekerService{
     @Override
     public void save(Seeker seeker) {
         seekerRepository.save(seeker);
+    }
+
+    @Override
+    public List<Seeker> findAll() {
+        return seekerRepository.findAll();
     }
 
 }

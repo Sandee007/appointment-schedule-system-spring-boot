@@ -307,10 +307,19 @@
 <script>
   $(document).ready(function () {
     $("#tablePendingAppointments").DataTable({
-      ...dataTablesConfig,
-      columnDefs: excludeColumns,
+      ...dataTablesConfig("Pending Appointments List"),
+      columnDefs: [
+        {
+          targets: 3,
+          className: CLASS_NO_EXPORT,
+        },
+      ],
     });
-    $("#tableTodayAppointments").DataTable(dataTablesConfig);
-    $("#tableUpcomingAppointments").DataTable(dataTablesConfig);
+    $("#tableTodayAppointments").DataTable(
+      dataTablesConfig("Today Appointments List")
+    );
+    $("#tableUpcomingAppointments").DataTable(
+      dataTablesConfig("Upcoming Appointments List")
+    );
   });
 </script>

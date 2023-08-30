@@ -115,87 +115,204 @@
 
   <div class="row">
     <div class="col-md-12">
-      <!-- Recent Orders -->
-      <div class="card card-table">
-        <div class="card-header">
-          <h4 class="card-title">Consultants List - TODO DATATABLES</h4>
-        </div>
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table table-hover table-center mb-0">
-              <thead>
-                <tr>
-                  <th>Consultant</th>
-                  <th>Email</th>
-                  <th>Phone No.</th>
-                  <th>Charge Per Hour</th>
-                  <th>Status</th>
-                  <!--                  <th class="text-right">Actions</th>-->
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr th:each="consultant : ${consultants}">
-                  <td>
-                    <h2 class="table-avatar">
-                      <a href="#" class="avatar avatar-sm mr-2"
-                        ><img
-                          class="avatar-img rounded-circle"
-                          th:src="${consultant.image}"
-                          alt=""
-                      /></a>
-                      <a
-                        th:text="${consultant.firstname + ' ' + consultant.lastname}"
-                      ></a>
-                    </h2>
-                  </td>
-                  <td><span th:text="${consultant.user.username}"></span></td>
-                  <td><span th:text="${consultant.phone}"></span></td>
-                  <td>
-                    LKR <span th:text="${consultant.chargePerHour}"></span>
-                  </td>
-                  <td>
-                    <div class="status-toggle">
-                      <input
-                        th:attr="data-delete-url=@{/admin/consultant/toggle-active(
+      <div class="appointment-tab">
+        <!-- Appointment Tab -->
+        <ul class="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
+          <li class="nav-item">
+            <a class="nav-link active" href="#consultantsList" data-toggle="tab"
+              >Consultants List</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#seekersList" data-toggle="tab"
+              >Seekers List</a
+            >
+          </li>
+        </ul>
+        <!-- /Appointment Tab -->
+      </div>
+
+      <div class="tab-content">
+        <!-- Upcoming Appointment Tab -->
+        <div class="tab-pane show active" id="consultantsList">
+          <!-- Recent Orders -->
+          <div class="card card-table">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table
+                  id="tableConsultantsList"
+                  class="table table-hover table-center mb-0"
+                >
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Consultant</th>
+                      <th>Email</th>
+                      <th>Phone No.</th>
+                      <th>Charge Per Hour</th>
+                      <th>Status</th>
+                      <!--                  <th class="text-right">Actions</th>-->
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="consultant,loop : ${consultants}">
+                      <td th:text="${loop.index+1}"></td>
+                      <td>
+                        <h2 class="table-avatar">
+                          <a href="#" class="avatar avatar-sm mr-2"
+                            ><img
+                              class="avatar-img rounded-circle"
+                              th:src="${consultant.image}"
+                              alt=""
+                          /></a>
+                          <a
+                            th:text="${consultant.firstname + ' ' + consultant.lastname}"
+                          ></a>
+                        </h2>
+                      </td>
+                      <td>
+                        <span th:text="${consultant.user.username}"></span>
+                      </td>
+                      <td><span th:text="${consultant.phone}"></span></td>
+                      <td>
+                        LKR <span th:text="${consultant.chargePerHour}"></span>
+                      </td>
+                      <td>
+                        <div class="status-toggle">
+                          <input
+                            th:attr="data-delete-url=@{/admin/consultant/toggle-active(
                         id=${consultant.getUser().id},
                         toggle=${consultant.getUser().enabled}
                         )}"
-                        oninput="toggleStatus(this)"
-                        type="checkbox"
-                        th:id="'status_'+${{consultant.id}}"
-                        class="check"
-                        th:checked="${consultant.getUser().enabled}"
-                      />
-                      <label
-                        th:for="'status_'+${{consultant.id}}"
-                        class="checktoggle"
-                        >checkbox</label
-                      >
-                    </div>
-                  </td>
-                  <td>
-                    <a
-                      href="#"
-                      th:href="@{/admin/consultant/edit(id=${consultant.getUser().getId()})}"
-                      class="btn btn-warning"
-                      >Edit</a
-                    >
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                            oninput="toggleStatus(this)"
+                            type="checkbox"
+                            th:id="'status_'+${{consultant.id}}"
+                            class="check"
+                            th:checked="${consultant.getUser().enabled}"
+                          />
+                          <label
+                            th:for="'status_'+${{consultant.id}}"
+                            class="checktoggle"
+                            >checkbox</label
+                          >
+                        </div>
+                      </td>
+                      <td>
+                        <a
+                          href="#"
+                          th:href="@{/admin/consultant/edit(id=${consultant.getUser().getId()})}"
+                          class="btn btn-warning"
+                          >Edit</a
+                        >
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- /Recent Orders -->
+        </div>
+        <div class="tab-pane" id="seekersList">
+          <div class="card card-table">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table
+                  id="tableSeekersList"
+                  class="table table-hover table-center mb-0"
+                >
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Seeker</th>
+                      <th>Email</th>
+                      <th>Phone No.</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="seeker,loop : ${seekers}">
+                      <td th:text="${loop.index+1}"></td>
+                      <td>
+                        <h2 class="table-avatar">
+                          <a href="#" class="avatar avatar-sm mr-2"
+                            ><img
+                              class="avatar-img rounded-circle"
+                              th:src="${seeker.image}"
+                              alt=""
+                          /></a>
+                          <a th:text="${seeker.fullName}"></a>
+                        </h2>
+                      </td>
+                      <td>
+                        <span th:text="${seeker.user.username}"></span>
+                      </td>
+                      <td><span th:text="${seeker.phone}"></span></td>
+                      <td>
+                        <div class="status-toggle">
+                          <input
+                            th:attr="data-delete-url=@{/admin/seeker/toggle-active(
+                        id=${seeker.getUser().id},
+                        toggle=${seeker.getUser().enabled}
+                        )}"
+                            oninput="toggleStatus(this)"
+                            type="checkbox"
+                            th:id="'status_'+${{seeker.id}}"
+                            class="check"
+                            th:checked="${seeker.getUser().enabled}"
+                          />
+                          <label
+                            th:for="'status_'+${{seeker.id}}"
+                            class="checktoggle"
+                            >checkbox</label
+                          >
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <!-- /Recent Orders -->
     </div>
   </div>
-</div>
 
-<script>
-  function toggleStatus(el) {
-    // console.log(el.data
-    location = el.dataset.deleteUrl;
-  }
-</script>
+  <script>
+    function toggleStatus(el) {
+      // console.log(el.data
+      location = el.dataset.deleteUrl;
+    }
+  </script>
+
+  <script th:insert="~{/base/data-tables-config.js}"></script>
+  <script>
+    $(document).ready(function () {
+      $("#tableConsultantsList").DataTable({
+        ...dataTablesConfig("Consultants List"),
+        columnDefs: [
+          {
+            targets: 5,
+            className: CLASS_NO_EXPORT,
+          },
+          {
+            targets: 6,
+            className: CLASS_NO_EXPORT,
+          },
+        ],
+      });
+
+      $("#tableSeekersList").DataTable({
+        ...dataTablesConfig("Seekers List"),
+        columnDefs: [
+          {
+            targets: 4,
+            className: CLASS_NO_EXPORT,
+          },
+        ],
+      });
+    });
+  </script>
+</div>

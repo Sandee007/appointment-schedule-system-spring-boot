@@ -29,9 +29,8 @@
     ></div>
   </div>
 
-  TODO = show counts
   <div class="row">
-    <div class="col-xl-3 col-sm-6 col-12">
+    <div class="col-xl-6 col-sm-6 col-12">
       <div class="card">
         <div class="card-body">
           <div class="dash-widget-header">
@@ -39,73 +38,33 @@
               <i class="fe fe-users"></i>
             </span>
             <div class="dash-count">
-              <h3>168</h3>
+              <h3 th:text="${consultants.size()}"></h3>
             </div>
           </div>
           <div class="dash-widget-info">
-            <h6 class="text-muted">Doctors</h6>
+            <h6 class="text-muted">Consultants</h6>
             <div class="progress progress-sm">
-              <div class="progress-bar bg-primary w-50"></div>
+              <div class="progress-bar bg-primary w-100"></div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-xl-3 col-sm-6 col-12">
+    <div class="col-xl-6 col-sm-6 col-12">
       <div class="card">
         <div class="card-body">
           <div class="dash-widget-header">
-            <span class="dash-widget-icon text-success">
-              <i class="fe fe-credit-card"></i>
+            <span class="dash-widget-icon text-danger">
+              <i class="fe fe-users"></i>
             </span>
             <div class="dash-count">
-              <h3>487</h3>
+              <h3 th:text="${seekers.size()}"></h3>
             </div>
           </div>
           <div class="dash-widget-info">
-            <h6 class="text-muted">Patients</h6>
+            <h6 class="text-muted">Seekers</h6>
             <div class="progress progress-sm">
-              <div class="progress-bar bg-success w-50"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-xl-3 col-sm-6 col-12">
-      <div class="card">
-        <div class="card-body">
-          <div class="dash-widget-header">
-            <span class="dash-widget-icon text-danger border-danger">
-              <i class="fe fe-money"></i>
-            </span>
-            <div class="dash-count">
-              <h3>485</h3>
-            </div>
-          </div>
-          <div class="dash-widget-info">
-            <h6 class="text-muted">Appointment</h6>
-            <div class="progress progress-sm">
-              <div class="progress-bar bg-danger w-50"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-xl-3 col-sm-6 col-12">
-      <div class="card">
-        <div class="card-body">
-          <div class="dash-widget-header">
-            <span class="dash-widget-icon text-warning border-warning">
-              <i class="fe fe-folder"></i>
-            </span>
-            <div class="dash-count">
-              <h3>$62523</h3>
-            </div>
-          </div>
-          <div class="dash-widget-info">
-            <h6 class="text-muted">Revenue</h6>
-            <div class="progress progress-sm">
-              <div class="progress-bar bg-warning w-50"></div>
+              <div class="progress-bar bg-danger w-100"></div>
             </div>
           </div>
         </div>
@@ -181,7 +140,7 @@
                       <td>
                         <div class="status-toggle">
                           <input
-                            th:attr="data-delete-url=@{/admin/consultant/toggle-active(
+                            th:attr="data-delete-url=@{/admin/toggle-active(
                         id=${consultant.getUser().id},
                         toggle=${consultant.getUser().enabled}
                         )}"
@@ -205,6 +164,14 @@
                           class="btn btn-warning"
                           >Edit</a
                         >
+                        <a
+                          href="#"
+                          th:href="@{/view/consultant(id=${consultant.id})}"
+                          target="_blank"
+                          class="btn btn-outline-info ml-2"
+                        >
+                          View Profile <i class="fa fa-external-link"></i
+                        ></a>
                       </td>
                     </tr>
                   </tbody>
@@ -229,6 +196,7 @@
                       <th>Email</th>
                       <th>Phone No.</th>
                       <th>Status</th>
+                      <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -252,22 +220,32 @@
                       <td>
                         <div class="status-toggle">
                           <input
-                            th:attr="data-delete-url=@{/admin/seeker/toggle-active(
-                        id=${seeker.getUser().id},
-                        toggle=${seeker.getUser().enabled}
+                            th:attr="data-delete-url=@{/admin/toggle-active(
+                        id=${seeker.user.id},
+                        toggle=${seeker.user.enabled}
                         )}"
                             oninput="toggleStatus(this)"
                             type="checkbox"
-                            th:id="'status_'+${{seeker.id}}"
+                            th:id="'status_seeker_'+${{seeker.id}}"
                             class="check"
                             th:checked="${seeker.getUser().enabled}"
                           />
                           <label
-                            th:for="'status_'+${{seeker.id}}"
+                            th:for="'status_seeker_'+${{seeker.id}}"
                             class="checktoggle"
                             >checkbox</label
                           >
                         </div>
+                      </td>
+                      <td>
+                        <a
+                          href="#"
+                          th:href="@{/view/seeker(id=${seeker.id})}"
+                          target="_blank"
+                          class="btn btn-outline-info ml-2"
+                        >
+                          View Profile <i class="fa fa-external-link"></i
+                        ></a>
                       </td>
                     </tr>
                   </tbody>
@@ -282,7 +260,7 @@
 
   <script>
     function toggleStatus(el) {
-      // console.log(el.data
+      // return console.log(el.dataset);
       location = el.dataset.deleteUrl;
     }
   </script>
@@ -309,6 +287,10 @@
         columnDefs: [
           {
             targets: 4,
+            className: CLASS_NO_EXPORT,
+          },
+          {
+            targets: 5,
             className: CLASS_NO_EXPORT,
           },
         ],

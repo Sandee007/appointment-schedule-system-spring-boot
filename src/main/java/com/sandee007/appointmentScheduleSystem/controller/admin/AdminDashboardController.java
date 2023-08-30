@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("admin")
@@ -29,6 +30,19 @@ public class AdminDashboardController {
         model.addAttribute("seekers", seekerService.findAll());
         model.addAttribute("consultants", consultantService.findAll());
         return "admin/dashboard";
+    }
+
+    @GetMapping("toggle-active")
+    public String toggleActive(
+            @RequestParam("id") int id,
+            @RequestParam("toggle") int toggle // * current enabled status
+    ) {
+        if (toggle == 0) {
+            userService.enableById(id);
+        } else {
+            userService.disableById(id);
+        }
+        return "redirect:/admin/dashboard";
     }
 
     @GetMapping("test")

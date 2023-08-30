@@ -76,6 +76,9 @@
       <li sec:authorize="hasRole('CONSULTANT')">
         <a href="#" th:href="@{/consultant/dashboard}">Dashboard</a>
       </li>
+      <li sec:authorize="hasRole('ADMIN')">
+        <a href="#" th:href="@{/admin/dashboard}">Dashboard</a>
+      </li>
       <li class="nav-item contact-item">
         <div class="header-contact-detail">
           <p

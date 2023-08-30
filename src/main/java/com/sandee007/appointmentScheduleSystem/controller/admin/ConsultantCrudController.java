@@ -134,19 +134,6 @@ public class ConsultantCrudController {
     }
 
 
-    @GetMapping("toggle-active")
-    public String toggleActive(
-            @RequestParam("id") int id,
-            @RequestParam("toggle") int toggle // * current enabled status
-    ) {
-        if (toggle == 0) {
-            userService.enableById(id);
-        } else {
-            userService.disableById(id);
-        }
-        return "redirect:/admin/dashboard";
-    }
-
     @GetMapping("edit")
     public String edit(
             @RequestParam("id") int id,

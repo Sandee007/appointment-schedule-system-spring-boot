@@ -59,12 +59,12 @@ public class UserServiceImpl implements UserService {
 //    @Transactional
     @Override
     public void enableById(int id) {
-        Optional<User> user = this.findById(id);
-        if(user.isPresent()){
-            user.get().setEnabled(1);
-            this.save(user.get());
-//            entityManager.merge(user.get());
-        }
+       User user = this.findById(id).orElse(null);
+
+       if (user != null){
+           user.setEnabled(1);
+           userRepository.save(user);
+       }
 
 //        ! doesn't work
 //        Query q = entityManager.createQuery(

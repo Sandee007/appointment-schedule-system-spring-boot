@@ -24,7 +24,12 @@
           >
             <div class="row">
               <div class="col-md-10">
-                <label for="selectedDate">Date</label>
+                <label for="selectedDate"
+                  >Date
+                  <span th:if="${MODE == 'UPDATE'}" class="text-danger text-sm"
+                    >System will not remove already occupied Timeslots</span
+                  >
+                </label>
                 <div class="input-group">
                   <input
                     class="form-control"

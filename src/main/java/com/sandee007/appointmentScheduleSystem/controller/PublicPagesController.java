@@ -8,6 +8,7 @@ import com.sandee007.appointmentScheduleSystem.entity.ConsultantScheduleDateTime
 import com.sandee007.appointmentScheduleSystem.entity.Country;
 import com.sandee007.appointmentScheduleSystem.entity.Industry;
 import com.sandee007.appointmentScheduleSystem.service.*;
+import com.sandee007.appointmentScheduleSystem.util.UtilThymeleaf;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +16,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -26,6 +28,7 @@ public class PublicPagesController {
     private UserService userService;
     private IndustryService industryService;
     private CountryService countryService;
+    private UtilThymeleaf utilThymeleaf;
 
     public PublicPagesController(
             ConsultantService consultantService,
@@ -33,7 +36,8 @@ public class PublicPagesController {
             ConsultantScheduleDateTimeslotService consultantScheduleDateTimeslotService,
             UserService userService,
             IndustryService industryService,
-            CountryService countryService
+            CountryService countryService,
+            UtilThymeleaf utilThymeleaf
     ) {
         this.consultantService = consultantService;
         this.consultantScheduleDateService = consultantScheduleDateService;
@@ -41,6 +45,7 @@ public class PublicPagesController {
         this.userService = userService;
         this.industryService = industryService;
         this.countryService = countryService;
+        this.utilThymeleaf = utilThymeleaf;
     }
 
     @GetMapping("/")
@@ -50,6 +55,9 @@ public class PublicPagesController {
 
         List<Country> countries = countryService.findAll();
         model.addAttribute("countries", countries);
+
+        List<Consultant> consultants = consultantService.findAllActiveConsultants();
+        model.addAttribute("consultants", consultants);
         return "index";
     }
 
@@ -58,18 +66,27 @@ public class PublicPagesController {
             @RequestParam("id") int id,
             Model model
     ) {
-        Consultant consultant = consultantService.findById(id).orElse(null);
+        Consultant consultant = consultantService.findActiveConsultantById(id).orElse(null);
         if (consultant == null) return "redirect:/";
-
-        Date today = new Date();
-        Date yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
 
         model.addAttribute("consultant", consultant);
         model.addAttribute(
                 "futureScheduleDates",
-                consultantScheduleDateService.findAllByConsultantAndDateAfterOrderByDateAsc(consultant, yesterday)
+                consultantScheduleDateService.findAllByConsultantAndDateAfterOrderByDateAsc(consultant, utilThymeleaf.getYesterday())
         );
         return "view/consultant";
+    }
+
+    @GetMapping("/view/consultants-filter")
+    public String consultantsFilter(Model model){
+
+        List<Integer> countryIds = List.of(1,2);
+        List<Integer> industryIds = List.of(1,2);
+
+        List<Consultant> consultants = consultantService.filterConsultants(countryIds, industryIds);
+
+        model.addAttribute("consultants", consultants);
+        return "view/consultants-filter";
     }
 
     @PostMapping("/payments")

@@ -21,9 +21,8 @@ public interface ConsultantScheduleDateTimeslotRepository extends JpaRepository<
 
     boolean existsByConsultantScheduleDateAndTimeslot(ConsultantScheduleDate consultantScheduleDate, TimeSlot timeSlot);
 
-    List<ConsultantScheduleDateTimeslot> findAllByStatusIsAndConsultantScheduleDate_ConsultantAndSeekerNotNull(
-            int status,
-            Consultant consultantScheduleDate_consultant
+    List<ConsultantScheduleDateTimeslot> findAllByStatusIsAndConsultantScheduleDate_ConsultantAndSeekerNotNullAndConsultantScheduleDate_DateAfter(
+            int status, Consultant consultantScheduleDate_consultant, Date consultantScheduleDate_date
     );
 
     List<ConsultantScheduleDateTimeslot> findAllByStatusIsAndConsultantScheduleDate_ConsultantAndSeekerNotNullAndConsultantScheduleDate_DateOrderByTimeslotAsc(

@@ -8,6 +8,7 @@ import com.sandee007.appointmentScheduleSystem.entity.Consultant;
 import com.sandee007.appointmentScheduleSystem.entity.ConsultantScheduleDate;
 import com.sandee007.appointmentScheduleSystem.entity.ConsultantScheduleDateTimeslot;
 import com.sandee007.appointmentScheduleSystem.entity.TimeSlot;
+import com.sandee007.appointmentScheduleSystem.util.UtilThymeleaf;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,9 +21,13 @@ import java.util.stream.Collectors;
 @Service
 public class ConsultantScheduleDateTimeslotServiceImpl implements ConsultantScheduleDateTimeslotService {
     private ConsultantScheduleDateTimeslotRepository consultantScheduleDateTimeslotRepository;
+    private UtilThymeleaf utilThymeleaf;
 
-    public ConsultantScheduleDateTimeslotServiceImpl(ConsultantScheduleDateTimeslotRepository consultantScheduleDateTimeslotRepository) {
+    public ConsultantScheduleDateTimeslotServiceImpl(ConsultantScheduleDateTimeslotRepository consultantScheduleDateTimeslotRepository,
+                                                     UtilThymeleaf utilThymeleaf
+    ) {
         this.consultantScheduleDateTimeslotRepository = consultantScheduleDateTimeslotRepository;
+        this.utilThymeleaf = utilThymeleaf;
     }
 
     @Override
@@ -119,9 +124,10 @@ public class ConsultantScheduleDateTimeslotServiceImpl implements ConsultantSche
             int status,
             Consultant consultantScheduleDate_consultant
     ) {
-        return consultantScheduleDateTimeslotRepository.findAllByStatusIsAndConsultantScheduleDate_ConsultantAndSeekerNotNull(
+        return consultantScheduleDateTimeslotRepository.findAllByStatusIsAndConsultantScheduleDate_ConsultantAndSeekerNotNullAndConsultantScheduleDate_DateAfter(
                 status,
-                consultantScheduleDate_consultant
+                consultantScheduleDate_consultant,
+               utilThymeleaf.getYesterday()
         );
     }
 
@@ -138,13 +144,12 @@ public class ConsultantScheduleDateTimeslotServiceImpl implements ConsultantSche
 
     @Override
     public List<ConsultantScheduleDateTimeslot> getUpcomingAppointments(Consultant consultantScheduleDate_consultant) {
-        Date today = new Date();
-        Date tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
+
 
         return consultantScheduleDateTimeslotRepository.findAllByStatusIsAndConsultantScheduleDate_ConsultantAndSeekerNotNullAndConsultantScheduleDate_DateAfterOrderByConsultantScheduleDate_Date(
                 1,
                 consultantScheduleDate_consultant,
-                tomorrow
+                utilThymeleaf.getTomorrow()
         );
     }
 

@@ -5,12 +5,15 @@ import com.sandee007.appointmentScheduleSystem.base.auth.service.EmailService;
 import com.sandee007.appointmentScheduleSystem.base.auth.service.UserService;
 import com.sandee007.appointmentScheduleSystem.dao.ConsultantRepository;
 import com.sandee007.appointmentScheduleSystem.entity.Consultant;
+import com.sandee007.appointmentScheduleSystem.entity.Country;
+import com.sandee007.appointmentScheduleSystem.entity.Industry;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.Query;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -84,11 +87,39 @@ public class ConsultantServiceImpl implements ConsultantService {
     }
 
     @Override
-    public List<Consultant> findAllActiveUsers() {
-        TypedQuery<Consultant> q = entityManager.createQuery(
-                "SELECT c FROM Consultant c " +
-                        " JOIN FETCH c.user WHERE c.user.enabled=1 "
-                , Consultant.class);
+    public List<Consultant> findAllActiveConsultants() {
+        //        TypedQuery<Consultant> q = entityManager.createQuery(
+        //                "SELECT c FROM Consultant c " +
+        //                        " JOIN FETCH c.user WHERE c.user.enabled=1 "
+        //                , Consultant.class);
+        //        return q.getResultList();
+        return consultantRepository.findAllByUser_Enabled(1);
+    }
+
+    @Override
+    public Optional<Consultant> findActiveConsultantById(int id) {
+        return consultantRepository.findByIdAndUser_Enabled(id, 1);
+    }
+
+    @Override
+    public List<Consultant> filterConsultants(
+            List<Integer> countryIds,
+            List<Integer> industryIds
+    ) {
+
+        Query q = entityManager.createNativeQuery(
+                "SELECT consultants.* FROM consultants " +
+                        " INNER JOIN consultant_countries ON consultants.id = consultant_countries.consultant_id " +
+                        " INNER JOIN consultant_industries ON consultants.id = consultant_industries.consultant_id " +
+                        " INNER JOIN users ON consultants.user_id = users.id " +
+                        " WHERE ( consultant_countries.country_id IN (:countryIds) OR consultant_industries.industry_id IN (:industryIds) ) " +
+                        " AND users.enabled = 1 " +
+                        " GROUP BY consultants.id " // * remove duplicates
+                , Consultant.class
+        );
+
+        q.setParameter("countryIds", countryIds);
+        q.setParameter("industryIds", industryIds);
         return q.getResultList();
     }
 

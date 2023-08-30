@@ -86,10 +86,7 @@
         <div class="col-lg-8">
           <div class="doctor-slider slider">
             <!-- Doctor Widget -->
-            <div
-              th:each="consultant: ${@utilThymeleaf.getAllConsultants()}"
-              class="profile-widget"
-            >
+            <div th:each="consultant: ${consultants}" class="profile-widget">
               <div class="doc-img">
                 <a href="#">
                   <img

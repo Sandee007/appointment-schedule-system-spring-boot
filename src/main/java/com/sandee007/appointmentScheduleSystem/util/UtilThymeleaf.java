@@ -46,9 +46,9 @@ public class UtilThymeleaf {
         return userService.findByUsername(username).getConsultant();
     }
 
-    public User getAuthUser(){
+    public User getAuthUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return  userService.findByUsername(authentication.getName());
+        return userService.findByUsername(authentication.getName());
     }
 
     public List<TimeSlot> getPropTimeslots() {
@@ -76,15 +76,27 @@ public class UtilThymeleaf {
         return String.valueOf(new Date().getTime());
     }
 
-    public String getNow(){
+    public String getNow() {
         return LocalDate.now().toString();
     }
 
-    public boolean isAuthSeekerAccount(int id){
+    public boolean isAuthSeekerAccount(int id) {
         Seeker seeker = seekerService.findById(id).orElse(null);
-        if(seeker == null) return false;
+        if (seeker == null) return false;
 
         return this.getAuthUser().getId() == seeker.getUser().getId();
     }
+
+    public Date getYesterday() {
+        Date today = new Date();
+        return new Date(today.getTime() - 24 * 60 * 60 * 1000);
+    }
+
+    public Date getTomorrow() {
+        Date today = new Date();
+        return  new Date(today.getTime() + 24 * 60 * 60 * 1000);
+    }
+
+
 
 }

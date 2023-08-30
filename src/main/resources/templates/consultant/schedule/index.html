@@ -31,13 +31,21 @@
                   <thead>
                     <tr>
                       <th>Date</th>
+                      <th class="text-right">
+                        <button
+                          onclick="togglePastDates()"
+                          class="btn btn-sm btn-outline-info"
+                        >
+                          Show/Hide Past Dates
+                        </button>
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr
                       th:each="date : ${consultantScheduleDates}"
                       th:classappend="${@utilThymeleaf.isPastDate(date.getDate())
-                        ? 'bg-default-light'
+                        ? 'bg-default-light oldDate'
                         : ''
                       }"
                     >
@@ -67,3 +75,9 @@
     </div>
   </div>
 </div>
+
+<script>
+  function togglePastDates() {
+    $(".oldDate").toggleClass("d-none");
+  }
+</script>

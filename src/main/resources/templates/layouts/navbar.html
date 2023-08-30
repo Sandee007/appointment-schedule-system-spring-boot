@@ -36,7 +36,7 @@
             <li th:each="country : ${@utilThymeleaf.getCountries()}">
               <a
                 href="#"
-                th:href="@{/countries/id(id=${country.id})}"
+                th:href="@{/view/consultants-filter(countryIds=${country.id})}"
                 th:text="${country.name}"
               ></a>
             </li>
@@ -48,7 +48,7 @@
             <li th:each="industry : ${@utilThymeleaf.getIndustries()}">
               <a
                 href="#"
-                th:href="@{/industries/id(id=${industry.id})}"
+                th:href="@{/view/consultants-filter(industryIds=${industry.id})}"
                 th:text="${industry.name}"
               ></a>
             </li>

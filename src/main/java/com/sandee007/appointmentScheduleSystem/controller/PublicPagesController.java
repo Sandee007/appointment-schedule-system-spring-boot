@@ -78,14 +78,16 @@ public class PublicPagesController {
     }
 
     @GetMapping("/view/consultants-filter")
-    public String consultantsFilter(Model model){
-
-        List<Integer> countryIds = List.of(1,2);
-        List<Integer> industryIds = List.of(1,2);
+    public String consultantsFilter(
+            @RequestParam(value = "countryIds", required = false) List<Integer> countryIds,
+            @RequestParam(value = "industryIds", required = false) List<Integer> industryIds,
+            Model model){
 
         List<Consultant> consultants = consultantService.filterConsultants(countryIds, industryIds);
 
         model.addAttribute("consultants", consultants);
+        model.addAttribute("countries", countryService.findAll());
+        model.addAttribute("industries", industryService.findAll());
         return "view/consultants-filter";
     }
 

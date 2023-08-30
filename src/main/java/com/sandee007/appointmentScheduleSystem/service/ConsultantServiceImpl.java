@@ -106,13 +106,16 @@ public class ConsultantServiceImpl implements ConsultantService {
             List<Integer> countryIds,
             List<Integer> industryIds
     ) {
+        String DYNAMIC_OPERATOR =  countryIds != null && industryIds != null ? " AND " : " OR ";
+        String DYNAMIC_CLAUSE = " WHERE ( consultant_countries.country_id IN (:countryIds) " + DYNAMIC_OPERATOR + " consultant_industries.industry_id IN (:industryIds) ) ";
 
         Query q = entityManager.createNativeQuery(
                 "SELECT consultants.* FROM consultants " +
                         " INNER JOIN consultant_countries ON consultants.id = consultant_countries.consultant_id " +
                         " INNER JOIN consultant_industries ON consultants.id = consultant_industries.consultant_id " +
                         " INNER JOIN users ON consultants.user_id = users.id " +
-                        " WHERE ( consultant_countries.country_id IN (:countryIds) OR consultant_industries.industry_id IN (:industryIds) ) " +
+                        DYNAMIC_CLAUSE +
+                        // " WHERE ( consultant_countries.country_id IN (:countryIds) OR consultant_industries.industry_id IN (:industryIds) ) " +
                         " AND users.enabled = 1 " +
                         " GROUP BY consultants.id " // * remove duplicates
                 , Consultant.class

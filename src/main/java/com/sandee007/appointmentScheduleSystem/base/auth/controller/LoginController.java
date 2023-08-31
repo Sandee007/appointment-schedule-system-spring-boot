@@ -1,5 +1,6 @@
 package com.sandee007.appointmentScheduleSystem.base.auth.controller;
 
+import com.sandee007.appointmentScheduleSystem.base.auth.dto.ChangePasswordDto;
 import com.sandee007.appointmentScheduleSystem.base.auth.entity.Role;
 import com.sandee007.appointmentScheduleSystem.base.auth.entity.User;
 import com.sandee007.appointmentScheduleSystem.base.auth.security.ERole;
@@ -7,15 +8,15 @@ import com.sandee007.appointmentScheduleSystem.base.auth.service.UserService;
 import com.sandee007.appointmentScheduleSystem.base.auth.validation.ValidationMessages;
 import com.sandee007.appointmentScheduleSystem.dto.RegisterSeekerDto;
 import com.sandee007.appointmentScheduleSystem.entity.Seeker;
+import com.sandee007.appointmentScheduleSystem.util.UtilThymeleaf;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -28,9 +29,11 @@ import java.util.Date;
 @Controller
 public class LoginController {
     private UserService userService;
+    private UtilThymeleaf utilThymeleaf;
 
-    public LoginController(UserService userService) {
+    public LoginController(UserService userService, UtilThymeleaf utilThymeleaf) {
         this.userService = userService;
+        this.utilThymeleaf = utilThymeleaf;
     }
 
     @GetMapping("/login")
@@ -158,6 +161,48 @@ public class LoginController {
         //        ! NEEDS TO SEND THE PLAIN PASSWORD HERE, NOT THE ENCRYPTED ONE
         request.login(user.getUsername(), registerSeekerDto.getPassword());
         return "redirect:/";
+    }
+
+    @PostMapping("change-password")
+    String changePasswordPost(
+            @Valid @ModelAttribute("changePasswordDto") ChangePasswordDto changePasswordDto,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes,
+            HttpServletRequest request
+    ) {
+        String redirectTo = "redirect:/";
+
+        User user = userService.findById(changePasswordDto.getId()).orElse(null);
+        if (user == null) {
+            redirectAttributes.addFlashAttribute(ValidationMessages.ERROR, ValidationMessages.SOMETHING_WENT_WRONG);
+            return redirectTo;
+        }
+
+        if (request.isUserInRole(ERole.ROLE_SEEKER.name())) {
+            User authUser = utilThymeleaf.getAuthUser();
+
+            if(authUser.getId() != user.getId()) {
+                redirectAttributes.addFlashAttribute(ValidationMessages.ERROR, ValidationMessages.SOMETHING_WENT_WRONG);
+                return redirectTo;
+            }
+
+            if (bindingResult.hasErrors()) return "view/seeker/change-password";
+            redirectTo = "redirect:/view/seeker?id="+authUser.getSeeker().getId();
+
+        } else if (request.isUserInRole(ERole.ROLE_CONSULTANT.name())) {
+            if (bindingResult.hasErrors()) return "consultant/profile/change-password";
+            redirectTo = "redirect:/consultant/dashboard";
+
+        } else {
+            redirectAttributes.addFlashAttribute(ValidationMessages.ERROR, ValidationMessages.SOMETHING_WENT_WRONG);
+            return redirectTo;
+        }
+
+        user.setPassword(changePasswordDto.getNewPassword());
+        userService.save(user);
+        redirectAttributes.addFlashAttribute("success", "Password Changed");
+        return redirectTo;
+
     }
 
 }

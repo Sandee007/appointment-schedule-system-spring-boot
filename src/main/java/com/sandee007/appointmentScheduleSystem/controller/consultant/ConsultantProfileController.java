@@ -98,26 +98,4 @@ public class ConsultantProfileController {
         return "consultant/profile/change-password";
     }
 
-    @PostMapping("change-password")
-    String changePasswordPost(
-            @Valid @ModelAttribute("changePasswordDto") ChangePasswordDto changePasswordDto,
-            BindingResult bindingResult,
-            RedirectAttributes redirectAttributes
-    ) {
-        String redirectTo = "redirect:/consultant/dashboard";
-        if (bindingResult.hasErrors()) return "consultant/profile/change-password";
-
-        User user = userService.findById(changePasswordDto.getId()).orElse(null);
-        if (user == null) {
-            redirectAttributes.addFlashAttribute("error", "Something went wrong");
-            return redirectTo;
-        }
-
-        user.setPassword(changePasswordDto.getNewPassword());
-        userService.save(user);
-        redirectAttributes.addFlashAttribute("success", "Password Changed");
-        return redirectTo;
-
-    }
-
 }

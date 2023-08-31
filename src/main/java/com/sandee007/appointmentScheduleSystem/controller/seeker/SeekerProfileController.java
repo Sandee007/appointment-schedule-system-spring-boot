@@ -1,5 +1,7 @@
 package com.sandee007.appointmentScheduleSystem.controller.seeker;
 
+import com.sandee007.appointmentScheduleSystem.base.auth.dto.ChangePasswordDto;
+import com.sandee007.appointmentScheduleSystem.base.auth.validation.ValidationMessages;
 import com.sandee007.appointmentScheduleSystem.entity.Seeker;
 import com.sandee007.appointmentScheduleSystem.service.SeekerService;
 import com.sandee007.appointmentScheduleSystem.util.UtilThymeleaf;
@@ -39,7 +41,6 @@ public class SeekerProfileController {
         Seeker seeker = seekerService.findById(id).orElse(null);
         if (seeker == null) return "redirect:/";
 
-
         model.addAttribute("seeker", seeker);
         model.addAttribute("isAuthSeekerAccount", utilThymeleaf.getAuthUser().getId() == seeker.getUser().getId());
         return "view/seeker";
@@ -74,7 +75,17 @@ public class SeekerProfileController {
         }
         seekerService.save(seeker);
 
-        redirectAttributes.addFlashAttribute("success", "Profile updated");
+        redirectAttributes.addFlashAttribute(ValidationMessages.SUCCESS, "Profile updated");
         return "redirect:/view/seeker?id=4";
+    }
+
+    @GetMapping(value = "seeker/change-password")
+    String seekerChangePassword(Model model){
+
+        ChangePasswordDto changePasswordDto = new ChangePasswordDto();
+        changePasswordDto.setId(utilThymeleaf.getAuthUser().getId());
+        model.addAttribute("changePasswordDto", changePasswordDto);
+
+        return "view/seeker/change-password";
     }
 }

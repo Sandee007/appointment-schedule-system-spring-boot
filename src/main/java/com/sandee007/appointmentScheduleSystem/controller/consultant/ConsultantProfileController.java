@@ -1,9 +1,10 @@
 package com.sandee007.appointmentScheduleSystem.controller.consultant;
 
+import com.sandee007.appointmentScheduleSystem.base.auth.dto.ChangePasswordDto;
 import com.sandee007.appointmentScheduleSystem.entity.Consultant;
-import com.sandee007.appointmentScheduleSystem.entity.TimeSlot;
 import com.sandee007.appointmentScheduleSystem.service.ConsultantService;
 import com.sandee007.appointmentScheduleSystem.service.TimeslotService;
+import com.sandee007.appointmentScheduleSystem.util.UtilThymeleaf;
 import jakarta.validation.Valid;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -19,17 +20,20 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.Date;
-import java.util.List;
 
 @Controller
 @RequestMapping("consultant/profile")
 public class ConsultantProfileController {
     private ConsultantService consultantService;
     private TimeslotService timeslotService;
+    private UtilThymeleaf utilThymeleaf;
 
-    public ConsultantProfileController(ConsultantService consultantService, TimeslotService timeslotService) {
+    public ConsultantProfileController(ConsultantService consultantService, TimeslotService timeslotService,
+                                       UtilThymeleaf utilThymeleaf
+    ) {
         this.consultantService = consultantService;
         this.timeslotService = timeslotService;
+        this.utilThymeleaf = utilThymeleaf;
     }
 
     @GetMapping("edit")
@@ -76,5 +80,28 @@ public class ConsultantProfileController {
         consultantService.save(consultant);
         redirectAttributes.addFlashAttribute("success", "Profile Updated");
         return "redirect:/consultant/dashboard";
+    }
+
+
+    @GetMapping("change-password")
+    String changePassword(Model model) {
+        ChangePasswordDto changePasswordDto = new ChangePasswordDto();
+        changePasswordDto.setId(utilThymeleaf.getAuthUser().getId());
+
+        model.addAttribute("changePasswordDto", changePasswordDto);
+        return "consultant/profile/change-password";
+    }
+
+    @PostMapping("change-password")
+    String changePasswordPost(
+            @Valid @ModelAttribute("changePasswordDto") ChangePasswordDto changePasswordDto,
+            BindingResult bindingResult
+    ) {
+        System.out.println(utilThymeleaf.getAuthUser().getPassword());
+        if (bindingResult.hasErrors()) return "consultant/profile/change-password";
+
+        return "redirect:/consultant/dashboard";
+
+
     }
 }

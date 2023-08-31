@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MatchesCurrentPassword {
-//    String passwordToMatch() default "";
+//    String passwordToMatch();
     String message() default "Does not match with Current Password";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};

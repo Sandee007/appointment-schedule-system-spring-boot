@@ -3,11 +3,9 @@ package com.sandee007.appointmentScheduleSystem.base.auth.service;
 import com.sandee007.appointmentScheduleSystem.base.auth.dao.UserRepository;
 import com.sandee007.appointmentScheduleSystem.base.auth.entity.User;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 

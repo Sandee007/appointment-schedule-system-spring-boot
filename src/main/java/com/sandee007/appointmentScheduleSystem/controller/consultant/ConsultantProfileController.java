@@ -1,6 +1,8 @@
 package com.sandee007.appointmentScheduleSystem.controller.consultant;
 
 import com.sandee007.appointmentScheduleSystem.base.auth.dto.ChangePasswordDto;
+import com.sandee007.appointmentScheduleSystem.base.auth.entity.User;
+import com.sandee007.appointmentScheduleSystem.base.auth.service.UserService;
 import com.sandee007.appointmentScheduleSystem.entity.Consultant;
 import com.sandee007.appointmentScheduleSystem.service.ConsultantService;
 import com.sandee007.appointmentScheduleSystem.service.TimeslotService;
@@ -27,13 +29,17 @@ public class ConsultantProfileController {
     private ConsultantService consultantService;
     private TimeslotService timeslotService;
     private UtilThymeleaf utilThymeleaf;
+    private UserService userService;
 
-    public ConsultantProfileController(ConsultantService consultantService, TimeslotService timeslotService,
-                                       UtilThymeleaf utilThymeleaf
+    public ConsultantProfileController(
+            ConsultantService consultantService, TimeslotService timeslotService,
+            UtilThymeleaf utilThymeleaf,
+            UserService userService
     ) {
         this.consultantService = consultantService;
         this.timeslotService = timeslotService;
         this.utilThymeleaf = utilThymeleaf;
+        this.userService = userService;
     }
 
     @GetMapping("edit")
@@ -95,13 +101,23 @@ public class ConsultantProfileController {
     @PostMapping("change-password")
     String changePasswordPost(
             @Valid @ModelAttribute("changePasswordDto") ChangePasswordDto changePasswordDto,
-            BindingResult bindingResult
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes
     ) {
-        System.out.println(utilThymeleaf.getAuthUser().getPassword());
+        String redirectTo = "redirect:/consultant/dashboard";
         if (bindingResult.hasErrors()) return "consultant/profile/change-password";
 
-        return "redirect:/consultant/dashboard";
+        User user = userService.findById(changePasswordDto.getId()).orElse(null);
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("error", "Something went wrong");
+            return redirectTo;
+        }
 
+        user.setPassword(changePasswordDto.getNewPassword());
+        userService.save(user);
+        redirectAttributes.addFlashAttribute("success", "Password Changed");
+        return redirectTo;
 
     }
+
 }

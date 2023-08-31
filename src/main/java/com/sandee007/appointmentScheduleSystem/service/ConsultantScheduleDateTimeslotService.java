@@ -52,5 +52,9 @@ public interface ConsultantScheduleDateTimeslotService {
             Consultant consultantScheduleDate_consultant
     );
 
+    List<ConsultantScheduleDateTimeslot> getAppointmentHistory(
+            Consultant consultantScheduleDate_consultant
+    );
+
 
 }

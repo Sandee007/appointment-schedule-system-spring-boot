@@ -1,0 +1,97 @@
+<div
+  layout:decorate="~{consultant/layouts/default}"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:fragment="content"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+  <div
+    layout:replace="~{/consultant/layouts/components/pageTitle :: consultantPageTitle(title='Appointment History')}"
+  ></div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="appointment-tab">
+        <!-- Appointment Tab -->
+        <!--        <ul class="nav nav-tabs nav-tabs-solid nav-tabs-rounded">-->
+        <!--          <li class="nav-item">-->
+        <!--            <a class="nav-link active" href="#history" data-toggle="tab"-->
+        <!--              >History</a-->
+        <!--            >-->
+        <!--          </li>-->
+        <!--        </ul>-->
+        <!-- /Appointment Tab -->
+
+        <div class="tab-content">
+          <!-- Upcoming Appointment Tab -->
+          <div class="tab-pane show active" id="history">
+            <div class="card card-table mb-0">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table
+                    class="table table-hover table-center p-5"
+                    id="tableAppointmentHistory"
+                  >
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Job Seeker Name</th>
+                        <th>Appointment Date</th>
+                        <th>Timeslot</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        th:each="appointment,loop : ${appointmentHistory}"
+                        th:with="seeker=${appointment.getSeeker()}"
+                      >
+                        <th th:text="${loop.index+1}"></th>
+                        <td>
+                          <h2 class="table-avatar">
+                            <a href="#" class="avatar avatar-sm mr-2"
+                              ><img
+                                class="avatar-img rounded-circle"
+                                th:src="${seeker.image}"
+                                alt="User Image"
+                            /></a>
+                            <th:block
+                              th:text="${seeker.getFullName()}"
+                            ></th:block>
+                          </h2>
+                        </td>
+                        <td
+                          th:text="${appointment.getConsultantScheduleDate().date}"
+                        ></td>
+                        <td>
+                          <span
+                            class="btn btn-sm bg-info-light"
+                            th:text="${appointment.getTimeslot().getSlotsString()}"
+                          ></span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /Upcoming Appointment Tab -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script th:insert="~{/base/data-tables-config.js}"></script>
+<script>
+  $(document).ready(function () {
+    $("#tableAppointmentHistory").DataTable({
+      ...dataTablesConfig("Appointment History"),
+      // columnDefs: [
+      //   {
+      //     targets: 3,
+      //     className: CLASS_NO_EXPORT,
+      //   },
+      // ],
+    });
+  });
+</script>

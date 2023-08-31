@@ -37,4 +37,10 @@ public interface ConsultantScheduleDateTimeslotRepository extends JpaRepository<
             Date consultantScheduleDate_date
     );
 
+    List<ConsultantScheduleDateTimeslot> findAllByStatusIsAndConsultantScheduleDate_ConsultantAndSeekerNotNullAndConsultantScheduleDate_DateBeforeOrderByConsultantScheduleDate_Date(
+            int status,
+            Consultant consultantScheduleDate_consultant,
+            Date consultantScheduleDate_date
+    );
+
 }

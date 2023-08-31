@@ -23,8 +23,9 @@ public class ConsultantScheduleDateTimeslotServiceImpl implements ConsultantSche
     private ConsultantScheduleDateTimeslotRepository consultantScheduleDateTimeslotRepository;
     private UtilThymeleaf utilThymeleaf;
 
-    public ConsultantScheduleDateTimeslotServiceImpl(ConsultantScheduleDateTimeslotRepository consultantScheduleDateTimeslotRepository,
-                                                     UtilThymeleaf utilThymeleaf
+    public ConsultantScheduleDateTimeslotServiceImpl(
+            ConsultantScheduleDateTimeslotRepository consultantScheduleDateTimeslotRepository,
+            UtilThymeleaf utilThymeleaf
     ) {
         this.consultantScheduleDateTimeslotRepository = consultantScheduleDateTimeslotRepository;
         this.utilThymeleaf = utilThymeleaf;
@@ -127,7 +128,7 @@ public class ConsultantScheduleDateTimeslotServiceImpl implements ConsultantSche
         return consultantScheduleDateTimeslotRepository.findAllByStatusIsAndConsultantScheduleDate_ConsultantAndSeekerNotNullAndConsultantScheduleDate_DateAfter(
                 status,
                 consultantScheduleDate_consultant,
-               utilThymeleaf.getYesterday()
+                utilThymeleaf.getYesterday()
         );
     }
 
@@ -150,6 +151,15 @@ public class ConsultantScheduleDateTimeslotServiceImpl implements ConsultantSche
                 1,
                 consultantScheduleDate_consultant,
                 utilThymeleaf.getTomorrow()
+        );
+    }
+
+    @Override
+    public List<ConsultantScheduleDateTimeslot> getAppointmentHistory(Consultant consultantScheduleDate_consultant) {
+        return consultantScheduleDateTimeslotRepository.findAllByStatusIsAndConsultantScheduleDate_ConsultantAndSeekerNotNullAndConsultantScheduleDate_DateBeforeOrderByConsultantScheduleDate_Date(
+                1,
+                consultantScheduleDate_consultant,
+                new Date()
         );
     }
 

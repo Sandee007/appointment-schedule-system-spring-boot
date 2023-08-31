@@ -62,4 +62,15 @@ public class ConsultantDashboardController {
 
         return "redirect:/consultant/dashboard#pending-appointments";
     }
+
+    @GetMapping("history")
+    public String history(Model model, Authentication authentication){
+        Consultant consultant = consultantService.getLoggedInConsultant(authentication);
+        List<ConsultantScheduleDateTimeslot> appointmentHistory = consultantScheduleDateTimeslotService.getAppointmentHistory(
+                consultant
+        );
+
+        model.addAttribute("appointmentHistory", appointmentHistory);
+        return "consultant/history";
+    }
 }

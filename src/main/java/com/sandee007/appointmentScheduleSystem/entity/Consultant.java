@@ -147,6 +147,7 @@ public class Consultant {
     }
 
     public String getCountriesString() {
+        if(this.getCountries() == null) return null;
         return this.getCountries().stream().map(Country::getName).toList()
                    .toString()
                    .replace("[", "").replace("]", "");

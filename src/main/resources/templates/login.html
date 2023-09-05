@@ -1,64 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head th:replace="~{admin/layouts/header :: adminHeader}"></head>
-<body>
-
-<!-- Main Wrapper -->
-<div class="main-wrapper login-body">
-    <div class="login-wrapper">
+  <head th:replace="~{admin/layouts/header :: adminHeader}"></head>
+  <body style="background-image: url('/assets/images/cover3.avif')">
+    <!-- Main Wrapper -->
+    <div class="main-wrapper login-body">
+      <div class="login-wrapper">
         <div class="container">
-            <div class="loginbox">
-                <div class="login-left">
-                    <!--                    <img class="img-fluid" src="assets/img/logo-white.png" alt="Logo">-->
-                </div>
-                <div class="login-right">
-                    <div class="login-right-wrap">
-                        <h1>Login</h1>
-                        <p class="account-subtitle">Log into <span
-                                th:text="${@environment.getProperty('spring.application.name')}"></span></p>
-
-                        <!-- Form -->
-                        <form th:action="@{/login-handler}" method="post">
-                            <div class="form-group">
-                                <input name="username" class="form-control" type="text" placeholder="Email">
-                            </div>
-                            <div class="form-group">
-                                <input name="password" class="form-control" type="password" placeholder="Password">
-                            </div>
-                            <div class="form-group">
-                                <button class="btn btn-primary btn-block" type="submit">Login</button>
-                            </div>
-
-                            <div th:if="${param.error}" class="text-center text-danger">Invalid Credentials</div>
-                            <div th:if="${param.logout}" class="text-center text-success">Logged out Successfully</div>
-                        </form>
-                        <!-- /Form -->
-
-                        <!--                        <div class="text-center forgotpass"><a href="#">Forgot Password?</a></div>-->
-                        <!--                        <div class="login-or">-->
-                        <!--                            <span class="or-line"></span>-->
-                        <!--                            <span class="span-or">or</span>-->
-                        <!--                        </div>-->
-
-                        <!--                        &lt;!&ndash; Social Login &ndash;&gt;-->
-                        <!--                        <div class="social-login">-->
-                        <!--                            <span>Login with</span>-->
-                        <!--                            <a href="#" class="facebook"><i class="fa fa-facebook"></i></a><a href="#" class="google"><i-->
-                        <!--                                class="fa fa-google"></i></a>-->
-                        <!--                        </div>-->
-                        <!--                        &lt;!&ndash; /Social Login &ndash;&gt;-->
-
-                        <div class="text-center dont-have">Don’t have an account? <a href="#" th:href="@{/register}">Register</a>
-                        </div>
-                    </div>
-                </div>
+          <div class="loginbox shadow-lg border-primary">
+            <div class="login-left">
+              <h2 class="text-light">Welcome to</h2>
+              <h1
+                class="text-light"
+                th:text="${@environment.getProperty('spring.application.name')}"
+              ></h1>
             </div>
+            <div class="login-right">
+              <div class="login-right-wrap">
+                <h1 class="text-primary">Login</h1>
+                <p class="account-subtitle">
+                  Log into
+                  <span
+                    th:text="${@environment.getProperty('spring.application.name')}"
+                  ></span>
+                </p>
+
+                <!-- Form -->
+                <form th:action="@{/login-handler}" method="post">
+                  <div class="form-group">
+                    <input
+                      name="username"
+                      class="form-control"
+                      type="text"
+                      placeholder="Email"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <input
+                      name="password"
+                      class="form-control"
+                      type="password"
+                      placeholder="Password"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <button
+                      id="btn_login"
+                      class="btn btn-primary btn-block"
+                      type="submit"
+                    >
+                      Login
+                    </button>
+                  </div>
+
+                  <div th:if="${param.error}" class="text-center text-danger">
+                    Invalid Credentials
+                  </div>
+                  <div th:if="${param.logout}" class="text-center text-success">
+                    Logged out Successfully
+                  </div>
+                </form>
+                <!-- /Form -->
+
+                <!--                        <div class="text-center forgotpass"><a href="#">Forgot Password?</a></div>-->
+                <!--                        <div class="login-or">-->
+                <!--                            <span class="or-line"></span>-->
+                <!--                            <span class="span-or">or</span>-->
+                <!--                        </div>-->
+
+                <!--                        &lt;!&ndash; Social Login &ndash;&gt;-->
+                <!--                        <div class="social-login">-->
+                <!--                            <span>Login with</span>-->
+                <!--                            <a href="#" class="facebook"><i class="fa fa-facebook"></i></a><a href="#" class="google"><i-->
+                <!--                                class="fa fa-google"></i></a>-->
+                <!--                        </div>-->
+                <!--                        &lt;!&ndash; /Social Login &ndash;&gt;-->
+
+                <div class="text-center dont-have">
+                  Don’t have an account?
+                  <a href="#" th:href="@{/register}">Register</a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-</div>
-<!-- /Main Wrapper -->
-
-</body>
-
+    <!-- /Main Wrapper -->
+  </body>
 </html>

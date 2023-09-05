@@ -7,45 +7,52 @@
       ><i class="fe fe-home"></i> <span>Dashboard</span></a
     >
   </li>
-  <li class="submenu">
-    <a href="#"
-      ><i class="fe fe-document"></i> <span> Consultants</span>
-      <span class="menu-arrow"></span
-    ></a>
-    <ul style="display: none">
-      <li>
-        <a
-          th:classappend="${currentUrl == '/admin/dashboard'} ? active : ''"
-          href="#"
-          th:href="@{/admin/dashboard}"
-          >Invoice Reports</a
-        >
-      </li>
-      <li>
-        <a
-          th:classappend="${currentUrl == '/admin/test'} ? active : ''"
-          href="#"
-          th:href="@{/admin/test}"
-          >Test</a
-        >
-      </li>
-      <li>
-        <a
-          th:classappend="${currentUrl == '/admin/consultant/create'} ? active : ''"
-          href="#"
-          th:href="@{/admin/consultant/create}"
-          >Create</a
-        >
-      </li>
-    </ul>
-  </li>
-
-  <li>
-    <a href="appointment-list.html"
-      ><i class="fe fe-layout"></i>
-      <span>TODO - Appointments - gen reports by date</span></a
+  <li
+    th:classappend="${currentUrl == '/admin/consultant/create'} ? active : ''"
+  >
+    <a href="#" th:href="@{/admin/consultant/create}"
+      ><i class="fe fe-document"></i> <span>Register Consultant</span></a
     >
   </li>
+  <!--  <li class="submenu">-->
+  <!--    <a href="#"-->
+  <!--      ><i class="fe fe-document"></i> <span> Consultants</span>-->
+  <!--      <span class="menu-arrow"></span-->
+  <!--    ></a>-->
+  <!--    <ul style="display: none">-->
+  <!--      <li>-->
+  <!--        <a-->
+  <!--          th:classappend="${currentUrl == '/admin/dashboard'} ? active : ''"-->
+  <!--          href="#"-->
+  <!--          th:href="@{/admin/dashboard}"-->
+  <!--          >Invoice Reports</a-->
+  <!--        >-->
+  <!--      </li>-->
+  <!--      <li>-->
+  <!--        <a-->
+  <!--          th:classappend="${currentUrl == '/admin/test'} ? active : ''"-->
+  <!--          href="#"-->
+  <!--          th:href="@{/admin/test}"-->
+  <!--          >Test</a-->
+  <!--        >-->
+  <!--      </li>-->
+  <!--      <li>-->
+  <!--        <a-->
+  <!--          th:classappend="${currentUrl == '/admin/consultant/create'} ? active : ''"-->
+  <!--          href="#"-->
+  <!--          th:href="@{/admin/consultant/create}"-->
+  <!--          >Create</a-->
+  <!--        >-->
+  <!--      </li>-->
+  <!--    </ul>-->
+  <!--  </li>-->
+
+  <!--  <li>-->
+  <!--    <a href="appointment-list.html"-->
+  <!--      ><i class="fe fe-layout"></i>-->
+  <!--      <span>TODO - Appointments - gen reports by date</span></a-->
+  <!--    >-->
+  <!--  </li>-->
   <li>
     <a target="_blank" href="/"
       ><i class="fe fe-link-external"></i> <span>Public Site</span></a

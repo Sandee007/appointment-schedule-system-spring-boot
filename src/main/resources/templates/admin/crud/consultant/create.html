@@ -147,7 +147,9 @@
         />
         <!--        th:field="${user.consultant.countries}"-->
         <input type="hidden" th:field="*{id}" />
-        <button class="btn btn-primary" type="submit">Submit</button>
+        <button id="btn_submit" class="btn btn-primary" type="submit">
+          Submit
+        </button>
       </form>
     </div>
   </div>
@@ -162,7 +164,7 @@
     let countriesString = [[${countriesString}]]
     let industriesString = [[${industriesString}]]
     // console.log({propCountries})
-    console.log({propIndustries})
+    // console.log({propIndustries})
     // console.log({user})
     // console.log({consultant})
     // console.log({countriesString})

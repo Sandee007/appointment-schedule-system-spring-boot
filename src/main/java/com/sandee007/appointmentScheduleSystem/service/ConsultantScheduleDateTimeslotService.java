@@ -16,7 +16,6 @@ public interface ConsultantScheduleDateTimeslotService {
     void save(ConsultantScheduleDateTimeslot consultantScheduleDateTimeslot);
 
     List<ConsultantScheduleDateTimeslot> findAllById(Iterable<Integer> ids);
-
     void deleteAllById(Iterable<Integer> ids);
 
     void deleteAll(List<ConsultantScheduleDateTimeslot> consultantScheduleDateTimeslots);
@@ -55,6 +54,7 @@ public interface ConsultantScheduleDateTimeslotService {
     List<ConsultantScheduleDateTimeslot> getAppointmentHistory(
             Consultant consultantScheduleDate_consultant
     );
+    List<ConsultantScheduleDateTimeslot> findAllAppointments();
 
 
 }

@@ -12,6 +12,7 @@ const exportOptions = {
 const CLASS_NO_EXPORT = "noExport";
 
 const dataTablesConfig = (fileExportName) => {
+  // fileExportName = fileExportName
   return {
     // dom: "Blfrtip",
     // buttons: ["excel", "pdf", "csv"],

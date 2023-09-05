@@ -9,6 +9,8 @@ import com.sandee007.appointmentScheduleSystem.entity.ConsultantScheduleDate;
 import com.sandee007.appointmentScheduleSystem.entity.ConsultantScheduleDateTimeslot;
 import com.sandee007.appointmentScheduleSystem.entity.TimeSlot;
 import com.sandee007.appointmentScheduleSystem.util.UtilThymeleaf;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,13 +24,16 @@ import java.util.stream.Collectors;
 public class ConsultantScheduleDateTimeslotServiceImpl implements ConsultantScheduleDateTimeslotService {
     private ConsultantScheduleDateTimeslotRepository consultantScheduleDateTimeslotRepository;
     private UtilThymeleaf utilThymeleaf;
+    private EntityManager entityManager;
 
     public ConsultantScheduleDateTimeslotServiceImpl(
             ConsultantScheduleDateTimeslotRepository consultantScheduleDateTimeslotRepository,
-            UtilThymeleaf utilThymeleaf
+            UtilThymeleaf utilThymeleaf,
+            EntityManager entityManager
     ) {
         this.consultantScheduleDateTimeslotRepository = consultantScheduleDateTimeslotRepository;
         this.utilThymeleaf = utilThymeleaf;
+        this.entityManager = entityManager;
     }
 
     @Override
@@ -161,6 +166,22 @@ public class ConsultantScheduleDateTimeslotServiceImpl implements ConsultantSche
                 consultantScheduleDate_consultant,
                 new Date()
         );
+    }
+
+    @Override
+    public List<ConsultantScheduleDateTimeslot> findAllAppointments() {
+        TypedQuery<ConsultantScheduleDateTimeslot> q = entityManager.createQuery(
+                " SELECT csdt FROM ConsultantScheduleDateTimeslot csdt" +
+                        " JOIN FETCH csdt.consultantScheduleDate " +
+                        " JOIN FETCH csdt.consultantScheduleDate.consultant " +
+                        " JOIN FETCH csdt.timeslot " +
+                        " JOIN FETCH csdt.seeker " +
+                        " WHERE csdt.status = 1 " +
+                        " ORDER BY csdt.consultantScheduleDate.date DESC "
+                , ConsultantScheduleDateTimeslot.class
+        );
+
+        return q.getResultList();
     }
 
 

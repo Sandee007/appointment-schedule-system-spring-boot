@@ -1,0 +1,109 @@
+<!-- ***** ALWAYS START WITH content container-fluid ***** -->
+<div
+  layout:decorate="~{admin/layouts/default}"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:fragment="content"
+  class="content container-fluid"
+>
+  <div
+    layout:replace="~{admin/layouts/components/pageTitle :: adminPageTitle(title='Appointment History') }"
+  ></div>
+  <!-- /Page Header -->
+  <!--  <span th:text="${#ctx.springRequestContext.requestUri}"></span>-->
+  <div class="row">
+    <div
+      class="col-12 alert alert-success my-3"
+      th:if="${success}"
+      th:text="${success}"
+    ></div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card card-table">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table
+              id="tableAppointmentHistory"
+              class="table table-hover table-center mb-0"
+            >
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Date</th>
+                  <th>Consultant</th>
+                  <th>Job Seeker</th>
+                  <th>Timeslot</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="timeslot,loop : ${timeslots}">
+                  <td th:text="${loop.index+1}"></td>
+                  <td>
+                    <span
+                      th:text="${timeslot.consultantScheduleDate.date}"
+                    ></span>
+                  </td>
+                  <td>
+                    <h2 class="table-avatar">
+                      <a href="#" class="avatar avatar-sm mr-2"
+                        ><img
+                          class="avatar-img rounded-circle"
+                          th:src="${timeslot.consultantScheduleDate.consultant.image}"
+                          alt=""
+                      /></a>
+                      <a
+                        th:text="${timeslot.consultantScheduleDate.consultant.fullName}"
+                      ></a>
+                    </h2>
+                  </td>
+                  <td>
+                    <h2 class="table-avatar">
+                      <a href="#" class="avatar avatar-sm mr-2"
+                        ><img
+                          class="avatar-img rounded-circle"
+                          th:src="${timeslot.seeker.image}"
+                          alt=""
+                      /></a>
+                      <a th:text="${timeslot.seeker.fullName}"></a>
+                    </h2>
+                  </td>
+                  <td>
+                    <span th:text="${timeslot.timeslot.slotsString}"></span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- /Recent Orders -->
+    </div>
+  </div>
+
+  <script>
+    function toggleStatus(el) {
+      // return console.log(el.dataset);
+      location = el.dataset.deleteUrl;
+    }
+  </script>
+
+  <script th:insert="~{/base/data-tables-config.js}"></script>
+  <script>
+    $(document).ready(function () {
+      $("#tableAppointmentHistory").DataTable({
+        ...dataTablesConfig("Appointment History"),
+        // columnDefs: [
+        //   {
+        //     targets: 5,
+        //     className: CLASS_NO_EXPORT,
+        //   },
+        //   {
+        //     targets: 6,
+        //     className: CLASS_NO_EXPORT,
+        //   },
+        // ],
+      });
+    });
+  </script>
+</div>

@@ -2,6 +2,7 @@ package com.sandee007.appointmentScheduleSystem.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sandee007.appointmentScheduleSystem.base.auth.entity.User;
+import com.sandee007.appointmentScheduleSystem.base.auth.service.EmailService;
 import com.sandee007.appointmentScheduleSystem.base.auth.service.UserService;
 import com.sandee007.appointmentScheduleSystem.entity.Consultant;
 import com.sandee007.appointmentScheduleSystem.entity.ConsultantScheduleDateTimeslot;
@@ -16,8 +17,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -29,6 +28,7 @@ public class PublicPagesController {
     private IndustryService industryService;
     private CountryService countryService;
     private UtilThymeleaf utilThymeleaf;
+    private EmailService emailService;
 
     public PublicPagesController(
             ConsultantService consultantService,
@@ -37,7 +37,8 @@ public class PublicPagesController {
             UserService userService,
             IndustryService industryService,
             CountryService countryService,
-            UtilThymeleaf utilThymeleaf
+            UtilThymeleaf utilThymeleaf,
+            EmailService emailService
     ) {
         this.consultantService = consultantService;
         this.consultantScheduleDateService = consultantScheduleDateService;
@@ -46,6 +47,7 @@ public class PublicPagesController {
         this.industryService = industryService;
         this.countryService = countryService;
         this.utilThymeleaf = utilThymeleaf;
+        this.emailService = emailService;
     }
 
     @GetMapping("/")
@@ -72,7 +74,10 @@ public class PublicPagesController {
         model.addAttribute("consultant", consultant);
         model.addAttribute(
                 "futureScheduleDates",
-                consultantScheduleDateService.findAllByConsultantAndDateAfterOrderByDateAsc(consultant, utilThymeleaf.getYesterday())
+                consultantScheduleDateService.findAllByConsultantAndDateAfterOrderByDateAsc(
+                        consultant,
+                        utilThymeleaf.getYesterday()
+                )
         );
         return "view/consultant";
     }
@@ -81,7 +86,8 @@ public class PublicPagesController {
     public String consultantsFilter(
             @RequestParam(value = "countryIds", required = false) List<Integer> countryIds,
             @RequestParam(value = "industryIds", required = false) List<Integer> industryIds,
-            Model model){
+            Model model
+    ) {
 
         List<Consultant> consultants = consultantService.filterConsultants(countryIds, industryIds);
 
@@ -119,18 +125,21 @@ public class PublicPagesController {
             @RequestParam("consultantId") int id,
             Model model
     ) throws JsonProcessingException {
+
         Consultant consultant = consultantService.findById(id).orElse(null);
         if (consultant == null) return "redirect:/";
+
+        //        * auth seeker
+        User user = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 
         List<ConsultantScheduleDateTimeslot> timeslots = consultantScheduleDateTimeslotService.getAllByIdString(
                 timeslotString
         );
-
         for (ConsultantScheduleDateTimeslot timeslot : timeslots) {
-            User user = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
             timeslot.setSeeker(user.getSeeker());
         }
-        consultantScheduleDateTimeslotService.saveAll(timeslots);
+//        consultantScheduleDateTimeslotService.saveAll(timeslots);
+        emailService.sendMailAppointmentsBooked(user, consultant, timeslots);
 
 
         model.addAttribute("timeslots", timeslots);

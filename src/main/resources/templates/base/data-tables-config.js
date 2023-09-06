@@ -12,7 +12,7 @@ const exportOptions = {
 const CLASS_NO_EXPORT = "noExport";
 
 const dataTablesConfig = (fileExportName) => {
-  // fileExportName = fileExportName
+  fileExportName = fileExportName + " " + moment().format("YYYY-MM-DD HH:mm");
   return {
     // dom: "Blfrtip",
     // buttons: ["excel", "pdf", "csv"],

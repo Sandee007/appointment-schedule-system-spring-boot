@@ -23,20 +23,17 @@ public class ConsultantServiceImpl implements ConsultantService {
 
     private ConsultantRepository consultantRepository;
     private UserService userService;
-    private EmailService emailService;
     private Environment environment;
     private EntityManager entityManager;
 
     public ConsultantServiceImpl(
             ConsultantRepository consultantRepository,
             UserService userService,
-            EmailService emailService,
             Environment environment,
             EntityManager entityManager
     ) {
         this.consultantRepository = consultantRepository;
         this.userService = userService;
-        this.emailService = emailService;
         this.environment = environment;
         this.entityManager = entityManager;
     }

@@ -107,8 +107,8 @@ public class ConsultantCrudController {
             model.addAttribute("countriesString", countriesString);
             return "admin/crud/consultant/create";
         }
-
-        //        * role
+//
+//        //        * role
         Role role = new Role(ERole.ROLE_CONSULTANT.name());
         role.setUser(user);
         user.setRole(role);

@@ -77,6 +77,9 @@ public class EmailServiceImpl implements EmailService {
         context.setVariable("user", user);
         context.setVariable("password", password);
         context.setVariable("subject", subject);
+        context.setVariable("appName", appName);
+        context.setVariable("appUrl", appUrl);
+        context.setVariable("appContactEmail", "info"+consultantService.generateConsultantEmailDomain());
         String content = templateEngine.process("emailTemplates/consultantRegistered", context);
 
         try {
